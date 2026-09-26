@@ -1,0 +1,1803 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#050907">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>صابر | SABER V6</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#050907;color:#e9f3ed;font-family:Tahoma,Arial,sans-serif;font-size:14px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit;outline:none;width:100%}
+#app{display:flex;flex-direction:column;height:100vh;max-width:520px;margin:0 auto;background:#06100c;position:relative}
+header{height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid #1e3329;background:#08120e;z-index:30;position:relative}
+.brand{display:flex;align-items:center;gap:8px}
+.mark{width:34px;height:34px;border:1px solid #4d8968;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#66d39d;font-weight:900;font-size:15px;background:#0a1a12}
+.brand-txt b{font-size:14px;display:block}
+.brand-txt small{display:block;color:#7a9086;font-size:8px;letter-spacing:1.5px}
+.hdr-right{display:flex;align-items:center;gap:6px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#66d39d;box-shadow:0 0 6px #66d39d}
+.status-dot.warn{background:#d2ad63;box-shadow:0 0 6px #d2ad63}
+.status-dot.err{background:#c96d6d;box-shadow:0 0 6px #c96d6d}
+.menu-btn{width:36px;height:36px;border-radius:9px;color:#7a9086;font-size:22px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.menu-btn:active{background:#0f2420;color:#66d39d}
+.top-menu{position:absolute;top:58px;left:12px;background:#0f1e17;border:1px solid #2b4a3a;border-radius:12px;padding:5px;display:none;z-index:40;min-width:240px;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.top-menu.open{display:block;animation:menuIn .15s}
+@keyframes menuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.top-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;padding:11px 14px;border-radius:8px;color:#e9f3ed;font-size:13px}
+.top-menu button:active{background:#132a1f;color:#66d39d}
+.top-menu .divider{height:1px;background:#1e3329;margin:4px 6px}
+.top-menu .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;font-size:12px;color:#e9f3ed}
+.switch{position:relative;width:38px;height:22px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;inset:0;background:#1a2a22;border-radius:12px;border:1px solid #2b4a3a;transition:.2s}
+.switch span::before{content:"";position:absolute;width:16px;height:16px;left:2px;top:2px;background:#7a9086;border-radius:50%;transition:.2s}
+.switch input:checked+span{background:#1a3d2e;border-color:#66d39d}
+.switch input:checked+span::before{transform:translateX(-16px);background:#66d39d}
+main{flex:1;position:relative;overflow:hidden;min-height:0}
+.page{display:none;position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:80px}
+.page.active{display:block}
+#chat.active{display:flex;flex-direction:column;padding:0 0 60px 0}
+#voice.active{display:flex;flex-direction:column;align-items:center;padding-bottom:60px}
+nav{position:absolute;bottom:0;left:0;right:0;height:60px;display:flex;background:#08120e;border-top:1px solid #1e3329;z-index:15}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#7a9086;font-size:9px;padding:4px 2px;position:relative;transition:color .15s}
+nav button.active{color:#66d39d}
+nav button.active::before{content:"";position:absolute;top:0;left:20%;right:20%;height:2px;background:#66d39d;border-radius:0 0 2px 2px}
+nav button .ico{font-size:20px;line-height:1;margin-bottom:2px}
+h1,h2,h3{margin:0 0 8px}
+h2{font-size:17px;margin-bottom:12px}
+h3{font-size:13px}
+.muted{color:#7a9086;font-size:11px;line-height:1.7}
+.card{border:1px solid #1e3329;border-radius:10px;background:#0a1510;padding:14px;margin-bottom:10px}
+.card h3{color:#66d39d;margin-bottom:6px}
+.row{display:flex;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid #2b4a3a;background:#0b1712;color:#c8d9d0;border-radius:8px;padding:10px 14px;font-size:12px;min-height:40px}
+.btn.primary{background:#66d39d;color:#050907;border-color:#66d39d;font-weight:700}
+.btn:active{opacity:.8}
+.chip{display:inline-block;border:1px solid #2b4a3a;background:#0b1712;color:#c8d9d0;border-radius:6px;padding:7px 10px;font-size:11px;margin:3px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10px;color:#7a9086;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase}
+.field input,.field select,.field textarea{background:#0b1712;border:1px solid #1e3329;border-radius:8px;padding:10px 12px;color:#e9f3ed;font-size:13px}
+.field input:focus{border-color:#66d39d}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;background:#13251c;border:1px solid #3c674f;color:#e1f1e8;padding:10px 16px;border-radius:8px;font-size:11px;max-width:90%;text-align:center;transition:opacity .25s,transform .25s;pointer-events:none;z-index:200;font-family:monospace}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.home-hero{text-align:center;padding:24px 10px 16px}
+.home-mark{width:80px;height:80px;margin:0 auto 14px;border:1px solid #3a6b52;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#66d39d;font-weight:900;font-size:32px;background:#0a1a12;box-shadow:0 0 30px rgba(102,211,157,.2)}
+.home-hero h1{font-size:19px;margin-bottom:6px}
+.home-hero p{font-size:11px;color:#7a9086;line-height:1.8}
+.quick{margin-top:18px}
+.quick::after{content:"";display:table;clear:both}
+.quick .card{float:right;width:48%;margin:1% 0 1% 2%;text-align:center;cursor:pointer;padding:14px 8px}
+.quick .card:nth-child(2n){margin-left:0}
+.quick .card .ico{font-size:24px;display:block;margin-bottom:5px}
+.quick .card b{font-size:12px}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;font-size:12px;border-bottom:1px solid #122019}
+.set-row:last-child{border:none}
+.messages{flex:1;overflow-y:auto;padding:14px 12px 8px;-webkit-overflow-scrolling:touch}
+.msg{margin:10px 0;display:flex;align-items:flex-start;gap:8px;cursor:pointer;transition:opacity .15s;border-radius:10px;position:relative}
+.msg:active{opacity:.7}
+.msg.user{flex-direction:row-reverse}
+.bubble{max-width:80%;border:1px solid #1e3329;border-radius:14px;padding:10px 14px;font-size:13px;line-height:1.75;background:#0a1510;word-break:break-word;white-space:pre-wrap;position:relative}
+.msg.user .bubble{background:#113127;border-color:#275d49}
+.msg.assistant .bubble{border-color:#1e5a3a}
+.mini{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#173a2b;color:#66d39d;font-weight:900;font-size:11px;flex-shrink:0;border:1px solid #2b5a44}
+.msg.user .mini{background:#1a2d4a;color:#7aa8ff;border-color:#3a5a7a}
+.msg-tools{display:flex;gap:4px;margin-top:6px;justify-content:flex-end}
+.msg-tools button{padding:4px 8px;border-radius:5px;color:#7a9086;font-size:10px;background:rgba(102,211,157,.05);border:1px solid rgba(102,211,157,.1)}
+.msg-tools button:active{background:rgba(102,211,157,.15);color:#66d39d}
+.search-box{display:none;padding:8px 12px;background:#0a1510;border-bottom:1px solid #1e3329;gap:8px;align-items:center}
+.search-box.show{display:flex}
+.search-box input{background:#050907;border:1px solid #2b4a3a;border-radius:8px;padding:8px 10px;font-size:12px;color:#e9f3ed;flex:1}
+.search-box button{color:#7a9086;font-size:14px;padding:4px 8px}
+.compose-wrap{flex-shrink:0;padding:8px 10px;background:#050907;border-top:1px solid #1e3329}
+.compose{display:flex;align-items:flex-end;border:1px solid #2b4a3a;background:#0b1712;padding:5px;border-radius:14px;gap:3px}
+.compose textarea{flex:1;min-height:38px;max-height:100px;resize:none;border:none;background:none;padding:9px;font-size:13px;line-height:1.5}
+.compose-mic{width:38px;height:38px;border-radius:10px;background:#101c16;border:1px solid #2b4a3a;color:#cfe0d6;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.compose-mic.active{background:#4a3020;border-color:#c98a4a;color:#ffd59c;animation:pulseMic 1.2s infinite}
+@keyframes pulseMic{0%,100%{box-shadow:0 0 0 0 rgba(215,138,73,.4)}50%{box-shadow:0 0 0 8px rgba(215,138,73,0)}}
+.send{width:40px;height:40px;border-radius:11px;background:#66d39d;color:#050907;font-size:18px;font-weight:bold;flex-shrink:0}
+.status-bar{text-align:center;color:#5e7468;font-size:8px;margin-top:5px;font-family:monospace;letter-spacing:1px;display:flex;justify-content:center;gap:8px;align-items:center}
+.search-badge{display:none;background:rgba(92,200,255,.15);color:#5cc8ff;border:1px solid rgba(92,200,255,.4);border-radius:10px;padding:1px 8px;font-size:9px}
+.search-badge.show{display:inline-block}
+.tts-badge{display:none;background:rgba(210,173,99,.15);color:#d2ad63;border:1px solid rgba(210,173,99,.4);border-radius:10px;padding:1px 8px;font-size:9px}
+.tts-badge.show{display:inline-block}
+.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;opacity:0;pointer-events:none;transition:opacity .2s}
+.sheet-backdrop.show{opacity:1;pointer-events:auto}
+.msg-sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:min(520px,100%);background:#0f1e17;border-top:1px solid #2b4a3a;border-radius:20px 20px 0 0;padding:14px 12px 20px;z-index:101;transition:transform .25s cubic-bezier(.2,.8,.2,1);box-shadow:0 -10px 30px rgba(0,0,0,.6)}
+.msg-sheet.show{transform:translateX(-50%) translateY(0)}
+.msg-sheet .handle{width:40px;height:4px;background:#2b4a3a;border-radius:2px;margin:0 auto 12px}
+.msg-sheet .preview{background:#0a1510;border:1px solid #1e3329;border-radius:10px;padding:10px;margin-bottom:12px;font-size:12px;color:#a8b8b0;max-height:80px;overflow:hidden;text-overflow:ellipsis;white-space:pre-wrap;word-break:break-word}
+.msg-sheet button{display:flex;align-items:center;gap:12px;width:100%;text-align:right;padding:13px 14px;border-radius:10px;color:#e9f3ed;font-size:14px;transition:background .15s}
+.msg-sheet button:active{background:#132a1f;color:#66d39d}
+.msg-sheet button.danger{color:#c96d6d}
+.msg-sheet button.cancel{justify-content:center;background:#0a1510;margin-top:6px;color:#7a9086;font-size:13px}
+.voice-terminal{font-size:8px;color:#66d39d;letter-spacing:2px;margin-bottom:14px;font-family:monospace;opacity:.7}
+.face-box{position:relative;width:180px;height:180px;margin:0 auto 26px;flex-shrink:0}
+.face-ring{position:absolute;top:-10px;left:-10px;right:-10px;bottom:-10px;border-radius:50%;border:1px solid rgba(102,211,157,.3)}
+.face-ring::before{content:"";position:absolute;top:-8px;left:-8px;right:-8px;bottom:-8px;border-radius:50%;border:1px dashed rgba(102,211,157,.4);animation:spin 30s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatar{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;background:#0a1a12;border:2px solid rgba(102,211,157,.4);box-shadow:0 0 40px rgba(102,211,157,.2),inset 0 0 30px rgba(0,0,0,.5);transition:border-color .3s,box-shadow .3s}
+.avatar.listening{border-color:#00ffaa}
+.avatar.thinking{border-color:#d2ad63}
+.avatar.speaking{border-color:#66d39d}
+.avatar.error{border-color:#c96d6d}
+.eye{position:absolute;top:34%;width:40px;height:40px;border-radius:50%;background:#00ffaa;box-shadow:0 0 20px #00ffaa,inset 0 0 8px rgba(255,255,255,.5)}
+.eye.l{right:24%}
+.eye.r{left:24%}
+.eye::after{content:"";position:absolute;top:18%;left:20%;width:30%;height:30%;border-radius:50%;background:#fff;opacity:.9}
+.avatar.idle .eye{animation:blink 4s infinite}
+@keyframes blink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.05)}}
+.avatar.error .eye{background:#c96d6d}
+.mouth{position:absolute;bottom:22%;left:50%;transform:translateX(-50%);width:44px;height:6px;background:#66d39d;border-radius:3px;box-shadow:0 0 10px #66d39d}
+.avatar.idle .mouth{height:4px;opacity:.7}
+.avatar.speaking .mouth{animation:talk .16s ease-in-out infinite alternate}
+@keyframes talk{from{height:4px;width:40px}to{height:14px;width:52px}}
+.vstate{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);padding:4px 12px;border-radius:16px;background:#050907;border:1px solid rgba(102,211,157,.4);font-size:9px;font-family:monospace;letter-spacing:2px;color:#66d39d;white-space:nowrap}
+.vstate.warn{color:#d2ad63;border-color:#d2ad63}
+.vstate.err{color:#c96d6d;border-color:#c96d6d}
+.viz{display:flex;align-items:flex-end;justify-content:center;height:26px;margin:6px 0 12px;gap:3px}
+.viz i{display:block;width:3px;height:4px;background:#66d39d;border-radius:2px;opacity:.6}
+.transcript{min-height:42px;max-height:80px;overflow-y:auto;color:#d0e0d6;font-size:13px;line-height:1.7;text-align:center;padding:0 10px;margin-bottom:8px;width:100%}
+.voice-ctrls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:6px}
+.mic-btn{width:72px;height:72px;border-radius:20px;border:2px solid #4a8063;background:#123024;color:#66d39d;font-size:28px;display:flex;align-items:center;justify-content:center}
+.mic-btn.active{background:#4a3020;border-color:#c98a4a;color:#ffd59c;box-shadow:0 0 30px rgba(215,138,73,.5)}
+.ctrl-sm{width:44px;height:44px;border-radius:12px;border:1px solid #2b4a3a;background:#101c16;color:#cfe0d6;font-size:16px;display:flex;align-items:center;justify-content:center}
+.set-section{margin-bottom:18px}
+.set-section h3{font-size:11px;color:#66d39d;margin-bottom:8px;padding-bottom:5px;letter-spacing:2px;border-bottom:1px solid #1e3329;text-transform:uppercase;font-family:monospace}
+.model-card{border:1px solid #1e3329;border-radius:10px;padding:11px 11px 11px 38px;background:#0a1510;cursor:pointer;margin-bottom:8px;position:relative}
+.model-card.active{border-color:#66d39d;background:#0f2420}
+.model-card.active::before{content:"✓";position:absolute;top:13px;left:11px;width:18px;height:18px;border-radius:50%;background:#66d39d;color:#050907;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.model-card b{display:block;font-size:12px;margin-bottom:3px}
+.model-card small{display:block;font-size:10px;color:#7a9086;line-height:1.5}
+.model-card.search-model{border-color:#3a5a7a}
+.model-card.search-model.active{border-color:#5cc8ff;background:rgba(92,200,255,.08)}
+.model-card.search-model.active::before{background:#5cc8ff}
+.debug-block{background:#0b1712;border:1px solid #1e3329;border-radius:8px;padding:10px;font-family:monospace;font-size:11px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto;color:#c8d9d0}
+.debug-block.tts{color:#a7e6c3;border-color:#2b4a3a}
+.status-row{padding:10px 12px;border-radius:8px;background:#0b1712;border:1px solid #1e3329;font-size:11px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.tag{font-size:9px;font-weight:700;padding:3px 8px;border-radius:12px;font-family:monospace}
+.tag.pass{color:#66d39d;background:rgba(102,211,157,.1);border:1px solid rgba(102,211,157,.3)}
+.tag.fail{color:#c96d6d;background:rgba(201,109,109,.1);border:1px solid rgba(201,109,109,.3)}
+.range-wrap{display:flex;align-items:center;gap:8px}
+.range-wrap input[type=range]{flex:1;accent-color:#66d39d}
+.range-val{font-size:11px;color:#66d39d;min-width:36px;text-align:center;font-family:monospace}
+.boot{position:fixed;inset:0;background:#050907;display:flex;align-items:center;justify-content:center;z-index:10000;animation:bootHide 3s forwards}
+@keyframes bootHide{0%,75%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+.boot-ring{width:90px;height:90px;margin:0 auto 14px;border-radius:50%;border:1px solid #66d39d;display:flex;align-items:center;justify-content:center;position:relative}
+.boot-ring::before{content:"";position:absolute;top:-6px;left:-6px;right:-6px;bottom:-6px;border-radius:50%;border:1px dashed rgba(102,211,157,.5);animation:spin 10s linear infinite}
+.boot-mark{font-size:34px;color:#66d39d;font-weight:900}
+.boot-name{font-size:20px;font-weight:900;letter-spacing:4px;text-align:center}
+.boot-sub{font-size:9px;letter-spacing:3px;color:#66d39d;font-family:monospace;text-align:center;opacity:.7}
+</style>
+</head>
+<body>
+<script>
+window.onerror = function(msg, url, line, col, err){
+  console.error('SABER ERROR:', msg, 'at line', line + ':' + col);
+  document.title = 'ERROR: ' + msg;
+  return false;
+};
+console.log('SABER V6 loading...');
+</script>
+
+<div class="boot">
+  <div>
+    <div class="boot-ring"><div class="boot-mark">ص</div></div>
+    <div class="boot-name">صابر</div>
+    <div class="boot-sub">SABER V6</div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div class="brand">
+      <div class="mark">ص</div>
+      <div class="brand-txt"><b>صابر</b><small>SABER V6</small></div>
+    </div>
+    <div class="hdr-right">
+      <span class="status-dot" id="statusDot"></span>
+      <button class="menu-btn" onclick="toggleTopMenu(event)">⋮</button>
+    </div>
+  </header>
+
+  <div class="top-menu" id="topMenu">
+    <button onclick="show('settings');closeTopMenu()">⚙️ تنظیمات</button>
+    <button onclick="show('status');closeTopMenu()">📊 وضعیت سیستم</button>
+    <button onclick="show('lab');closeTopMenu()">🔊 TTS Lab</button>
+    <div class="divider"></div>
+    <div class="toggle-row">
+      <span>🌐 جستجوی زنده وب</span>
+      <label class="switch"><input type="checkbox" id="liveSearchToggle" onchange="toggleLiveSearch(this.checked)"><span></span></label>
+    </div>
+    <div class="toggle-row">
+      <span>🌐 صدای آنلاین فارسی</span>
+      <label class="switch"><input type="checkbox" id="onlineTTSMenuToggle" onchange="toggleOnlineTTS(this.checked)"><span></span></label>
+    </div>
+    <div class="toggle-row">
+      <span>🔊 خوانش خودکار پاسخ</span>
+      <label class="switch"><input type="checkbox" id="autoSpeakToggle" onchange="toggleAutoSpeak(this.checked)"><span></span></label>
+    </div>
+    <div class="divider"></div>
+    <button onclick="toggleSearchBox();closeTopMenu()">🔍 جستجو در گفتگو</button>
+    <button onclick="exportChat();closeTopMenu()">📤 خروجی گفتگو</button>
+    <button onclick="clearAllChat();closeTopMenu()">🗑️ پاک کردن گفتگو</button>
+    <div class="divider"></div>
+    <button onclick="aboutApp();closeTopMenu()">ℹ️ درباره صابر</button>
+  </div>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="home-hero">
+        <div class="home-mark">ص</div>
+        <h1>صابر آماده است</h1>
+        <p>دستیار تاکتیکی نسخه ۶<br>با Groq AI · صدا · جستجوی زنده</p>
+      </div>
+      <div class="quick">
+        <div class="card" onclick="show('chat')"><span class="ico">💬</span><b>گفت‌وگو</b></div>
+        <div class="card" onclick="show('voice')"><span class="ico">🎙️</span><b>صوتی</b></div>
+        <div class="card" onclick="startNewChat()"><span class="ico">✨</span><b>گفتگوی جدید</b></div>
+        <div class="card" onclick="show('status')"><span class="ico">📊</span><b>وضعیت</b></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>وضعیت سیستم</h3>
+        <div class="set-row"><span>شخصیت</span><span id="homePersonality" style="color:#66d39d">—</span></div>
+        <div class="set-row"><span>مدل فعال</span><span id="homeModel" style="color:#66d39d">—</span></div>
+        <div class="set-row"><span>صدای فعال</span><span id="homeTtsMode" class="muted">—</span></div>
+        <div class="set-row"><span>جستجوی زنده</span><span id="homeSearch" class="muted">—</span></div>
+        <div class="set-row"><span>Groq Key</span><span id="homeKey" class="muted">—</span></div>
+        <div class="set-row"><span>میکروفون</span><span id="homeMic" class="muted">—</span></div>
+      </div>
+    </section>
+
+    <section id="chat" class="page">
+      <div class="search-box" id="searchBox">
+        <input id="searchInput" placeholder="جستجو در گفتگو..." oninput="filterMessages(this.value)">
+        <button onclick="clearSearch()">✕</button>
+      </div>
+      <div class="messages" id="messages"></div>
+      <div class="compose-wrap">
+        <div class="compose">
+          <button class="compose-mic" id="composeMicBtn" onclick="toggleComposeMic()">🎙️</button>
+          <textarea id="input" placeholder="پیام به صابر..." rows="1" onkeydown="keyChat(event)"></textarea>
+          <button class="send" onclick="sendChat()">➤</button>
+        </div>
+        <div class="status-bar">
+          <span id="chatStatus">GROQ · READY</span>
+          <span class="search-badge" id="searchBadge">🌐 LIVE</span>
+          <span class="tts-badge" id="ttsBadge">🔊 ONLINE</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="voice" class="page">
+      <div style="padding:14px 12px;display:flex;flex-direction:column;align-items:center;width:100%">
+        <div class="voice-terminal">// SABER VOICE</div>
+        <div class="face-box">
+          <div class="face-ring"></div>
+          <div class="avatar idle" id="avatar">
+            <i class="eye l"></i>
+            <i class="eye r"></i>
+            <i class="mouth" id="mouth"></i>
+          </div>
+          <div class="vstate" id="vstate">● IDLE</div>
+        </div>
+        <div class="viz" id="viz">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="transcript" id="transcript">«سلام، بگو چه کاری برات انجام بدم.»</div>
+        <div class="voice-ctrls">
+          <button class="ctrl-sm" onclick="stopSpeaking()">⏹</button>
+          <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎙️</button>
+          <button class="ctrl-sm" onclick="speakCurrent()">🔊</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="lab" class="page">
+      <h2>🔊 TTS Lab</h2>
+      <p class="muted" style="margin-bottom:10px">پردازش متن فارسی + تست هر دو حالت صدا.</p>
+      <div class="card">
+        <textarea id="labInput" rows="3" style="background:#0b1712;border:1px solid #1e3329;border-radius:8px;padding:10px;color:#e9f3ed;font-size:12px">سلام. امروز ساعت ۸:۳۰ جلسه داریم. ۱۲ نفر و ۷۵٪ پیشرفت.</textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn primary" style="flex:1" onclick="labProcess()">پردازش</button>
+          <button class="btn" style="flex:1" onclick="labSpeak()">🔊 گوشی</button>
+          <button class="btn" style="flex:1" onclick="labSpeakOnline()">🌐 آنلاین</button>
+        </div>
+      </div>
+      <div class="card"><h3>متن اصلی</h3><pre id="labDisplay" class="debug-block">—</pre></div>
+      <div class="card"><h3>متن نهایی برای TTS</h3><pre id="labTts" class="debug-block tts">—</pre></div>
+    </section>
+
+    <section id="status" class="page">
+      <h2>📊 وضعیت سیستم</h2>
+      <p class="muted" style="margin-bottom:10px">بررسی زنده قابلیت‌ها.</p>
+      <div id="statusTable"></div>
+    </section>
+
+    <section id="settings" class="page">
+      <h2>⚙️ تنظیمات</h2>
+
+      <div class="set-section">
+        <h3>🎭 شخصیت صابر</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">حال و هوای صابر رو انتخاب کن.</p>
+        <div id="personalityList"></div>
+      </div>
+
+      <div class="set-section">
+        <h3>🧠 مدل Groq</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">مدل‌های در دسترس از حساب شما بارگذاری می‌شوند.</p>
+        <div id="modelList">
+          <div class="muted" style="padding:10px;text-align:center">در حال بارگذاری...</div>
+        </div>
+        <button class="btn" style="width:100%;margin-top:8px" onclick="loadModelsFromApi(true)">🔄 بارگذاری مجدد</button>
+      </div>
+
+      <div class="set-section">
+        <h3>🌐 جستجوی زنده</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">
+          وقتی فعال باشه، صابر از اینترنت جواب می‌گیره.
+        </p>
+        <div class="toggle-row" style="background:#0a1510;border:1px solid #1e3329;border-radius:10px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px">
+          <span>جستجوی زنده وب</span>
+          <label class="switch"><input type="checkbox" id="settingsLiveSearch" onchange="toggleLiveSearch(this.checked)"><span></span></label>
+        </div>
+      </div>
+
+      <div class="set-section">
+        <h3>🔑 کلید Groq</h3>
+        <div class="field">
+          <label>API Key</label>
+          <input id="apiKeyInput" type="text" placeholder="gsk_..." autocomplete="off">
+        </div>
+        <button class="btn primary" style="width:100%" onclick="saveApiKey()">ذخیره کلید</button>
+      </div>
+
+      <div class="set-section">
+        <h3>🎙️ صدا</h3>
+        <div class="toggle-row" style="background:#0a1510;border:1px solid #1e3329;border-radius:10px;margin-bottom:10px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px">
+          <span>🌐 استفاده از TTS آنلاین (فارسی)</span>
+          <label class="switch"><input type="checkbox" id="onlineTTSToggle" onchange="toggleOnlineTTS(this.checked)"><span></span></label>
+        </div>
+        <p class="muted" style="font-size:10px;margin-bottom:10px">
+          وقتی روشن باشه، صابر از Google Translate TTS استفاده می‌کنه (کیفیت بالاتر ولی نیاز به اینترنت).
+        </p>
+        <div class="field">
+          <label>صدای TTS گوشی</label>
+          <select id="ttsVoice" onchange="saveSettings()"><option value="">خودکار (فارسی ترجیح)</option></select>
+        </div>
+        <div class="field">
+          <label>سرعت (<span id="rateVal">0.90</span>)</label>
+          <div class="range-wrap">
+            <input type="range" id="ttsRate" min="0.5" max="1.5" step="0.05" value="0.9" oninput="updateRate();saveSettings()">
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn" style="flex:1" onclick="testVoice()">🔊 تست گوشی</button>
+          <button class="btn" style="flex:1" onclick="testVoiceOnline()">🌐 تست آنلاین</button>
+        </div>
+        <button class="btn" style="width:100%;margin-top:8px" onclick="listAllVoices()">📋 لیست صداهای نصب‌شده</button>
+      </div>
+
+      <div class="set-section">
+        <h3>ℹ️ درباره</h3>
+        <div class="set-row"><span>نسخه</span><span>SABER V6</span></div>
+        <div class="set-row"><span>وضعیت کلید</span><span id="keyStatus">—</span></div>
+        <div class="set-row"><span>وضعیت مدل</span><span id="modelStatus">—</span></div>
+      </div>
+    </section>
+  </main>
+
+  <nav>
+    <button data-page="home" class="active" onclick="show('home')"><span class="ico">⌂</span>خانه</button>
+    <button data-page="chat" onclick="show('chat')"><span class="ico">💬</span>چت</button>
+    <button data-page="voice" onclick="show('voice')"><span class="ico">🎙️</span>صوتی</button>
+    <button data-page="settings" onclick="show('settings')"><span class="ico">⚙️</span>تنظیمات</button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="sheet-backdrop" id="sheetBackdrop" onclick="closeMsgSheet()"></div>
+<div class="msg-sheet" id="msgSheet">
+  <div class="handle"></div>
+  <div class="preview" id="sheetPreview">—</div>
+  <button onclick="sheetAction('copy')">📋 کپی متن</button>
+  <button onclick="sheetAction('speak')">🔊 پخش صوتی گوشی</button>
+  <button onclick="sheetAction('speakOnline')">🌐 پخش آنلاین</button>
+  <button onclick="sheetAction('regenerate')">🔄 تولید مجدد</button>
+  <button onclick="sheetAction('edit')">✏️ ویرایش و ارسال مجدد</button>
+  <button onclick="sheetAction('report')">🚩 گزارش</button>
+  <button onclick="sheetAction('delete')" class="danger">🗑️ حذف پیام</button>
+  <button onclick="closeMsgSheet()" class="cancel">انصراف</button>
+</div>
+<script>
+/* ============================================================
+   🔴 EDIT 🔴 — کلید Groq خودت رو اینجا بذار
+   ============================================================ */
+var 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 = '';
+var HARDCODED_KEY = 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;
+/* 🔴⬆️ اگر می‌خوای کلید رو توی کد بذاری، بین دو تا ' قرار بده ⬆️🔴 */
+
+var DEFAULT_CONFIG = {
+  MODEL: 'mistral-saba-24b',
+  TTS_LANG: 'fa-IR',
+  TTS_RATE: 0.9,
+  TTS_PITCH: 0.85
+};
+
+(function(){
+'use strict';
+
+function $(id){return document.getElementById(id);}
+
+var S = {
+  chat: [],
+  settings: {
+    model: DEFAULT_CONFIG.MODEL,
+    ttsVoice: '',
+    ttsRate: DEFAULT_CONFIG.TTS_RATE,
+    personality: 'friend',
+    liveSearch: false,
+    autoSpeak: false,
+    onlineTTS: false
+  },
+  apiKey: '',
+  recognition: null,
+  listening: false,
+  speaking: false,
+  availableModels: [],
+  selectedMsgIndex: -1,
+  searchQuery: ''
+};
+
+var PERSONALITIES = [
+  { id:'friend', emoji:'🤝', name:'رفیق باحال', desc:'خودی، صمیمی، شوخ — مثل یه رفیق قدیمی',
+    prompt:'تو "صابر" هستی، یه رفیق خودی و باحال. با کاربر خیلی راحت و خودمونی حرف می‌زنی. از کلمات محاوره‌ای مثل "داداش"، "بذار ببینم"، "چه خبر"، "آره بابا" استفاده می‌کنی. شوخ‌طبعی و صمیمیت توی جواب‌هات موج می‌زنه. ولی وقتی جدی شد، جدی می‌شی. جواب‌هات کوتاه، مفید و بامزه‌ست.' },
+  { id:'coach', emoji:'💪', name:'مربی انگیزشی', desc:'پر انرژی، تشویق‌کننده، مثبت‌اندیش',
+    prompt:'تو صابر هستی، یه مربی و دوست انگیزشی. با انرژی و محبت حرف می‌زنی. به کاربر انگیزه می‌دی و تشویقش می‌کنی. از جملات مثبت مثل "آفرین!"، "می‌تونی!"، "قوی باش!" استفاده می‌کنی. لحنت گرم و دلگرم‌کننده‌ست.' },
+  { id:'funny', emoji:'😄', name:'شوخ و بامزه', desc:'همیشه یه شوخی یا کنایه داره',
+    prompt:'تو صابر هستی، یه همکار باحال و شوخ. با کاربر شوخی می‌کنی، از لطیفه‌ها و کنایه‌های بامزه استفاده می‌کنی. لحنت غیررسمی و راحته. ولی وقتی کار جدی درمیون باشه، تمرکز می‌کنی و درست انجامش می‌دی.' },
+  { id:'calm', emoji:'🧘', name:'آروم و دانا', desc:'با صبر، محبت و آرامش',
+    prompt:'تو صابر هستی، یه دوست دانا و آروم. با صبر و محبت گوش می‌دی و جواب می‌دی. لحنت گرم و آرامش‌بخشه. هیچ‌وقت عجله نداری. جواب‌هات متفکرانه و عمیقن.' },
+  { id:'pro', emoji:'💼', name:'حرفه‌ای و متعادل', desc:'دوستانه ولی حرفه‌ای — تعادل کامل',
+    prompt:'تو صابر هستی، دستیار هوش مصنوعی کاربر. لحنت دوستانه و صمیمیه ولی حرفه‌ای. با کاربر مثل یه همکار خوب حرف می‌زنی. جواب‌هات کوتاه، مفید و گرم‌ان.' }
+];
+
+function getPersonalityPrompt(){
+  var id = S.settings.personality || 'friend';
+  for(var i=0;i<PERSONALITIES.length;i++)
+    if(PERSONALITIES[i].id === id) return PERSONALITIES[i].prompt;
+  return PERSONALITIES[0].prompt;
+}
+
+function getPersonalityName(){
+  var id = S.settings.personality || 'friend';
+  for(var i=0;i<PERSONALITIES.length;i++)
+    if(PERSONALITIES[i].id === id) return PERSONALITIES[i].name;
+  return 'رفیق باحال';
+}
+
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+function toast(m){
+  var t=$('toast');if(!t)return;
+  t.textContent=m;t.className='toast show';
+  if(window._tT)clearTimeout(window._tT);
+  window._tT=setTimeout(function(){t.className='toast';},2400);
+}
+window.toast=toast;
+
+window.toggleTopMenu = function(e){
+  if(e) e.stopPropagation();
+  var m=$('topMenu');
+  if(!m) return;
+  m.className = (m.className.indexOf('open')>=0) ? 'top-menu' : 'top-menu open';
+};
+window.closeTopMenu = function(){
+  var m=$('topMenu');
+  if(m) m.className='top-menu';
+};
+document.addEventListener('click', function(e){
+  var m=$('topMenu');
+  if(!m) return;
+  if(m === e.target || m.contains(e.target)) return;
+  if(e.target.className && e.target.className.indexOf('menu-btn')>=0) return;
+  m.className='top-menu';
+});
+
+window.toggleLiveSearch = function(on){
+  S.settings.liveSearch = !!on;
+  save('saber_v6_settings',S.settings);
+  var t1=$('liveSearchToggle'); if(t1) t1.checked = S.settings.liveSearch;
+  var t2=$('settingsLiveSearch'); if(t2) t2.checked = S.settings.liveSearch;
+  var badge=$('searchBadge');
+  if(badge) badge.className = S.settings.liveSearch ? 'search-badge show' : 'search-badge';
+  var hs=$('homeSearch');
+  if(hs){
+    hs.textContent = S.settings.liveSearch ? '🌐 فعال' : 'خاموش';
+    hs.style.color = S.settings.liveSearch ? '#5cc8ff' : '#7a9086';
+  }
+  toast(S.settings.liveSearch ? 'جستجوی زنده فعال شد' : 'جستجوی زنده خاموش شد');
+  if(S.settings.liveSearch && S.settings.model.indexOf('compound')<0){
+    toast('⚠️ برای جستجو، مدل compound رو انتخاب کن');
+  }
+};
+
+window.toggleAutoSpeak = function(on){
+  S.settings.autoSpeak = !!on;
+  save('saber_v6_settings',S.settings);
+  var t1=$('autoSpeakToggle'); if(t1) t1.checked = S.settings.autoSpeak;
+  toast(S.settings.autoSpeak ? 'خوانش خودکار فعال' : 'خوانش خودکار خاموش');
+};
+
+window.toggleOnlineTTS = function(on){
+  S.settings.onlineTTS = !!on;
+  save('saber_v6_settings', S.settings);
+  var t1 = $('onlineTTSToggle'); if(t1) t1.checked = S.settings.onlineTTS;
+  var t2 = $('onlineTTSMenuToggle'); if(t2) t2.checked = S.settings.onlineTTS;
+  var badge = $('ttsBadge');
+  if(badge) badge.className = S.settings.onlineTTS ? 'tts-badge show' : 'tts-badge';
+  var hm = $('homeTtsMode');
+  if(hm){
+    hm.textContent = S.settings.onlineTTS ? '🌐 آنلاین' : '🔊 گوشی';
+    hm.style.color = S.settings.onlineTTS ? '#d2ad63' : '#66d39d';
+  }
+  toast(S.settings.onlineTTS ? '🌐 صدای آنلاین فعال' : '🔊 صدای گوشی فعال');
+};
+
+window.toggleSearchBox = function(){
+  var b=$('searchBox');
+  if(!b) return;
+  if(b.className.indexOf('show')>=0){ clearSearch(); }
+  else{
+    b.className = 'search-box show';
+    var inp=$('searchInput'); if(inp) inp.focus();
+  }
+};
+window.clearSearch = function(){
+  var b=$('searchBox'); if(b) b.className='search-box';
+  var inp=$('searchInput'); if(inp) inp.value='';
+  S.searchQuery='';
+  renderChat();
+};
+window.filterMessages = function(q){
+  S.searchQuery = (q||'').trim().toLowerCase();
+  renderChat();
+};
+
+window.aboutApp = function(){
+  alert('صابر | SABER V6\n\n' +
+    'دستیار هوش مصنوعی تاکتیکی\n' +
+    '• چت هوشمند با Groq\n' +
+    '• جستجوی زنده وب\n' +
+    '• صدای گوشی + آنلاین فارسی\n' +
+    '• ۵ شخصیت\n' +
+    '• اعراب‌گذاری خودکار\n\n' +
+    'نسخه ۶.۰.۰');
+};
+
+window.exportChat = function(){
+  if(!S.chat.length){toast('گفتگویی برای خروجی نیست');return;}
+  try{
+    var blob = new Blob([JSON.stringify(S.chat,null,2)],{type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'saber-chat-'+Date.now()+'.json';
+    a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);},500);
+  }catch(e){toast('خروجی ناموفق');}
+};
+
+window.clearAllChat = function(){
+  if(!S.chat.length){toast('گفتگویی وجود ندارد');return;}
+  if(!confirm('همه گفتگو پاک شود؟')) return;
+  S.chat=[];
+  save('saber_v6_chat',[]);
+  renderChat();
+  toast('گفتگو پاک شد');
+};
+
+window.startNewChat = function(){
+  if(S.chat.length && !confirm('گفتگوی جدید شروع شود؟')) return;
+  S.chat=[];
+  save('saber_v6_chat',[]);
+  renderChat();
+  show('chat');
+  toast('گفتگوی جدید');
+};
+
+window.show = function(id){
+  if(!id)return;
+  var pages = document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++) pages[i].className = 'page';
+  var p = $(id);
+  if(p) p.className = 'page active';
+  var btns = document.querySelectorAll('nav button');
+  for(var j=0;j<btns.length;j++){
+    btns[j].className = (btns[j].getAttribute('data-page')===id)?'active':'';
+  }
+  if(id==='settings'){
+    refreshVoices();
+    var ak=$('apiKeyInput'); if(ak) ak.value = S.apiKey||'';
+    var ls=$('settingsLiveSearch'); if(ls) ls.checked = S.settings.liveSearch;
+    var ot=$('onlineTTSToggle'); if(ot) ot.checked = S.settings.onlineTTS;
+  }
+  if(id==='status') renderStatus();
+  if(id==='chat') renderChat();
+  closeTopMenu();
+};
+
+function setSys(text,type){
+  var d=$('statusDot');
+  if(d) d.className='status-dot'+(type==='warn'?' warn':type==='err'?' err':'');
+}
+function setAvatar(st){
+  var a=$('avatar');if(a)a.className='avatar '+st;
+  var L={idle:'● IDLE',listening:'● LISTENING',thinking:'● THINKING',speaking:'● SPEAKING',error:'● ERROR'};
+  var v=$('vstate');
+  if(v){
+    v.textContent = L[st]||('● '+st.toUpperCase());
+    v.className = 'vstate'+(st==='error'?' err':st==='thinking'?' warn':'');
+  }
+  setSys(st, st==='error'?'err':st==='thinking'?'warn':'');
+}
+
+function addTashkeelForTTS(text){
+  if(!text) return '';
+  var t = text;
+  t = t.replace(/(^|\s)می(?=[ا-ی])/g, '$1می‌ِ');
+  t = t.replace(/([ا-ی])ها(?=\s|$)/g, '$1هَا');
+  t = t.replace(/(\s|^)است(\s|$)/g, '$1اَست$2');
+  t = t.replace(/(\s|^)که(\s|$)/g, '$1کِه$2');
+  var dict = {
+    'سلام':'سَلام','صابر':'صابِر','ممنون':'مَمنون','لطفا':'لُطفاً',
+    'بله':'بَله','نه':'نَه','خیلی':'خِیلی','فردا':'فَردا',
+    'امروز':'اِمروز','ساعت':'ساعَت','دقیقه':'دَقیقه','جلسه':'جَلسه'
+  };
+  for(var key in dict){
+    if(dict.hasOwnProperty(key)){
+      var re = new RegExp('(^|\\s)'+key+'(?=\\s|$)','g');
+      t = t.replace(re, '$1'+dict[key]);
+    }
+  }
+  return t;
+}
+
+function numFa(n){
+  n=parseInt(n,10);if(isNaN(n))return '';
+  var O=['صفر','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه'];
+  var T=['ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'];
+  var TE=['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
+  var H=['','صد','دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد'];
+  var SC=['','هزار','میلیون','میلیارد'];
+  if(n===0)return 'صفر';
+  function three(x){
+    var p=[],h=Math.floor(x/100),r=x%100;
+    if(h)p.push(H[h]);
+    if(r){
+      if(r<10)p.push(O[r]);
+      else if(r<20)p.push(T[r-10]);
+      else{var t=Math.floor(r/10),o=r%10;p.push(TE[t]);if(o)p.push(O[o]);}
+    }
+    return p.join(' و ');
+  }
+  var g=[],m=n;
+  while(m>0){g.push(m%1000);m=Math.floor(m/1000);}
+  var w=[];
+  for(var i=g.length-1;i>=0;i--){
+    if(!g[i])continue;
+    var x=three(g[i]);
+    w.push(SC[i]?x+' '+SC[i]:x);
+  }
+  return w.join(' و ');
+}
+
+function prepTTS(raw){
+  if(!raw)return '';
+  var t=String(raw);
+  t=t.replace(/```[\s\S]*?```/g,' ')
+       .replace(/`([^`]+)`/g,'$1')
+       .replace(/\[([^\]]+)\]\([^)]+\)/g,'$1')
+       .replace(/https?:\/\/\S+/g,' لینک ')
+       .replace(/#{1,6}\s/g,' ')
+       .replace(/(\*\*|__)(.*?)\1/g,'$2')
+       .replace(/(\*|_)(.*?)\1/g,'$2')
+       .replace(/<[^>]+>/g,' ');
+  t=t.replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ة/g,'ه');
+  t=t.replace(/(\d{1,2}):(\d{2})/g,function(m,h,mn){return 'ساعت '+numFa(+h)+' و '+numFa(+mn)+' دقیقه';});
+  t=t.replace(/(\d+(?:\.\d+)?)\s*%/g,function(m,n){return numFa(parseInt(n,10))+' درصد';});
+  t=t.replace(/\d+/g,function(m){return numFa(+m);});
+  t = addTashkeelForTTS(t);
+  return t.replace(/\s{2,}/g,' ').trim();
+}
+
+window.loadModelsFromApi = function(force){
+  if(!S.apiKey){toast('ابتدا کلید Groq را وارد کنید');return;}
+  if(S.availableModels.length > 0 && !force){renderModelList();return;}
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET','https://api.groq.com/openai/v1/models',true);
+  xhr.setRequestHeader('Authorization','Bearer '+S.apiKey);
+  xhr.timeout = 15000;
+  xhr.onload = function(){
+    if(xhr.status >= 200 && xhr.status < 300){
+      try{
+        var data = JSON.parse(xhr.responseText);
+        if(data && data.data && Array.isArray(data.data)){
+          S.availableModels = data.data.map(function(m){ return m.id; });
+          renderModelList();
+          updateModelStatus('ok');
+        }else{updateModelStatus('err');}
+      }catch(e){updateModelStatus('err');}
+    }else if(xhr.status === 401){
+      toast('کلید Groq نامعتبر است');updateModelStatus('err');
+    }else{
+      toast('خطا در دریافت مدل‌ها (HTTP '+xhr.status+')');updateModelStatus('err');
+    }
+  };
+  xhr.onerror = function(){toast('خطای شبکه');updateModelStatus('err');};
+  xhr.ontimeout = function(){toast('زمان تمام شد');updateModelStatus('err');};
+  xhr.send();
+};
+
+function updateModelStatus(status){
+  var el = $('modelStatus');
+  if(!el) return;
+  if(status === 'ok'){
+    el.textContent = '✅ ' + S.availableModels.length + ' مدل';
+    el.style.color = '#66d39d';
+  }else{
+    el.textContent = '❌ خطا';
+    el.style.color = '#c96d6d';
+  }
+}
+
+function renderModelList(){
+  var box = $('modelList');
+  if(!box) return;
+  if(!S.availableModels.length){
+    box.innerHTML = '<div class="muted" style="padding:10px;text-align:center">هیچ مدلی یافت نشد.</div>';
+    return;
+  }
+  var priority = [
+    'compound-beta','groq/compound','groq/compound-mini','compound-beta-mini',
+    'mistral-saba-24b','llama-3.3-70b-versatile','llama-3.1-8b-instant',
+    'gemma2-9b-it','deepseek-r1-distill-llama-70b','qwen/qwen3-32b',
+    'openai/gpt-oss-120b','openai/gpt-oss-20b'
+  ];
+  var sorted = S.availableModels.slice().sort(function(a,b){
+    var ia = priority.indexOf(a); if(ia === -1) ia = 999;
+    var ib = priority.indexOf(b); if(ib === -1) ib = 999;
+    return ia - ib;
+  });
+  var html = '';
+  for(var i=0;i<sorted.length;i++){
+    var m = sorted[i];
+    var desc = '', isSearch = false;
+    if(m.indexOf('compound') > -1){desc = '🌐 جستجوی زنده وب';isSearch = true;}
+    else if(m.indexOf('mistral-saba') === 0) desc = 'فارسی، عربی، اردو — پیشنهاد';
+    else if(m.indexOf('llama-3.3-70b') === 0) desc = 'قوی — تحلیل، کد';
+    else if(m.indexOf('llama-3.1-8b') === 0) desc = 'سریع و سبک';
+    else if(m.indexOf('gemma2') === 0) desc = 'Google — دقیق';
+    else if(m.indexOf('deepseek-r1') === 0) desc = 'استدلال عمیق';
+    else if(m.indexOf('qwen') === 0) desc = 'ریاضی و استدلال';
+    else if(m.indexOf('gpt-oss-120b') > -1) desc = 'GPT اوپن‌سورس';
+    else if(m.indexOf('gpt-oss-20b') > -1) desc = 'GPT سبک';
+
+    var active = (m === S.settings.model) ? ' active' : '';
+    var searchClass = isSearch ? ' search-model' : '';
+    html += '<div class="model-card'+searchClass+active+'" data-model="'+m+'" onclick="pickModel(\''+m+'\')">';
+    html += '<b>'+m+'</b>';
+    if(desc) html += '<small>'+desc+'</small>';
+    html += '</div>';
+  }
+  box.innerHTML = html;
+}
+
+function askAI(msg,cb){
+  if(!S.apiKey){cb('⚠️ کلید Groq تنظیم نشده.\n\nبرو به ⋮ → تنظیمات → کلید را وارد کن.');return;}
+  if(!S.settings.model){cb('⚠️ مدلی انتخاب نشده. به تنظیمات برو.');return;}
+
+  var msgs=[{role:'system',content:getPersonalityPrompt()}];
+  for(var i=Math.max(0,S.chat.length-8);i<S.chat.length;i++){
+    if(S.chat[i].role==='user'||S.chat[i].role==='assistant')
+      msgs.push({role:S.chat[i].role,content:S.chat[i].text});
+  }
+  msgs.push({role:'user',content:msg});
+
+  var xhr=new XMLHttpRequest();
+  xhr.open('POST','https://api.groq.com/openai/v1/chat/completions',true);
+  xhr.setRequestHeader('Authorization','Bearer '+S.apiKey);
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.timeout=45000;
+
+  var body = {
+    model: S.settings.model,
+    messages: msgs,
+    temperature: 0.7,
+    max_tokens: 1500
+  };
+
+  if(S.settings.liveSearch && S.settings.model.indexOf('compound')<0){
+    body.model = 'compound-beta';
+  }
+
+  xhr.onload=function(){
+    if(xhr.status>=200&&xhr.status<300){
+      try{
+        var d=JSON.parse(xhr.responseText);
+        var r=d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content;
+        cb(r||'پاسخی نیامد.');
+      }catch(e){cb('خطا در پردازش: '+e.message);}
+    }else{
+      var err='HTTP '+xhr.status;
+      try{var e=JSON.parse(xhr.responseText);if(e.error&&e.error.message)err=e.error.message;}catch(ex){}
+      cb('خطا: '+err);
+    }
+  };
+  xhr.onerror=function(){cb('خطای شبکه — اینترنت را چک کن');};
+  xhr.ontimeout=function(){cb('زمان تمام شد');};
+  xhr.send(JSON.stringify(body));
+}
+
+/* ============================================================
+   💬 Chat
+   ============================================================ */
+function addMsg(role,text,noRender){
+  var m={
+    role:role,
+    text:text,
+    time:new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})
+  };
+  S.chat.push(m);
+  save('saber_v6_chat',S.chat);
+  if(!noRender) renderOne(m,S.chat.length-1);
+  return m;
+}
+
+function renderOne(m,idx){
+  var box=$('messages');if(!box)return;
+
+  if(S.searchQuery){
+    var txt = (m.text||'').toLowerCase();
+    if(txt.indexOf(S.searchQuery) < 0) return;
+  }
+
+  var el=document.createElement('div');
+  el.className='msg '+(m.role==='assistant'?'assistant':'user');
+  el.setAttribute('data-idx',idx);
+
+  var mini=document.createElement('div');
+  mini.className='mini';
+  mini.textContent = m.role==='assistant'?'ص':'ش';
+  el.appendChild(mini);
+
+  var wrap=document.createElement('div');
+  wrap.style.maxWidth='80%';
+
+  var b=document.createElement('div');
+  b.className='bubble';
+  b.textContent=m.text;
+  wrap.appendChild(b);
+
+  var tools=document.createElement('div');
+  tools.className='msg-tools';
+
+  var bCopy=document.createElement('button');
+  bCopy.textContent='📋';
+  bCopy.title='کپی';
+  bCopy.onclick=function(e){e.stopPropagation();doCopy(m.text);};
+
+  var bSpeak=document.createElement('button');
+  bSpeak.textContent='🔊';
+  bSpeak.title='پخش گوشی';
+  bSpeak.onclick=function(e){e.stopPropagation();speakViaPhone(m.text);};
+
+  var bOnline=document.createElement('button');
+  bOnline.textContent='🌐';
+  bOnline.title='پخش آنلاین';
+  bOnline.onclick=function(e){e.stopPropagation();speakOnline(m.text);};
+
+  var bMore=document.createElement('button');
+  bMore.textContent='⋯';
+  bMore.title='بیشتر';
+  bMore.onclick=function(e){e.stopPropagation();openMsgSheet(idx);};
+
+  if(m.role==='assistant'){
+    var bRegen=document.createElement('button');
+    bRegen.textContent='🔄';
+    bRegen.title='تولید مجدد';
+    bRegen.onclick=function(e){e.stopPropagation();regenerateAt(idx);};
+    tools.appendChild(bRegen);
+  }
+
+  tools.appendChild(bCopy);
+  tools.appendChild(bSpeak);
+  tools.appendChild(bOnline);
+  tools.appendChild(bMore);
+  wrap.appendChild(tools);
+
+  el.appendChild(wrap);
+
+  el.onclick=function(e){
+    if(e) e.stopPropagation();
+    openMsgSheet(idx);
+  };
+
+  box.appendChild(el);
+  box.scrollTop=box.scrollHeight;
+}
+
+function renderChat(){
+  var box=$('messages');if(!box)return;
+  box.innerHTML='';
+  if(!S.chat.length){
+    box.innerHTML='<div id="welcome" style="text-align:center;padding:20px 10px">'+
+      '<div style="width:56px;height:56px;border:1px solid #3a6b52;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#66d39d;background:#0a1a12">ص</div>'+
+      '<h1 style="font-size:16px;margin-bottom:6px">گفت‌وگو با صابر</h1>'+
+      '<p class="muted" style="margin-bottom:10px">پیام بفرست یا از پیشنهادها استفاده کن</p>'+
+      '<button class="chip" onclick="ask(\'سلام صابر، خودت رو معرفی کن\')">سلام صابر</button>'+
+      '<button class="chip" onclick="ask(\'امروز چه خبر؟\')">🌐 اخبار</button>'+
+      '<button class="chip" onclick="ask(\'یه کد پایتون بنویس\')">کد بنویس</button>'+
+      '<button class="chip" onclick="ask(\'ساعت چنده؟\')">ساعت چند؟</button>'+
+      '</div>';
+    return;
+  }
+  for(var i=0;i<S.chat.length;i++) renderOne(S.chat[i],i);
+}
+
+function thinkingBox(){
+  var box=$('messages');if(!box)return null;
+  var el=document.createElement('div');
+  el.className='msg assistant';
+  var searchHint = S.settings.liveSearch ? ' (🌐 جستجو)' : '';
+  el.innerHTML='<div class="mini">ص</div><div class="bubble" style="color:#7a9086">صابر در حال پردازش'+searchHint+'...</div>';
+  box.appendChild(el);
+  box.scrollTop=box.scrollHeight;
+  return el;
+}
+
+window.sendChat=function(){
+  var inp=$('input');if(!inp)return;
+  var t=inp.value.trim();if(!t)return;
+  inp.value='';inp.style.height='';
+  addMsg('user',t);
+  var ph=thinkingBox();
+  setSys('THINKING','warn');
+  askAI(t,function(r){
+    if(ph&&ph.parentNode)ph.parentNode.removeChild(ph);
+    addMsg('assistant',r);
+    setSys('READY','ok');
+    if(S.settings.autoSpeak) speak(r);
+  });
+};
+
+window.ask=function(t){
+  var i=$('input');if(i)i.value=t;
+  show('chat');
+  setTimeout(function(){window.sendChat();},100);
+};
+
+window.keyChat=function(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();window.sendChat();}
+};
+
+window.regenerateAt = function(idx){
+  var m = S.chat[idx];
+  if(!m || m.role!=='assistant'){toast('فقط پاسخ صابر قابل تولید مجدد است');return;}
+  var userMsg = null;
+  for(var i=idx-1;i>=0;i--){
+    if(S.chat[i].role==='user'){userMsg=S.chat[i];break;}
+  }
+  if(!userMsg){toast('پیام کاربر پیدا نشد');return;}
+
+  S.chat.splice(idx,1);
+  save('saber_v6_chat',S.chat);
+  renderChat();
+
+  var ph = thinkingBox();
+  setSys('THINKING','warn');
+  var saved = S.chat.slice();
+  S.chat = saved.slice(0, saved.indexOf(userMsg)+1);
+
+  askAI(userMsg.text,function(r){
+    if(ph&&ph.parentNode)ph.parentNode.removeChild(ph);
+    S.chat = saved;
+    addMsg('assistant',r);
+    setSys('READY','ok');
+    if(S.settings.autoSpeak) speak(r);
+  });
+
+  toast('تولید مجدد...');
+  closeMsgSheet();
+};
+
+window.openMsgSheet=function(idx){
+  S.selectedMsgIndex = idx;
+  var m = S.chat[idx];
+  if(!m) return;
+  var prev=$('sheetPreview');
+  if(prev) prev.textContent = (m.role==='assistant'?'صابر: ':'شما: ') + m.text;
+  var sheet=$('msgSheet');
+  var back=$('sheetBackdrop');
+  if(sheet) sheet.className='msg-sheet show';
+  if(back) back.className='sheet-backdrop show';
+};
+
+window.closeMsgSheet=function(){
+  var sheet=$('msgSheet');
+  var back=$('sheetBackdrop');
+  if(sheet) sheet.className='msg-sheet';
+  if(back) back.className='sheet-backdrop';
+  S.selectedMsgIndex=-1;
+};
+
+window.sheetAction=function(action){
+  var idx = S.selectedMsgIndex;
+  if(idx<0 || !S.chat[idx]){closeMsgSheet();return;}
+  var m = S.chat[idx];
+
+  if(action==='copy'){ doCopy(m.text); closeMsgSheet(); }
+  else if(action==='speak'){ speakViaPhone(m.text); closeMsgSheet(); }
+  else if(action==='speakOnline'){ speakOnline(m.text); closeMsgSheet(); }
+  else if(action==='regenerate'){ regenerateAt(idx); }
+  else if(action==='edit'){
+    var inp=$('input');
+    if(inp){
+      inp.value = m.text;
+      inp.focus();
+      inp.style.height='auto';
+      inp.style.height=Math.min(inp.scrollHeight,100)+'px';
+    }
+    S.chat.splice(idx,1);
+    save('saber_v6_chat',S.chat);
+    renderChat();
+    show('chat');
+    toast('برای ویرایش و ارسال مجدد آماده است');
+    closeMsgSheet();
+  }
+  else if(action==='report'){
+    var reason = prompt('دلیل گزارش را وارد کنید (اختیاری):','پیام نامناسب');
+    if(reason!==null) toast('گزارش ثبت شد. ممنون از همکاری شما.');
+    closeMsgSheet();
+  }
+  else if(action==='delete'){
+    if(confirm('این پیام حذف شود؟')){
+      S.chat.splice(idx,1);
+      save('saber_v6_chat',S.chat);
+      renderChat();
+      toast('حذف شد');
+    }
+    closeMsgSheet();
+  }
+};
+
+function doCopy(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text)
+      .then(function(){toast('کپی شد');})
+      .catch(function(){fallbackCopy(text);});
+  }else{
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text){
+  try{
+    var ta=document.createElement('textarea');
+    ta.value=text;
+    ta.style.position='fixed';
+    ta.style.opacity='0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('کپی شد');
+  }catch(e){toast('کپی نشد');}
+}
+
+/* ============================================================
+   🔊 TTS — گوشی + آنلاین
+   ============================================================ */
+function getVoices(){
+  try{
+    if(!('speechSynthesis' in window)) return [];
+    var v = window.speechSynthesis.getVoices();
+    return v || [];
+  }catch(e){ return []; }
+}
+
+function waitForVoices(cb, tries){
+  tries = tries || 0;
+  var v = getVoices();
+  if(v.length > 0){ cb(v); return; }
+  if(tries >= 15){ cb([]); return; }
+  setTimeout(function(){ waitForVoices(cb, tries+1); }, 200);
+}
+
+function refreshVoices(){
+  var sel=$('ttsVoice');
+  if(!sel) return;
+  var prev = S.settings.ttsVoice || sel.value;
+  sel.innerHTML = '<option value="">🔊 خودکار (فارسی ترجیح)</option>';
+  waitForVoices(function(voices){
+    if(!voices.length){
+      var o = document.createElement('option');
+      o.value = '';
+      o.textContent = '⚠️ صدایی یافت نشد';
+      o.disabled = true;
+      sel.appendChild(o);
+      return;
+    }
+    var sorted = voices.slice().sort(function(a,b){
+      var aFa = (a.lang||'').toLowerCase().indexOf('fa') === 0 ? 0 : 1;
+      var bFa = (b.lang||'').toLowerCase().indexOf('fa') === 0 ? 0 : 1;
+      if(aFa !== bFa) return aFa - bFa;
+      return String(a.name).localeCompare(String(b.name));
+    });
+    var faVoices = [], otherVoices = [];
+    for(var i=0;i<sorted.length;i++){
+      var lang = (sorted[i].lang||'').toLowerCase();
+      if(lang.indexOf('fa') === 0 || lang.indexOf('per') === 0){
+        faVoices.push(sorted[i]);
+      }else{
+        otherVoices.push(sorted[i]);
+      }
+    }
+    if(faVoices.length){
+      var groupFa = document.createElement('optgroup');
+      groupFa.label = '🇮🇷 فارسی';
+      for(var f=0;f<faVoices.length;f++){
+        var oF = document.createElement('option');
+        oF.value = faVoices[f].name;
+        oF.textContent = faVoices[f].name + ' (' + (faVoices[f].lang||'?') + ')';
+        groupFa.appendChild(oF);
+      }
+      sel.appendChild(groupFa);
+    }
+    if(otherVoices.length){
+      var groupOther = document.createElement('optgroup');
+      groupOther.label = '🌍 سایر زبان‌ها';
+      for(var o=0;o<otherVoices.length;o++){
+        var oO = document.createElement('option');
+        oO.value = otherVoices[o].name;
+        oO.textContent = otherVoices[o].name + ' (' + (otherVoices[o].lang||'?') + ')';
+        groupOther.appendChild(oO);
+      }
+      sel.appendChild(groupOther);
+    }
+    if(prev){
+      var opts = sel.querySelectorAll('option');
+      for(var k=0;k<opts.length;k++){
+        if(opts[k].value === prev){ sel.value = prev; break; }
+      }
+    }
+  });
+}
+
+/* --------- تصمیم‌گیر: گوشی یا آنلاین --------- */
+function speak(text){
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  try{
+    if(window._saberAudio){
+      window._saberAudio.pause();
+      window._saberAudio.currentTime = 0;
+      window._saberAudio = null;
+    }
+  }catch(e){}
+
+  var pr = prepTTS(text);
+  if(!pr) return;
+
+  /* اگه آنلاین ترجیح داده شده → مستقیم آنلاین */
+  if(S.settings.onlineTTS){
+    speakOnline(pr);
+    return;
+  }
+
+  /* دنبال فارسی گوشی */
+  waitForVoices(function(voices){
+    var faVoice = null;
+    for(var i=0;i<voices.length;i++){
+      var lg = (voices[i].lang||'').toLowerCase();
+      var nm = (voices[i].name||'').toLowerCase();
+      if(lg.indexOf('fa') === 0 || lg.indexOf('per') === 0 ||
+         nm.indexOf('persian') > -1 || nm.indexOf('farsi') > -1 ||
+         nm.indexOf('iran') > -1){
+        faVoice = voices[i];
+        break;
+      }
+    }
+
+    if(faVoice){
+      speakViaPhoneVoice(pr, faVoice);
+      return;
+    }
+
+    /* فارسی نبود → آنلاین */
+    if('speechSynthesis' in window){ /* اگه خواستی اینجا هشدار بدی */ }
+    speakOnline(pr);
+  });
+}
+
+/* --------- پخش با گوشی (با voice مشخص) --------- */
+function speakViaPhoneVoice(text, voice){
+  try{
+    var u = new SpeechSynthesisUtterance(text);
+    if(voice){
+      u.voice = voice;
+      u.lang = voice.lang || 'fa-IR';
+    }else{
+      u.lang = 'fa-IR';
+      var voices = getVoices();
+      if(voices.length) u.voice = voices[0];
+    }
+    u.rate = S.settings.ttsRate || DEFAULT_CONFIG.TTS_RATE;
+    u.pitch = DEFAULT_CONFIG.TTS_PITCH;
+    u.volume = 1;
+
+    u.onstart = function(){ S.speaking=true; setAvatar('speaking'); animOn(); };
+    u.onend   = function(){ S.speaking=false; animOff(); setAvatar('idle'); };
+    u.onerror = function(){ S.speaking=false; animOff(); setAvatar('idle'); };
+
+    window.speechSynthesis.speak(u);
+  }catch(e){
+    console.warn('phone tts error', e);
+    speakOnline(text);
+  }
+}
+
+/* --------- پخش صریح با گوشی --------- */
+window.speakViaPhone = function(text){
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  var pr = prepTTS(text);
+  if(!pr) return;
+  waitForVoices(function(voices){
+    var voice = null;
+    if(S.settings.ttsVoice){
+      for(var i=0;i<voices.length;i++){
+        if(voices[i].name === S.settings.ttsVoice){ voice = voices[i]; break; }
+      }
+    }
+    if(!voice){
+      for(var j=0;j<voices.length;j++){
+        var lg = (voices[j].lang||'').toLowerCase();
+        if(lg.indexOf('fa') === 0 || lg.indexOf('per') === 0){ voice = voices[j]; break; }
+      }
+    }
+    if(!voice && voices.length) voice = voices[0];
+    speakViaPhoneVoice(pr, voice);
+  });
+};
+
+/* --------- پخش آنلاین با Google Translate --------- */
+window.speakOnline = function(text){
+  var pr = prepTTS(text);
+  if(!pr) return;
+
+  /* توقف قبلی */
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  try{
+    if(window._saberAudio){
+      window._saberAudio.pause();
+      window._saberAudio.currentTime = 0;
+      window._saberAudio = null;
+    }
+  }catch(e){}
+
+  /* تقسیم متن به تکه‌های ۱۹۰ حرفی */
+  var chunks = [];
+  var remaining = pr;
+  while(remaining.length > 0){
+    if(remaining.length <= 190){ chunks.push(remaining); break; }
+    var chunk = remaining.substring(0, 190);
+    var lastBreak = Math.max(
+      chunk.lastIndexOf('. '),
+      chunk.lastIndexOf('، '),
+      chunk.lastIndexOf('؟ '),
+      chunk.lastIndexOf('! '),
+      chunk.lastIndexOf(' ')
+    );
+    if(lastBreak > 100){
+      chunk = remaining.substring(0, lastBreak + 1);
+    }
+    chunks.push(chunk.trim());
+    remaining = remaining.substring(chunk.length).trim();
+  }
+
+  playChunksSequentially(chunks, 0);
+};
+
+function playChunksSequentially(chunks, index){
+  if(index >= chunks.length){
+    S.speaking = false;
+    animOff();
+    setAvatar('idle');
+    return;
+  }
+
+  S.speaking = true;
+  setAvatar('speaking');
+  animOn();
+
+  var chunk = chunks[index];
+  var endpoints = [
+    'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=fa&client=gtx&q=' + encodeURIComponent(chunk),
+    'https://translate.google.com/translate_tts?ie=UTF-8&tl=fa&client=tw-ob&q=' + encodeURIComponent(chunk)
+  ];
+
+  function tryEndpoint(endpointIndex){
+    if(endpointIndex >= endpoints.length){
+      console.warn('online TTS: all endpoints failed');
+      S.speaking = false;
+      animOff();
+      setAvatar('idle');
+      toast('سرویس TTS آنلاین در دسترس نیست؛ صدای گوشی را امتحان کن');
+      return;
+    }
+
+    var audio = new Audio();
+    var finished = false;
+    var timeoutId = setTimeout(function(){
+      if(finished) return;
+      finished = true;
+      try{ audio.pause(); }catch(e){}
+      console.warn('online TTS timeout on endpoint', endpointIndex + 1);
+      tryEndpoint(endpointIndex + 1);
+    }, 9000);
+
+    audio.preload = 'auto';
+    audio.src = endpoints[endpointIndex];
+    audio.volume = 1;
+
+    audio.onended = function(){
+      if(finished) return;
+      finished = true;
+      clearTimeout(timeoutId);
+      playChunksSequentially(chunks, index + 1);
+    };
+
+    audio.onerror = function(){
+      if(finished) return;
+      finished = true;
+      clearTimeout(timeoutId);
+      console.warn('online TTS endpoint failed:', endpointIndex + 1);
+      tryEndpoint(endpointIndex + 1);
+    };
+
+    window._saberAudio = audio;
+
+    var playPromise;
+    try{
+      playPromise = audio.play();
+    }catch(e){
+      if(finished) return;
+      finished = true;
+      clearTimeout(timeoutId);
+      console.warn('online TTS play exception:', e);
+      tryEndpoint(endpointIndex + 1);
+      return;
+    }
+
+    if(playPromise && typeof playPromise.catch === 'function'){
+      playPromise.catch(function(e){
+        if(finished) return;
+        finished = true;
+        clearTimeout(timeoutId);
+        console.warn('online TTS play rejected:', e);
+        /* این خطا معمولاً autoplay/permission است، نه قطع بودن اینترنت. */
+        if(e && e.name === 'NotAllowedError'){
+          S.speaking = false;
+          animOff();
+          setAvatar('idle');
+          toast('برای پخش آنلاین، یک‌بار روی دکمه تست آنلاین بزن');
+          return;
+        }
+        tryEndpoint(endpointIndex + 1);
+      });
+    }
+  }
+
+  tryEndpoint(0);
+}
+
+window.stopSpeaking=function(){
+  try{if('speechSynthesis' in window)window.speechSynthesis.cancel();}catch(e){}
+  try{
+    if(window._saberAudio){
+      window._saberAudio.pause();
+      window._saberAudio.currentTime = 0;
+      window._saberAudio = null;
+    }
+  }catch(e){}
+  S.speaking=false;
+  animOff();
+  setAvatar('idle');
+};
+
+window.speakCurrent=function(){
+  var t=$('transcript');if(!t)return;
+  var c=t.textContent.replace(/[«»]/g,'').trim();
+  if(c)speak(c);
+};
+window.testVoice=function(){speakViaPhone('سلام، من صابرم. این یک تست صدای گوشی است.');};
+window.testVoiceOnline=function(){speakOnline('سلام، من صابرم. این یک تست صدای آنلاین است.');};
+
+window.listAllVoices = function(){
+  var voices = getVoices();
+  if(!voices.length){ alert('هیچ صدایی یافت نشد'); return; }
+  var txt = 'صداهای موجود روی این دستگاه:\n\n';
+  for(var i=0;i<voices.length;i++){
+    txt += '• ' + voices[i].name + ' — ' + (voices[i].lang||'?');
+    if(voices[i].default) txt += ' (پیش‌فرض)';
+    txt += '\n';
+  }
+  alert(txt);
+};
+
+var animId=null;
+function animOn(){
+  animOff();
+  var m=$('mouth');
+  var bars=$('viz')?$('viz').children:[];
+  function tick(){
+    if(!S.speaking)return;
+    var val=0.3+Math.random()*0.7;
+    if(m)m.style.height=(4+val*10)+'px';
+    for(var i=0;i<bars.length;i++){
+      bars[i].style.height=Math.max(3,Math.random()*val*26)+'px';
+      bars[i].style.opacity=String(0.4+val*0.5);
+    }
+    animId=requestAnimationFrame(tick);
+  }
+  tick();
+}
+function animOff(){
+  if(animId){cancelAnimationFrame(animId);animId=null;}
+  var m=$('mouth');if(m)m.style.height='';
+  var bars=$('viz')?$('viz').children:[];
+  for(var i=0;i<bars.length;i++){bars[i].style.height='4px';bars[i].style.opacity='0.6';}
+}
+
+/* ============================================================
+   🎤 Speech Recognition
+   ============================================================ */
+function initRec(target){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return null;
+  var r=new SR();
+  r.lang=DEFAULT_CONFIG.TTS_LANG;
+  r.interimResults=true;
+  r.continuous=false;
+  r.onstart=function(){
+    S.listening=true;
+    if(target==='voice'){var b=$('micBtn');if(b)b.className='mic-btn active';setAvatar('listening');}
+    else if(target==='compose'){var c=$('composeMicBtn');if(c)c.className='compose-mic active';}
+  };
+  r.onresult=function(e){
+    var inter='',fin='';
+    for(var i=e.resultIndex;i<e.results.length;i++){
+      var x=e.results[i];
+      if(x.isFinal)fin+=x[0].transcript;
+      else inter+=x[0].transcript;
+    }
+    if(target==='voice'){
+      var t=$('transcript');
+      if(fin){ if(t)t.textContent=fin; stopL(); handleVoice(fin); }
+      else if(inter&&t) t.textContent=inter;
+    }else if(target==='compose'){
+      var inp=$('input');
+      if(inp){
+        if(inter) inp.placeholder='🎙️ '+inter;
+        if(fin){
+          inp.value=(inp.value?inp.value+' ':'')+fin;
+          inp.placeholder='پیام به صابر...';
+          inp.style.height='auto';
+          inp.style.height=Math.min(inp.scrollHeight,100)+'px';
+        }
+      }
+      if(fin) stopComposeMic();
+    }
+  };
+  r.onerror=function(e){
+    if(target==='voice') stopL(); else stopComposeMic();
+    if(e.error==='no-speech'){setAvatar('idle');toast('صدایی نشنیدم');}
+    else if(e.error==='aborted'){setAvatar('idle');}
+    else{setAvatar('error');toast('خطا: '+e.error);setTimeout(function(){setAvatar('idle');},2000);}
+  };
+  r.onend=function(){
+    if(target==='voice'){
+      var b=$('micBtn');if(b)b.className='mic-btn';
+      if(S.listening){S.listening=false;setAvatar('idle');}
+    }else if(target==='compose'){
+      var c=$('composeMicBtn');if(c)c.className='compose-mic';
+      var inp=$('input'); if(inp) inp.placeholder='پیام به صابر...';
+    }
+  };
+  return r;
+}
+
+window.toggleMic=function(){
+  if(S.listening){stopL();return;}
+  if(S.speaking)window.stopSpeaking();
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    toast('میکروفون پشتیبانی نمی‌شود');return;
+  }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){
+    st.getTracks().forEach(function(t){t.stop();});
+    S.recognition=initRec('voice');
+    if(!S.recognition){toast('تشخیص گفتار پشتیبانی نمی‌شود');return;}
+    try{S.recognition.start();}catch(e){toast('شروع ناموفق');}
+  }).catch(function(){
+    toast('دسترسی میکروفون رد شد');
+    setAvatar('error');
+    setTimeout(function(){setAvatar('idle');},2000);
+  });
+};
+
+window.toggleComposeMic = function(){
+  if(S.recognition && S.listening){ stopComposeMic(); return; }
+  if(S.speaking)window.stopSpeaking();
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    toast('میکروفون پشتیبانی نمی‌شود');return;
+  }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){
+    st.getTracks().forEach(function(t){t.stop();});
+    S.recognition=initRec('compose');
+    if(!S.recognition){toast('تشخیص گفتار پشتیبانی نمی‌شود');return;}
+    try{S.recognition.start();}catch(e){toast('شروع ناموفق');}
+  }).catch(function(){toast('دسترسی میکروفون رد شد');});
+};
+
+function stopComposeMic(){
+  var c=$('composeMicBtn');if(c)c.className='compose-mic';
+  var inp=$('input');if(inp)inp.placeholder='پیام به صابر...';
+  try{if(S.recognition)S.recognition.stop();}catch(e){}
+}
+
+function stopL(){
+  S.listening=false;
+  var b=$('micBtn');if(b)b.className='mic-btn';
+  try{if(S.recognition)S.recognition.stop();}catch(e){}
+  setAvatar('idle');
+}
+
+function handleVoice(text){
+  setAvatar('thinking');
+  var t=$('transcript');
+  if(t)t.textContent=text;
+  addMsg('user',text);
+  askAI(text,function(r){
+    if(t)t.textContent='«'+r+'»';
+    addMsg('assistant',r);
+    speak(r);
+  });
+}
+
+/* ============================================================
+   ⚙️ Settings
+   ============================================================
+*/
+window.pickModel=function(m){
+  S.settings.model=m;
+  save('saber_v6_settings',S.settings);
+  var cards=document.querySelectorAll('.model-card');
+  for(var i=0;i<cards.length;i++){
+    cards[i].className='model-card'+(cards[i].getAttribute('data-model')===m?' active':'');
+  }
+  var hm=$('homeModel');if(hm)hm.textContent=m.split('-')[0];
+  updateModelStatus('ok');
+  toast('مدل: '+m.split('-')[0]);
+};
+
+window.pickPersonality=function(id){
+  var found=false;
+  for(var i=0;i<PERSONALITIES.length;i++){
+    if(PERSONALITIES[i].id===id){found=true;break;}
+  }
+  if(!found)id='friend';
+  S.settings.personality=id;
+  save('saber_v6_settings',S.settings);
+  renderPersonalityList();
+  var hp=$('homePersonality');if(hp)hp.textContent=getPersonalityName();
+  toast('شخصیت: '+getPersonalityName());
+};
+
+function renderPersonalityList(){
+  var box=$('personalityList');
+  if(!box)return;
+  var current=S.settings.personality||'friend';
+  var html='';
+  for(var i=0;i<PERSONALITIES.length;i++){
+    var p=PERSONALITIES[i];
+    var active=p.id===current;
+    html+='<button type="button" onclick="pickPersonality(\''+p.id+'\')" style="display:flex;width:100%;align-items:center;gap:10px;text-align:right;margin-bottom:7px;padding:11px 12px;border:1px solid '+(active?'#66d39d':'#1e3329')+';border-radius:10px;background:'+(active?'#0f2420':'#0a1510')+';color:#e9f3ed;cursor:pointer;">';
+    html+='<span style="font-size:20px;flex-shrink:0">'+p.emoji+'</span>';
+    html+='<span style="flex:1"><b style="display:block;font-size:12px;margin-bottom:2px">'+p.name+'</b><small style="display:block;color:#7a9086;font-size:10px">'+p.desc+'</small></span>';
+    html+='<span style="color:#66d39d;font-weight:900">'+(active?'✓':'')+'</span>';
+    html+='</button>';
+  }
+  box.innerHTML=html;
+}
+
+window.saveSettings=function(){
+  var v=$('ttsVoice');if(v)S.settings.ttsVoice=v.value;
+  var r=$('ttsRate');if(r)S.settings.ttsRate=parseFloat(r.value)||DEFAULT_CONFIG.TTS_RATE;
+  save('saber_v6_settings',S.settings);
+};
+
+window.updateRate=function(){
+  var r=$('ttsRate'),v=$('rateVal');
+  if(r&&v)v.textContent=parseFloat(r.value).toFixed(2);
+};
+
+window.saveApiKey=function(){
+  var inp=$('apiKeyInput');if(!inp)return;
+  var k=inp.value.trim();
+  if(!k){toast('کلید را وارد کن');return;}
+  if(k.indexOf('gsk_')!==0){toast('کلید باید با gsk_ شروع بشه');return;}
+  S.apiKey=k;
+  save('saber_v6_apikey',k);
+  updateKeyStatus();
+  toast('کلید ذخیره شد');
+  S.availableModels=[];
+  loadModelsFromApi(true);
+};
+
+function updateKeyStatus(){
+  var el=$('keyStatus');if(!el)return;
+  if(S.apiKey){el.textContent='✅ تنظیم شده';el.style.color='#66d39d';}
+  else{el.textContent='❌ تنظیم نشده';el.style.color='#c96d6d';}
+  var hk=$('homeKey');
+  if(hk)hk.textContent=S.apiKey?'✅ موجود':'❌ وارد نشده';
+}
+
+/* ============================================================
+   📊 Status
+   ============================================================ */
+function renderStatus(){
+  var box=$('statusTable');if(!box)return;
+  var faVoice = false;
+  var voices = getVoices();
+  for(var v=0;v<voices.length;v++){
+    var lg = (voices[v].lang||'').toLowerCase();
+    if(lg.indexOf('fa') === 0 || lg.indexOf('per') === 0){ faVoice = true; break; }
+  }
+  var checks=[
+    ['Groq API Key',!!S.apiKey],
+    ['مدل انتخاب‌شده',!!S.settings.model],
+    ['لیست مدل‌ها',S.availableModels.length>0],
+    ['جستجوی زنده',!!S.settings.liveSearch],
+    ['TTS آنلاین',!!S.settings.onlineTTS],
+    ['صدای فارسی گوشی',faVoice],
+    ['خوانش خودکار',!!S.settings.autoSpeak],
+    ['Microphone',!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)],
+    ['Speech Recognition',!!(window.SpeechRecognition||window.webkitSpeechRecognition)],
+    ['Speech Synthesis','speechSynthesis' in window],
+    ['LocalStorage',(function(){try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return true;}catch(e){return false;}})()],
+    ['XMLHttpRequest',!!window.XMLHttpRequest]
+  ];
+  var h='';
+  for(var i=0;i<checks.length;i++){
+    h+='<div class="status-row"><span>'+checks[i][0]+'</span><span class="tag '+(checks[i][1]?'pass':'fail')+'">'+(checks[i][1]?'PASS':'FAIL')+'</span></div>';
+  }
+  box.innerHTML=h;
+}
+
+/* ============================================================
+   🔬 Lab
+   ============================================================ */
+window.labProcess=function(){
+  var i=$('labInput'),d=$('labDisplay'),t=$('labTts');
+  if(!i||!d||!t)return;
+  d.textContent=i.value||'—';
+  t.textContent=prepTTS(i.value)||'—';
+};
+window.labSpeak=function(){
+  if($('labInput')) speakViaPhone($('labInput').value);
+};
+window.labSpeakOnline=function(){
+  if($('labInput')) speakOnline($('labInput').value);
+};
+
+/* ============================================================
+   🚀 Boot
+   ============================================================ */
+function boot(){
+  setTimeout(function(){
+    var b=document.querySelector('.boot');
+    if(b) b.style.display='none';
+  },3000);
+
+  var sv = load('saber_v6_settings', null);
+  if(sv) for(var k in sv) if(sv.hasOwnProperty(k)) S.settings[k] = sv[k];
+  S.chat = load('saber_v6_chat', []);
+
+  if(HARDCODED_KEY && HARDCODED_KEY.indexOf('gsk_') === 0){
+    S.apiKey = HARDCODED_KEY;
+  }else{
+    var savedKey = load('saber_v6_apikey','');
+    if(savedKey) S.apiKey = savedKey;
+  }
+
+  setAvatar('idle');
+  setSys('READY','ok');
+  renderChat();
+  renderPersonalityList();
+  updateKeyStatus();
+
+  /* همگام‌سازی همه کلیدهای toggle */
+  var lt = $('liveSearchToggle'); if(lt) lt.checked = !!S.settings.liveSearch;
+  var st = $('settingsLiveSearch'); if(st) st.checked = !!S.settings.liveSearch;
+  var at = $('autoSpeakToggle'); if(at) at.checked = !!S.settings.autoSpeak;
+  var ot1 = $('onlineTTSToggle'); if(ot1) ot1.checked = !!S.settings.onlineTTS;
+  var ot2 = $('onlineTTSMenuToggle'); if(ot2) ot2.checked = !!S.settings.onlineTTS;
+
+  var sb = $('searchBadge'); if(sb && S.settings.liveSearch) sb.className = 'search-badge show';
+  var tb = $('ttsBadge'); if(tb && S.settings.onlineTTS) tb.className = 'tts-badge show';
+
+  if(S.apiKey){ loadModelsFromApi(); }
+  else{
+    var ml=$('modelList');
+    if(ml) ml.innerHTML='<div class="muted" style="padding:10px;text-align:center">ابتدا کلید Groq را در تنظیمات وارد کنید.</div>';
+  }
+
+  if('speechSynthesis' in window){
+    getVoices();
+    window.speechSynthesis.onvoiceschanged = refreshVoices;
+    setTimeout(refreshVoices, 300);
+    setTimeout(refreshVoices, 800);
+    setTimeout(refreshVoices, 1500);
+    setTimeout(refreshVoices, 3000);
+  }
+
+  var inp=$('input');
+  if(inp){
+    inp.addEventListener('input',function(){
+      inp.style.height='auto';
+      inp.style.height=Math.min(inp.scrollHeight,100)+'px';
+    });
+  }
+
+  var hm=$('homeModel'); if(hm) hm.textContent = S.settings.model.split('-')[0];
+  var hp=$('homePersonality'); if(hp) hp.textContent = getPersonalityName();
+
+  var hs=$('homeSearch');
+  if(hs){
+    hs.textContent = S.settings.liveSearch ? '🌐 فعال' : 'خاموش';
+    hs.style.color = S.settings.liveSearch ? '#5cc8ff' : '#7a9086';
+  }
+
+  var ht=$('homeTtsMode');
+  if(ht){
+    ht.textContent = S.settings.onlineTTS ? '🌐 آنلاین' : '🔊 گوشی';
+    ht.style.color = S.settings.onlineTTS ? '#d2ad63' : '#66d39d';
+  }
+
+  var hm2=$('homeMic');
+  if(hm2){
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+      hm2.textContent='✅ در دسترس';
+      hm2.style.color='#66d39d';
+    }else{
+      hm2.textContent='❌ ناموجود';
+      hm2.style.color='#c96d6d';
+    }
+  }
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', boot);
+}else{
+  boot();
+}
+
+console.log('SABER V6 loaded successfully');
+})();
+</script>
+
+</body>
+</html>
