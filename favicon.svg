@@ -1,7 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#050907"/>
-  <path d="M32 8 L12 17 V32 C12 45 22 55 32 58 C42 55 52 45 52 32 V17 Z"
-        fill="none" stroke="#66d39d" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M22 32 L29 39 L43 25" fill="none" stroke="#66d39d"
-        stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7dc85"/>
+      <stop offset="1" stop-color="#b8873a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="#0a0812"/>
+
+  <!-- سپر -->
+  <path d="M 34 24 L 94 24 L 94 78 Q 94 106 64 118 Q 34 106 34 78 Z"
+        fill="#0e0a1a" stroke="url(#gold)" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- فره وهر ساده -->
+  <g transform="translate(64 52)">
+    <!-- بال‌ها -->
+    <path d="M -8 -3 Q -22 -12 -38 -6 Q -34 3 -24 6 Q -14 8 -8 4 Z" fill="url(#gold)"/>
+    <path d="M 8 -3 Q 22 -12 38 -6 Q 34 3 24 6 Q 14 8 8 4 Z" fill="url(#gold)"/>
+    <!-- دیسک -->
+    <circle cx="0" cy="0" r="9" fill="#0a0812" stroke="url(#gold)" stroke-width="1.5"/>
+    <polygon points="-3,-5 0,-9 3,-5" fill="url(#gold)"/>
+    <circle cx="0" cy="-1" r="2.5" fill="url(#gold)"/>
+    <!-- دُم -->
+    <ellipse cx="-4" cy="13" rx="1.8" ry="4" fill="url(#gold)"/>
+    <ellipse cx="0" cy="14" rx="1.8" ry="4.5" fill="url(#gold)"/>
+    <ellipse cx="4" cy="13" rx="1.8" ry="4" fill="url(#gold)"/>
+  </g>
+
+  <!-- آرامگاه -->
+  <g transform="translate(64 96)">
+    <polygon points="-20,12 -16,12 -16,6 16,6 16,12 20,12 20,16 -20,16" fill="url(#gold)"/>
+    <rect x="-14" y="-8" width="28" height="14" fill="url(#gold)"/>
+    <rect x="-3" y="-3" width="6" height="9" fill="#0a0812"/>
+    <polygon points="-16,-8 16,-8 0,-18" fill="url(#gold)"/>
+  </g>
 </svg>
