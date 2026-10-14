@@ -1,25 +1,9 @@
-# CHANGELOG
+# Change Log
 
-## V6 PRO stabilization
-- حفظ رابط فارسی RTL و تم تاکتیکال موجود.
-- افزودن متغیرهای CSS پایه و پشتیبانی از `prefers-reduced-motion`.
-- بازگرداندن امکان بزرگ‌نمایی مرورگر برای دسترس‌پذیری موبایل.
-- افزودن دکمه آزمایش واقعی API از مسیر مدل‌های Groq با پیام‌های خطای دسته‌بندی‌شده.
-- جلوگیری از شروع ارسال گفت‌وگوی جدید تا پایان درخواست قبلی.
-- محدود کردن متن خطای API و پوشاندن الگوهای کلید در پیام خطا.
-- بازنویسی Service Worker برای به‌روزرسانی کش نسخه‌ای و جلوگیری از کش‌کردن API خارجی.
-- تکمیل راهنمای انتشار، امنیت و محدودیت‌های شناخته‌شده.
-
-## اصلاح بسته‌بندی و PWA — 2026-10-14
-- رفع نبودن پوشه assets در ZIP قبلی.
-- تولید آیکون‌های PWA از لوگوی واقعی SABER و افزودن نسخه maskable.
-- به‌روزرسانی manifest و کش Service Worker.
-- اصلاح راهنمای آپلود GitHub Pages و ثبت آزمون‌ها و محدودیت‌ها.
-
-
-## اصلاحات تکمیلی
-- اصلاح ساخت پیام‌های API برای جلوگیری از افزودن دوباره آخرین پیام کاربر به تاریخچه درخواست.
-- تغییر مدل پیش‌فرض به `openai/gpt-oss-120b` که در فهرست مدل‌های برنامه موجود است؛ در صورت تغییر دسترسی مدل در Groq، از تنظیمات مدل دیگری انتخاب کنید.
-- افزودن fallback فینگلیش برای خواندن متن فارسی با صدای دستگاه وقتی صدای فارسی محلی موجود نیست. این تبدیل آوایی تقریبی است و معادل ترجمه یا نویسه‌گردانی حرفه‌ای نیست.
-- افزودن مردمک و حرکت نگاه به چهره صابر و رعایت `prefers-reduced-motion`.
-- افزودن راهنمای آپلود فایل‌ها در GitHub از موبایل.
+## SABER V6 · ElevenLabs TTS integration
+- Added independent ElevenLabs API key storage, separate from Groq chat and Google Gemini TTS keys.
+- Added voice-list retrieval from the user's ElevenLabs account and selectable Voice ID.
+- Added a Persian voice test and audio playback through ElevenLabs Text-to-Speech using `eleven_v3` and language code `fa`.
+- Online speech now prioritizes ElevenLabs when its key is configured; existing Gemini and Google Translate fallbacks remain in place when ElevenLabs is not configured.
+- Bumped the service-worker cache version to ensure GitHub Pages clients fetch the updated app.
+- No API key is embedded in the project.

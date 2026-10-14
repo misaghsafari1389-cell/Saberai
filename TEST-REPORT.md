@@ -1,38 +1,16 @@
-# گزارش آزمون SABER AI V6 PRO (نسخه اصلاح‌شده)
+# Test Report
 
-تاریخ: 2026-10-14
+## Completed checks
+- JavaScript syntax check with Node.js: PASS.
+- Required UI element/function wiring inspected: ElevenLabs key, save/remove, voice listing, Voice ID selection, test button, persisted settings, and online TTS routing are present.
+- Service-worker cache name bumped to a new version: PASS.
+- Project contains no embedded ElevenLabs API key: PASS (user enters their own key in Settings).
 
-## خطای اصلی پیدا و رفع‌شده
-- **خطای بسته‌بندی ZIP:** آرشیو قبلی `SABER-AI-V6-PRO.zip` فایل‌های داخل `assets/` را نداشت، با اینکه `index.html`، `manifest.json` و `sw.js` به آن‌ها ارجاع می‌دادند. بنابراین لوگو و آیکون‌ها بعد از استخراج/انتشار از آن ZIP بارگذاری نمی‌شدند و Service Worker نیز ممکن بود هنگام نصب کش با خطا روبه‌رو شود. ZIP جدید با کل پوشه `assets/` ساخته شده است.
-- **آیکون PWA:** PNGهای قبلی با نشان موجود در هدر یکی نبودند. آیکون‌های 192 و 512 پیکسل از لوگوی واقعی SABER ساخته شدند و یک آیکون جداگانه maskable با حاشیه امن اضافه شد.
-- **Manifest و کش:** مانیفست اکنون هر سه آیکون را معرفی می‌کند و نسخه کش Service Worker به v4 افزایش یافته است تا فایل‌های قبلی جایگزین شوند.
-- **راهنمای آپلود:** تأکید شده که ZIP را نباید به‌عنوان یک فایل منفرد در مخزن قرار داد؛ باید محتویات استخراج‌شده در ریشه مخزن باشند.
+## Not verified live
+- No real ElevenLabs API request was made because the user's API key is private and was not supplied to the build process.
+- Actual API access, account quota, voice availability, browser CORS/network access, and audio playback must be confirmed by pressing “دریافت صداهای حساب” and “تست صدای فارسی” in the deployed app.
 
-## آزمون‌های محلی
-| آزمون | نتیجه |
-|---|---|
-| صحت ساختار ZIP و وجود فایل‌های assets در آرشیو نهایی | PASS (پس از ساخت آرشیو اجرا شد) |
-| تجزیه JSON مانیفست | PASS |
-| اعتبارسنجی XML لوگوی SVG | PASS |
-| بررسی نحوی اسکریپت‌های درون‌خطی HTML با Node.js | PASS |
-| بررسی نحوی Service Worker با Node.js | PASS |
-| ابعاد PNG آیکون‌های PWA | PASS: 192×192، 512×512، 512×512 |
-| وجود تمام مسیرهای محلی `src`/`href` و مسیرهای مانیفست | PASS |
-| وجود مسیرهای فایل در CORE سرویس‌ورکر | PASS |
-
-## آزمون‌های انجام‌نشده
-- آزمون انتشار واقعی روی GitHub Pages و بررسی درخواست‌های شبکه پس از انتشار: NOT RUN؛ نیازمند مخزن/URL منتشرشده کاربر است.
-- نصب PWA و مشاهده آیکون روی گوشی واقعی: NOT RUN؛ نیازمند مرورگر واقعی دستگاه است.
-- آزمون API با کلید معتبر، حالت آفلاین در مرورگر و آزمون کامل تعاملات: NOT RUN.
-
-## محدودیت‌ها
-- کلید API سمت مرورگر کاملاً محرمانه نیست؛ برای سرویس عمومی از بک‌اند امن استفاده شود.
-- دسترسی به سرویس API و قابلیت‌های گفتار به شبکه، حساب و پشتیبانی مرورگر وابسته‌اند.
-
-
-## بررسی تکمیلی
-- JavaScript: بررسی نحوی با Node.js موفق.
-- گفت‌وگو: مسیر ساخت درخواست بررسی و پیام کاربر تکراری در payload اصلاح شد؛ درخواست واقعی Groq به کلید معتبر نیاز دارد و اینجا به‌صورت زنده آزمایش نشده است.
-- TTS: مسیر fallback فینگلیش و صدای دستگاه اضافه شد. در دسترس بودن موتور گفتار به مرورگر/Android و صداهای نصب‌شده بستگی دارد؛ Google Translate TTS سرویس خارجی است و تضمین دسترس‌پذیری ندارد.
-- چهره: حرکت CSS مردمک و انیمیشن گفتار اضافه شد؛ این یک آواتار دوبعدی است، نه رندر سه‌بعدی یا ردیابی واقعی صورت.
-- GitHub Pages: راهنمای آپلود موبایل اضافه شد؛ انتشار مخزن کاربر از این محیط قابل تأیید نیست.
+## Known limitations
+- ElevenLabs is a browser-side integration suitable for personal use, not a secure multi-user public deployment; a key saved in LocalStorage can be accessed by someone with access to the browser/device.
+- Persian speech quality depends on the selected voice and the ElevenLabs account/model access.
+- If the deployed app remains cached, refresh the page after deployment; the service-worker cache version has been incremented.

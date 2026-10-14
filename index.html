@@ -387,6 +387,30 @@ console.log('SABER V6 loading...');
         <p id="googleTtsKeyStatus" class="muted" style="font-size:10px;margin-top:8px">کلید صدای گوگل تنظیم نشده است.</p>
       </div>
 
+      <div class="set-section" id="elevenLabsSection">
+        <h3>🎙️ کلید API صدای ElevenLabs</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">کلید ElevenLabs را جدا از کلید Groq وارد کن. برای فارسی از مدل eleven_v3 استفاده می‌شود. کلید فقط در همین مرورگر ذخیره می‌شود.</p>
+        <div class="field">
+          <label for="elevenLabsKeyInput">ElevenLabs API Key</label>
+          <input id="elevenLabsKeyInput" type="password" placeholder="کلید API ElevenLabs" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" style="flex:1" onclick="toggleElevenLabsKeyVisibility()">👁 نمایش/پنهان</button>
+          <button class="btn primary" style="flex:1" onclick="saveElevenLabsKey()">💾 ذخیره کلید صدا</button>
+        </div>
+        <div class="field">
+          <label for="elevenLabsVoiceId">شناسه صدا (Voice ID)</label>
+          <input id="elevenLabsVoiceId" type="text" placeholder="Voice ID از ElevenLabs" autocomplete="off" spellcheck="false" onchange="saveElevenLabsVoiceId()">
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" style="flex:1" onclick="loadElevenLabsVoices()">📋 دریافت صداهای حساب</button>
+          <button class="btn" style="flex:1" onclick="testElevenLabsTTS()">🔊 تست صدای فارسی</button>
+        </div>
+        <button class="btn" style="width:100%;margin-top:8px" onclick="removeElevenLabsKey()">🗑️ حذف کلید ElevenLabs</button>
+        <p id="elevenLabsStatus" class="muted" style="font-size:10px;margin-top:8px">ElevenLabs تنظیم نشده است.</p>
+        <div id="elevenLabsVoices" style="margin-top:8px"></div>
+      </div>
+
       <div class="set-section">
         <h3>🎙️ صدا</h3>
         <div class="toggle-row" style="background:#0a1510;border:1px solid #1e3329;border-radius:10px;margin-bottom:10px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px">
@@ -477,6 +501,8 @@ var S = {
   },
   apiKey: '',
   googleTtsApiKey: '',
+  elevenLabsApiKey: '',
+  elevenLabsVoiceId: '',
   recognition: null,
   listening: false,
   speaking: false,
@@ -657,6 +683,9 @@ window.show = function(id){
     var ak=$('apiKeyInput'); if(ak) ak.value = S.apiKey||'';
     var gk=$('googleTtsKeyInput'); if(gk) gk.value = S.googleTtsApiKey||'';
     updateGoogleTtsKeyStatus();
+    var ek=$('elevenLabsKeyInput'); if(ek) ek.value=S.elevenLabsApiKey||'';
+    var ev=$('elevenLabsVoiceId'); if(ev) ev.value=S.elevenLabsVoiceId||'';
+    updateElevenLabsStatus();
     var ls=$('settingsLiveSearch'); if(ls) ls.checked = S.settings.liveSearch;
     var ot=$('onlineTTSToggle'); if(ot) ot.checked = S.settings.onlineTTS;
   }
@@ -1312,7 +1341,11 @@ window.speakOnline = function(text){
   var pr = prepTTS(text);
   if(!pr) return;
 
-  /* اگر کلید Gemini تنظیم شده، از صدای مولد گوگل استفاده کن. */
+  /* اولویت موتور صدای انتخاب‌شده: ElevenLabs، سپس Gemini، سپس Google Translate. */
+  if(S.elevenLabsApiKey){
+    speakWithElevenLabsTTS(pr);
+    return;
+  }
   if(S.googleTtsApiKey){
     speakWithGeminiTTS(pr);
     return;
@@ -1387,6 +1420,38 @@ function speakWithGeminiTTS(text){
     var msg=String(err&&err.message||err);
     toast(msg.indexOf('HTTP 400')>=0||msg.indexOf('HTTP 403')>=0||msg.indexOf('HTTP 401')>=0?'کلید یا دسترسی Gemini TTS را بررسی کن':'Gemini TTS ناموفق بود؛ کلید، اینترنت و سهمیه را بررسی کن');
   });
+}
+
+function updateElevenLabsStatus(message){
+  var e=$('elevenLabsStatus');
+  if(!e)return;
+  if(message){e.textContent=message;e.style.color=message.indexOf('❌')===0?'#ff8c8c':'#d2ad63';return;}
+  e.textContent=S.elevenLabsApiKey?'✅ کلید ElevenLabs ذخیره شده'+(S.elevenLabsVoiceId?' · Voice ID تنظیم شده':' · هنوز Voice ID وارد نشده'):'کلید ElevenLabs تنظیم نشده است.';
+  e.style.color=S.elevenLabsApiKey?'#66d39d':'#7a9086';
+}
+window.toggleElevenLabsKeyVisibility=function(){var i=$('elevenLabsKeyInput');if(i)i.type=i.type==='password'?'text':'password';};
+window.saveElevenLabsKey=function(){var i=$('elevenLabsKeyInput');if(!i)return;var k=i.value.trim();if(!k){toast('کلید ElevenLabs را وارد کن');return;}S.elevenLabsApiKey=k;save('saber_v6_elevenlabs_key',k);updateElevenLabsStatus('کلید ذخیره شد. حالا «دریافت صداهای حساب» را بزن تا اتصال بررسی شود.');toast('کلید ElevenLabs در همین مرورگر ذخیره شد');};
+window.saveElevenLabsVoiceId=function(){var i=$('elevenLabsVoiceId');S.elevenLabsVoiceId=i?i.value.trim():'';save('saber_v6_elevenlabs_voice_id',S.elevenLabsVoiceId);updateElevenLabsStatus();};
+window.removeElevenLabsKey=function(){if(!confirm('کلید و شناسه صدای ElevenLabs از این مرورگر حذف شوند؟'))return;S.elevenLabsApiKey='';S.elevenLabsVoiceId='';save('saber_v6_elevenlabs_key','');save('saber_v6_elevenlabs_voice_id','');var k=$('elevenLabsKeyInput');if(k)k.value='';var v=$('elevenLabsVoiceId');if(v)v.value='';var list=$('elevenLabsVoices');if(list)list.innerHTML='';updateElevenLabsStatus();toast('تنظیمات ElevenLabs حذف شد');};
+window.loadElevenLabsVoices=function(){
+  if(!S.elevenLabsApiKey){toast('اول کلید ElevenLabs را ذخیره کن');return;}
+  updateElevenLabsStatus('در حال دریافت صداهای حساب از ElevenLabs…');
+  fetch('https://api.elevenlabs.io/v1/voices',{method:'GET',headers:{'xi-api-key':S.elevenLabsApiKey}}).then(function(r){return r.text().then(function(t){var d={};try{d=JSON.parse(t)}catch(e){}if(!r.ok)throw new Error('HTTP '+r.status+(d.detail&&d.detail.message?': '+d.detail.message:''));return d;});}).then(function(d){
+    var voices=Array.isArray(d.voices)?d.voices:[];var box=$('elevenLabsVoices');
+    if(!voices.length){updateElevenLabsStatus('❌ اتصال برقرار شد اما صدایی در حساب پیدا نشد.');return;}
+    if(box){var html='<label style="display:block;margin-bottom:6px">برای انتخاب، روی یک صدا بزن:</label>';for(var i=0;i<voices.length;i++){var v=voices[i];var id=String(v.voice_id||'');var name=String(v.name||'Voice');html+='<button type="button" class="btn" style="width:100%;margin:3px 0;text-align:right" data-voice-id="'+id.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'" onclick="chooseElevenLabsVoice(this.dataset.voiceId)">'+name.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' <small style="opacity:.65">'+(v.category||'')+'</small>'+(id===S.elevenLabsVoiceId?' ✓':'')+'</button>';}box.innerHTML=html;}
+    updateElevenLabsStatus('✅ اتصال موفق؛ '+voices.length+' صدا دریافت شد. برای فارسی مدل eleven_v3 استفاده می‌شود.');
+  }).catch(function(err){console.warn('ElevenLabs voices failed',err);updateElevenLabsStatus('❌ دریافت صداها ناموفق بود: '+String(err.message||err).slice(0,180));});
+};
+window.chooseElevenLabsVoice=function(id){S.elevenLabsVoiceId=String(id||'').trim();var i=$('elevenLabsVoiceId');if(i)i.value=S.elevenLabsVoiceId;save('saber_v6_elevenlabs_voice_id',S.elevenLabsVoiceId);updateElevenLabsStatus();toast('Voice ID انتخاب شد');};
+window.testElevenLabsTTS=function(){if(!S.elevenLabsApiKey){toast('اول کلید ElevenLabs را ذخیره کن');return;}if(!S.elevenLabsVoiceId){toast('اول صداهای حساب را دریافت و یک Voice ID انتخاب کن');return;}speakWithElevenLabsTTS('سلام، من صابرم. این یک آزمایش صدای فارسی است.');};
+function speakWithElevenLabsTTS(text){
+  if(!S.elevenLabsApiKey||!S.elevenLabsVoiceId){updateElevenLabsStatus('❌ کلید و Voice ID را در تنظیمات وارد کن.');return;}
+  try{window.speechSynthesis.cancel();}catch(e){}
+  try{if(window._saberAudio){window._saberAudio.pause();window._saberAudio.currentTime=0;window._saberAudio=null;}}catch(e){}
+  S.speaking=true;setAvatar('speaking');animOn();
+  var endpoint='https://api.elevenlabs.io/v1/text-to-speech/'+encodeURIComponent(S.elevenLabsVoiceId);
+  fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','xi-api-key':S.elevenLabsApiKey,'Accept':'audio/mpeg'},body:JSON.stringify({text:text,model_id:'eleven_v3',language_code:'fa',voice_settings:{stability:0.45,similarity_boost:0.75}})}).then(function(r){if(!r.ok)return r.text().then(function(t){throw new Error('HTTP '+r.status+(t?' · '+t.slice(0,220):''));});return r.blob();}).then(function(blob){if(!blob||!blob.size)throw new Error('فایل صوتی خالی دریافت شد');var url=URL.createObjectURL(blob),audio=new Audio(url);window._saberAudio=audio;audio.volume=1;function finish(){S.speaking=false;animOff();setAvatar('idle');URL.revokeObjectURL(url);if(window._saberAudio===audio)window._saberAudio=null;}audio.onended=finish;audio.onerror=function(){finish();toast('پخش فایل صوتی ناموفق بود');};return audio.play().catch(function(e){finish();throw e;});}).catch(function(err){console.warn('ElevenLabs TTS failed',err);S.speaking=false;animOff();setAvatar('idle');var m=String(err&&err.message||err);updateElevenLabsStatus('❌ خطای ElevenLabs: '+m.slice(0,200));toast(m.indexOf('HTTP 401')>=0||m.indexOf('HTTP 403')>=0?'کلید یا دسترسی ElevenLabs را بررسی کن':m.indexOf('HTTP 422')>=0?'Voice ID یا مدل انتخاب‌شده را بررسی کن':'ElevenLabs در دسترس نیست؛ اینترنت، سهمیه و تنظیمات را بررسی کن');});
 }
 
 window.toggleGoogleTtsKeyVisibility=function(){var i=$('googleTtsKeyInput');if(i)i.type=i.type==='password'?'text':'password';};
@@ -1846,6 +1911,10 @@ function boot(){
   }
   var savedGoogleTtsKey = load('saber_v6_google_tts_key','');
   if(typeof savedGoogleTtsKey === 'string') S.googleTtsApiKey = savedGoogleTtsKey;
+  var savedElevenLabsKey = load('saber_v6_elevenlabs_key','');
+  if(typeof savedElevenLabsKey === 'string') S.elevenLabsApiKey = savedElevenLabsKey;
+  var savedElevenLabsVoice = load('saber_v6_elevenlabs_voice_id','');
+  if(typeof savedElevenLabsVoice === 'string') S.elevenLabsVoiceId = savedElevenLabsVoice;
 
   setAvatar('idle');
   setSys('READY','ok');
@@ -1853,6 +1922,7 @@ function boot(){
   renderPersonalityList();
   updateKeyStatus();
   updateGoogleTtsKeyStatus();
+  updateElevenLabsStatus();
 
   /* همگام‌سازی همه کلیدهای toggle */
   var lt = $('liveSearchToggle'); if(lt) lt.checked = !!S.settings.liveSearch;
