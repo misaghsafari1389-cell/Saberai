@@ -16,3 +16,17 @@
 - انتخاب هوشمند جستجو بر اساس نشانه‌های متنی و تنظیم جستجوی زنده انجام می‌شود، نه یک طبقه‌بند جداگانه.
 - GitHub Pages ایستا است؛ کلیدهای API در مرورگر ذخیره می‌شوند و برای پروژه عمومی/چندکاربره بهتر است از سرور واسط امن استفاده شود.
 - حرکت لب به زمان پخش صوت وابسته است، اما از داده‌های دقیق phoneme/viseme موتور صدا استفاده نمی‌کند؛ بنابراین هم‌زمانی تقریبی است.
+
+
+## Additional checks
+- ZIP layout: project files are at archive root; only logos/icons are in assets/.
+- manifest.json parses and declares 192x192 and 512x512 PNG icons.
+- Search intent routes per request and does not mutate saved default model settings.
+- Live browser installation and live Groq API calls cannot be verified in this build environment; test on the published HTTPS GitHub Pages URL.
+
+
+## Additional checks
+- ZIP layout: project files are at archive root; logos/icons are under assets/.
+- manifest.json parses and declares 192x192 and 512x512 PNG icons.
+- Search routing is per request and does not mutate saved default model settings.
+- Live browser installation and live Groq API calls are not verified here; test on published HTTPS GitHub Pages.

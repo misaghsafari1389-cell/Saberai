@@ -37,3 +37,12 @@
 - کلید ElevenLabs و Voice ID در بخش صدای ElevenLabs جدا از Groq ذخیره می‌شوند.
 - Gemini TTS از این نسخه حذف شده است.
 - آواتار فقط هنگام شروع واقعی پخش صوت لب می‌زند؛ همگام‌سازی دقیق واج‌به‌واج پشتیبانی نمی‌شود.
+
+
+### GitHub Pages upload and install
+Extract the ZIP and upload the contents directly to the repository root, not the containing folder. The assets/ folder contains only the app logo and PNG PWA icons. The manifest uses relative URLs for both user/organization Pages and repository Pages paths. On Android, open the HTTPS published site in a supported browser such as Chrome, refresh, and choose Install app/Add to Home screen. If an old version remains cached, remove the old app/shortcut and clear site storage before reinstalling.
+
+Search requests are detected from multilingual search keywords in both chat and voice transcripts. Only that request temporarily tries Groq's search-capable model; the configured chat models remain unchanged and are used again on the next non-search request.
+
+
+GitHub Pages upload: extract the ZIP and upload its contents directly to the repository root, not the containing folder. Keep assets/ for logo and PNG icons. Open the published HTTPS site in a supported browser on Android and choose Install app/Add to Home screen. If an old version remains cached, remove it and clear site storage before reinstalling. Search keywords in multiple languages temporarily route only that request to the Groq search model; the next request returns to the configured chat model.

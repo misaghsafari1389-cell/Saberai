@@ -356,7 +356,7 @@ console.log('SABER V6 loading...');
 
       <div class="set-section">
         <h3>🔑 کلیدهای API و مدل‌های Groq</h3>
-        <p class="muted" style="font-size:10px;margin-bottom:8px">دو اتصال مستقل Groq تعریف کن. صابر برای درخواست‌های معمولی و جستجو به‌صورت هوشمند انتخاب می‌کند و در صورت خطای اتصال، اتصال دوم را امتحان می‌کند.</p>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">دو اتصال مستقل Groq تعریف کن. صابر با تشخیص واژه‌های جستجو در چند زبان، فقط همان درخواست را موقتاً به مدل جستجو می‌فرستد؛ درخواست بعدی دوباره از مدل گفت‌وگوی پیش‌فرض استفاده می‌کند. در صورت خطا، اتصال بعدی امتحان می‌شود.</p>
         <div class="field"><label for="apiKeyInput">Groq API Key 1</label><input id="apiKeyInput" type="password" placeholder="gsk_..." autocomplete="off" spellcheck="false"></div>
         <div class="field"><label for="groqModel1">مدل اتصال اول</label><input id="groqModel1" type="text" placeholder="مثلاً llama-3.3-70b-versatile" autocomplete="off" spellcheck="false"></div>
         <button class="btn" style="width:100%;margin-top:8px" onclick="toggleApiKeyVisibility()">👁 نمایش/پنهان‌کردن کلید اول</button>
@@ -845,22 +845,28 @@ function renderModelList(){
   box.innerHTML = html;
 }
 
+function detectSearchIntent(text){
+  var t=String(text||'').toLocaleLowerCase();
+  // Multilingual keyword routing used by both typed chat and voice transcripts.
+  var terms=/(جستجو|جست‌وجو|جست و جو|سرچ|بگرد|پیدا کن|پیداش کن|برو ببین|بررسی کن|تحقیق کن|اطلاعات به‌روز|اطلاعات به روز|آخرین اخبار|اخبار|امروز|همین الان|قیمت امروز|منبع معتبر|لینک بده|\bsearch\b|\bsearch for\b|\blook up\b|\bfind\b|\bgoogle\b|\bweb\b|\bbrowse\b|\blatest\b|\btoday\b|\bcurrent\b|\bnews\b|\bprice\b|\bsource\b|\bwebsite\b|\brecherche\b|\bchercher\b|\btrouver\b|\bactualit[eé]s\b|\baujourd'hui\b|\bprecio\b|\bbuscar\b|\bb[uú]squeda\b|\bnoticias\b|\bhoy\b|\bsuchen\b|\bsuche\b|\bnachrichten\b|\bheute\b|\bcercare\b|\bricerca\b|\bnotizie\b|\bhaberler\b|\bson dakika\b|\bпоиск\b|\bнайди\b|\bновости\b|\bсегодня\b|搜索|搜一下|查找|查询|最新|今天|新闻|価格|検索|調べて|最新情報|ニュース|검색|찾아|최신|खोजो|ताज़ा खबर|ابحث|بحث|آخر الأخبار|الأخبار|اليوم|araştır|bul|güncel|haberler)/iu;
+  return terms.test(t);
+}
 function askAI(msg,cb){
-  var searchIntent=!!S.settings.liveSearch || /(جستجو|جست‌وجو|پیدا کن|آخرین|امروز|قیمت|خبر|منبع|لینک|search|find|latest|today|price|news|source|website)/i.test(msg||'');
+  var searchIntent=detectSearchIntent(msg);
   var candidates=[];
   var key1=S.apiKey, key2=S.apiKey2;
   var model1=(S.groqModel1||S.settings.model||DEFAULT_CONFIG.MODEL).trim();
   var model2=(S.groqModel2||'mistral-saba-24b').trim();
+  // Search routing applies to this request only; saved chat models are never overwritten.
   if(searchIntent){
-    if(key1){
-      var searchModel=S.availableModels.indexOf('groq/compound')>=0?'groq/compound':(S.availableModels.indexOf('compound-beta')>=0?'compound-beta':'groq/compound');
-      candidates.push({key:key1,model:searchModel,label:'Groq 1 Search'});
-      if(model1!==searchModel)candidates.push({key:key1,model:model1,label:'Groq 1 Fallback'});
-    }
-    if(key2)candidates.push({key:key2,model:model2,label:'Groq 2'});
+    var searchModel='groq/compound';
+    if(key1)candidates.push({key:key1,model:searchModel,label:'Groq 1 Temporary Search'});
+    if(key2)candidates.push({key:key2,model:searchModel,label:'Groq 2 Temporary Search'});
+    if(key1 && model1!==searchModel)candidates.push({key:key1,model:model1,label:'Groq 1 Chat Fallback'});
+    if(key2 && model2!==searchModel)candidates.push({key:key2,model:model2,label:'Groq 2 Chat Fallback'});
   }else{
-    if(key1)candidates.push({key:key1,model:model1,label:'Groq 1'});
-    if(key2)candidates.push({key:key2,model:model2,label:'Groq 2'});
+    if(key1)candidates.push({key:key1,model:model1,label:'Groq 1 Chat'});
+    if(key2)candidates.push({key:key2,model:model2,label:'Groq 2 Chat'});
   }
   if(!candidates.length){cb('⚠️ حداقل یک کلید Groq را در تنظیمات وارد کن.');return;}
   var msgs=[{role:'system',content:getPersonalityPrompt()}];
