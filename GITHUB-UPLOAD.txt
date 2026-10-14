@@ -1,8 +1,19 @@
-GitHub Pages upload checklist:
-1. Extract the ZIP.
-2. Upload the CONTENTS of SABER-AI-V6-PRO directly to the repository root.
-3. Settings > Pages > Deploy from a branch > main > /(root) > Save.
-4. Open the HTTPS URL.
-5. In Settings, save a user-owned Groq key and run the real API connection test.
-Security: never commit a real API key. Browser-side storage is not secret from the device user.
-See README.md and TEST-REPORT.md.
+SABER AI V6 PRO — GitHub Pages upload
+
+IMPORTANT: GitHub Pages does not extract a ZIP uploaded through the web interface. Extract this ZIP first.
+
+1. Extract SABER-AI-V6-PRO-FIXED.zip on your device.
+2. Open the extracted SABER-AI-V6-PRO-FIXED folder.
+3. Upload its CONTENTS to the repository root. Do not upload only the ZIP and do not leave the files nested inside another project folder.
+4. Confirm these paths exist in GitHub exactly as written:
+   - index.html
+   - manifest.json
+   - sw.js
+   - assets/saber-logo-animated.svg
+   - assets/saber-icon-192.png
+   - assets/saber-icon-512.png
+   - assets/saber-icon-512-maskable.png
+5. In Settings > Pages, select Deploy from a branch, branch main (or your default branch), folder /(root), then Save.
+6. Open the HTTPS Pages URL. If an old icon remains, close the installed app/browser tab and clear the site's cached data before reinstalling.
+
+Never upload a real API key to the repository. See README.md and TEST-REPORT.md.

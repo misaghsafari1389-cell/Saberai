@@ -1,6 +1,6 @@
 /* SABER AI PWA service worker. Static UI is cached; API responses and secrets are never cached. */
-const CACHE_NAME = 'saber-ai-v6-pro-pages-v3';
-const CORE = ['./', './index.html', './manifest.json', './assets/saber-logo-animated.svg', './assets/saber-icon-192.png', './assets/saber-icon-512.png'];
+const CACHE_NAME = 'saber-ai-v6-pro-pages-v4';
+const CORE = ['./', './index.html', './manifest.json', './assets/saber-logo-animated.svg', './assets/saber-icon-192.png', './assets/saber-icon-512.png', './assets/saber-icon-512-maskable.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME)

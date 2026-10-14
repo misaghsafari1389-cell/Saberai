@@ -1,6 +1,9 @@
-نشان متحرک صابر
+SABER AI logo and PWA icons
 
-- assets/saber-logo-animated.svg : نشان برداری متحرک برای هدر و صفحه شروع برنامه.
-- assets/saber-icon-192.png و saber-icon-512.png : آیکون‌های نصب PWA روی گوشی.
-- برای تغییر رنگ، فایل SVG را ویرایش کنید؛ رنگ اصلی سبز زمردی/فیروزه‌ای و پس‌زمینه برنامه تیره است.
-- پس از آپلود نسخه جدید روی GitHub Pages، اگر نسخه قدیمی نمایش داده شد، یک بار سایت را کامل ببندید و دوباره باز کنید؛ نسخه کش Service Worker هم به‌روزرسانی شده است.
+- assets/saber-logo-animated.svg: animated vector logo used in the app header, loading screen, and browser favicon.
+- assets/saber-icon-192.png: 192x192 PWA / Apple touch icon generated from the SABER logo.
+- assets/saber-icon-512.png: 512x512 standard PWA icon generated from the same logo.
+- assets/saber-icon-512-maskable.png: 512x512 maskable PWA icon with extra safe-area padding.
+- manifest.json declares the actual PNG assets explicitly. sw.js precaches all icon assets.
+
+If GitHub Pages is hosted under a repository path, keep the relative paths unchanged. GitHub's web interface does not unpack ZIP files: extract the archive and upload the contents.
