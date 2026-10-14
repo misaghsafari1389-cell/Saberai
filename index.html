@@ -1356,8 +1356,9 @@ function speakWithGeminiTTS(text){
   try{ window.speechSynthesis.cancel(); }catch(e){}
   try{ if(window._saberAudio){window._saberAudio.pause();window._saberAudio.currentTime=0;window._saberAudio=null;} }catch(e){}
   S.speaking=true; setAvatar('speaking'); animOn();
-  var endpoint='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key='+encodeURIComponent(S.googleTtsApiKey);
-  fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+  var endpoint='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent';
+  /* Gemini authorization keys (AQ...) must be sent via x-goog-api-key, not appended as a URL query parameter. */
+  fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.googleTtsApiKey},body:JSON.stringify({
     contents:[{parts:[{text:'Read the following Persian text naturally and conversationally in Persian (Farsi), with clear pronunciation. Do not translate or add anything: '+text}]}],
     generationConfig:{responseModalities:['AUDIO'],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:'Kore'}}}}
   })}).then(function(resp){
