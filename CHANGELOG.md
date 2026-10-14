@@ -21,3 +21,11 @@
 - Manifest start_url/scope/id normalized to relative root and 192/512 PNG icons declared, including maskable icon purpose.
 - Service worker cache version bumped.
 - Search intent detection expanded across multiple languages and applies only to the current request; next requests return to configured chat model.
+
+
+## نسخهٔ نهایی تکمیلی
+- لوگوی ثابت صابر جایگزین لوگوی متحرک در صفحهٔ شروع و سربرگ شد.
+- چهرهٔ رباتیک مرجع با نگاه مستقیم در صفحهٔ صوتی استفاده شد.
+- سه پوستهٔ تاکتیکال، نیمه‌شب و کهربایی اضافه شد.
+- تاریخچهٔ محلی گفتگوها با امکان بازیابی و حذف اضافه شد.
+- دکمهٔ نصب PWA و تشخیص رویداد beforeinstallprompt اضافه شد؛ نمایش گزینهٔ نصب همچنان به پشتیبانی مرورگر، HTTPS و معیارهای نصب وابسته است.

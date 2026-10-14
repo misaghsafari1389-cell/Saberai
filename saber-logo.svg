@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">SABER AI emblem</title><desc id="desc">A static tactical emerald AI core and Persian Saad-inspired central mark.</desc>
+<defs>
+ <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b7ffe0"/><stop offset=".48" stop-color="#00ffaa"/><stop offset="1" stop-color="#278b62"/></linearGradient>
+ <radialGradient id="core"><stop offset="0" stop-color="#123d2b"/><stop offset="1" stop-color="#06100c"/></radialGradient>
+ <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M128 12 215 62 215 164 128 214 41 164 41 62Z" stroke="#2d7654" stroke-width="2" opacity=".65"/>
+ <path d="M128 23 204 67 204 158 128 202 52 158 52 67Z" stroke="url(#edge)" stroke-width="3" stroke-dasharray="26 10" opacity=".8">
+  
+ </path>
+ <ellipse cx="128" cy="112" rx="83" ry="31" stroke="#00ffaa" stroke-width="1.7" opacity=".8" transform="rotate(-32 128 112)">
+  
+ </ellipse>
+ <ellipse cx="128" cy="112" rx="83" ry="31" stroke="#8bffcf" stroke-width="1.2" opacity=".55" transform="rotate(32 128 112)">
+  
+ </ellipse>
+ <circle cx="128" cy="112" r="53" fill="url(#core)" stroke="url(#edge)" stroke-width="3" filter="url(#glow)">
+  
+ </circle>
+ <circle cx="128" cy="112" r="43" stroke="#66d39d" stroke-width="1" opacity=".55" stroke-dasharray="3 7"/>
+ <path d="M92 112 Q109 86 128 101 Q145 82 164 108 Q148 130 128 122 Q111 139 92 112Z" stroke="#b7ffe0" stroke-width="2.5" fill="#0a2418" filter="url(#glow)"/>
+ <circle cx="128" cy="110" r="8" fill="#00ffaa" stroke="#eafff5" stroke-width="2" filter="url(#glow)">
+  
+ </circle>
+ <path d="M128 25v14 M128 185v14 M41 112h14 M201 112h14" stroke="#b7ffe0" stroke-width="3"/>
+ <circle cx="128" cy="25" r="3" fill="#00ffaa"/><circle cx="215" cy="112" r="3" fill="#00ffaa"/><circle cx="128" cy="199" r="3" fill="#00ffaa"/><circle cx="41" cy="112" r="3" fill="#00ffaa"/>
+</g>
+</svg>

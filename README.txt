@@ -46,3 +46,6 @@ Search requests are detected from multilingual search keywords in both chat and 
 
 
 GitHub Pages upload: extract the ZIP and upload its contents directly to the repository root, not the containing folder. Keep assets/ for logo and PNG icons. Open the published HTTPS site in a supported browser on Android and choose Install app/Add to Home screen. If an old version remains cached, remove it and clear site storage before reinstalling. Search keywords in multiple languages temporarily route only that request to the Groq search model; the next request returns to the configured chat model.
+
+
+نسخهٔ جدید همچنین شامل لوگوی ثابت، چهرهٔ رباتیک مستقیم‌نگر، سه پوسته، تاریخچهٔ گفتگوها و کنترل نصب PWA است. برای GitHub Pages، محتویات را در ریشهٔ مخزن قرار بده و پوشهٔ assets را کامل نگه دار.

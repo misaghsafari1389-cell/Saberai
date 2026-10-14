@@ -30,3 +30,9 @@
 - manifest.json parses and declares 192x192 and 512x512 PNG icons.
 - Search routing is per request and does not mutate saved default model settings.
 - Live browser installation and live Groq API calls are not verified here; test on published HTTPS GitHub Pages.
+
+
+## اصلاحات تکمیلی این نسخه
+- بررسی ساختاری ZIP و اعتبار JSON manifest انجام می‌شود.
+- چهره، تم‌ها، تاریخچه و دکمهٔ نصب به کد افزوده شده‌اند.
+- نصب واقعی روی گوشی و APIهای زنده در این محیط قابل تأیید نیستند؛ پس از انتشار باید روی HTTPS آزمایش شوند.

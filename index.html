@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#050907">
 <meta name="description" content="صابر؛ دستیار هوشمند فارسی با گفت‌وگو و امکانات صوتی">
 <link rel="manifest" href="./manifest.json">
-<link rel="icon" type="image/svg+xml" href="./assets/saber-logo-animated.svg">
+<link rel="icon" type="image/svg+xml" href="./assets/saber-logo.svg">
 <link rel="apple-touch-icon" href="./assets/saber-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>صابر | SABER V6</title>
@@ -123,21 +123,21 @@ h3{font-size:13px}
 .face-ring{position:absolute;top:-10px;left:-10px;right:-10px;bottom:-10px;border-radius:50%;border:1px solid rgba(102,211,157,.3)}
 .face-ring::before{content:"";position:absolute;top:-8px;left:-8px;right:-8px;bottom:-8px;border-radius:50%;border:1px dashed rgba(102,211,157,.4);animation:spin 30s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.avatar{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:48% 48% 46% 46%;background:radial-gradient(ellipse at 50% 42%,#f2c5a4 0%,#dca17e 58%,#9d654f 100%);border:2px solid rgba(102,211,157,.55);box-shadow:0 0 40px rgba(102,211,157,.2),inset 0 -12px 22px rgba(75,32,23,.24);transition:border-color .3s,box-shadow .3s;overflow:hidden}
+.avatar{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:48% 48% 46% 46%;background:#06100c url('./assets/saber-face.webp') center 28%/cover no-repeat;border:2px solid rgba(102,211,157,.55);box-shadow:0 0 40px rgba(102,211,157,.2);transition:border-color .3s,box-shadow .3s;overflow:hidden}
 .avatar.listening{border-color:#00ffaa}
 .avatar.thinking{border-color:#d2ad63}
 .avatar.speaking{border-color:#66d39d}
 .avatar.error{border-color:#c96d6d}
-.eye{position:absolute;top:37%;width:30px;height:17px;border-radius:50%;background:#fff8ee;box-shadow:0 2px 0 #895d4b;overflow:hidden}.eye::before{content:"";position:absolute;left:9px;top:1px;width:13px;height:15px;border-radius:50%;background:#5a3828;box-shadow:inset 0 0 0 4px #9b704e}.eye::after{content:"";position:absolute;top:3px;left:13px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.95}
+.eye{display:none}.eye::before{content:"";position:absolute;left:9px;top:1px;width:13px;height:15px;border-radius:50%;background:#5a3828;box-shadow:inset 0 0 0 4px #9b704e}.eye::after{content:"";position:absolute;top:3px;left:13px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.95}
 .eye.l{right:24%}
 .eye.r{left:24%}
-.avatar:before{content:"";position:absolute;top:-4%;left:7%;width:86%;height:34%;background:linear-gradient(#30231f,#594036);border-radius:48% 48% 25% 25%;z-index:2;box-shadow:0 6px 5px #774b3a55}
-.avatar:after{content:"";position:absolute;left:46%;top:44%;width:12%;height:24%;background:linear-gradient(90deg,#b77d61,#f0bd9a,#bd8064);clip-path:polygon(35% 0,65% 0,100% 85%,50% 100%,0 85%);z-index:1}
+.avatar:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,10,15,.03),transparent 55%,rgba(0,10,15,.22));z-index:1;pointer-events:none}
+.avatar:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 28px rgba(0,0,0,.2);z-index:1;pointer-events:none}
 .eye::after{content:"";position:absolute;top:18%;left:20%;width:30%;height:30%;border-radius:50%;background:#fff;opacity:.9}
 .avatar.idle .eye{animation:blink 4s infinite}
 @keyframes blink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.05)}}
 .avatar.error .eye{background:#c96d6d}
-.mouth{position:absolute;z-index:3;bottom:19%;left:50%;transform:translateX(-50%);width:30px;height:7px;background:#9c3f4b;border-radius:4px 4px 10px 10px;border-top:3px solid #f3c6b4;box-shadow:0 1px 2px #6d332c;transition:height .07s,width .07s}
+.mouth{display:none}
 .avatar.idle .mouth{height:7px;opacity:1}
 .avatar.speaking .mouth{animation:talk .13s ease-in-out infinite alternate}
 @keyframes talk{from{height:4px;width:24px}to{height:18px;width:32px}}
@@ -170,14 +170,18 @@ h3{font-size:13px}
 .range-wrap{display:flex;align-items:center;gap:8px}
 .range-wrap input[type=range]{flex:1;accent-color:#66d39d}
 .range-val{font-size:11px;color:#66d39d;min-width:36px;text-align:center;font-family:monospace}
-.boot{position:fixed;inset:0;background:#050907;display:flex;align-items:center;justify-content:center;z-index:10000;animation:bootHide 3s forwards}
-@keyframes bootHide{0%,75%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+.boot{position:fixed;inset:0;background:#050907;display:flex;align-items:center;justify-content:center;z-index:10000;animation:bootHide .7s forwards;pointer-events:none}
+@keyframes bootHide{0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
 .boot-ring{width:90px;height:90px;margin:0 auto 14px;border-radius:50%;border:1px solid #66d39d;display:flex;align-items:center;justify-content:center;position:relative}
-.boot-ring::before{content:"";position:absolute;top:-6px;left:-6px;right:-6px;bottom:-6px;border-radius:50%;border:1px dashed rgba(102,211,157,.5);animation:spin 10s linear infinite}
+.boot-ring::before{content:"";position:absolute;top:-6px;left:-6px;right:-6px;bottom:-6px;border-radius:50%;border:1px dashed rgba(102,211,157,.25)}
 .boot-mark{width:76px;height:76px;display:flex;align-items:center;justify-content:center}
 .boot-mark img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 12px rgba(0,255,170,.3))}
 .boot-name{font-size:20px;font-weight:900;letter-spacing:4px;text-align:center}
 .boot-sub{font-size:9px;letter-spacing:3px;color:#66d39d;font-family:monospace;text-align:center;opacity:.7}
+
+/* User-selectable themes */
+body.theme-midnight #app{background:#080d1b} body.theme-midnight header,body.theme-midnight nav{background:#0b1225;border-color:#26375e} body.theme-midnight .card,body.theme-midnight .bubble,body.theme-midnight .search-box{background:#101a30;border-color:#26375e} body.theme-midnight .msg.user .bubble{background:#17294a;border-color:#35558a} body.theme-midnight .btn,body.theme-midnight .chip,body.theme-midnight .compose{background:#101a30;border-color:#30436b} body.theme-midnight .btn.primary,body.theme-midnight .send{background:#79a7ff;color:#071021;border-color:#79a7ff} body.theme-midnight nav button.active{color:#79a7ff} body.theme-midnight nav button.active::before{background:#79a7ff} body.theme-midnight .card h3{color:#79a7ff} body.theme-midnight .field input,body.theme-midnight .field select,body.theme-midnight .field textarea{background:#101a30;border-color:#26375e}
+body.theme-amber #app{background:#160e08} body.theme-amber header,body.theme-amber nav{background:#211309;border-color:#50351c} body.theme-amber .card,body.theme-amber .bubble,body.theme-amber .search-box{background:#24170c;border-color:#50351c} body.theme-amber .msg.user .bubble{background:#3a2411;border-color:#7a4d21} body.theme-amber .btn,body.theme-amber .chip,body.theme-amber .compose{background:#24170c;border-color:#62401e} body.theme-amber .btn.primary,body.theme-amber .send{background:#f0b35b;color:#211309;border-color:#f0b35b} body.theme-amber nav button.active{color:#f0b35b} body.theme-amber nav button.active::before{background:#f0b35b} body.theme-amber .card h3{color:#f0b35b} body.theme-amber .field input,body.theme-amber .field select,body.theme-amber .field textarea{background:#24170c;border-color:#50351c}
 </style>
 </head>
 <body>
@@ -192,7 +196,7 @@ console.log('SABER V6 loading...');
 
 <div class="boot">
   <div>
-    <div class="boot-ring"><div class="boot-mark"><img src="./assets/saber-logo-animated.svg" alt="نشان متحرک صابر"></div></div>
+    <div class="boot-ring"><div class="boot-mark"><img src="./assets/saber-logo.svg" alt="نشان صابر"></div></div>
     <div class="boot-name">صابر</div>
     <div class="boot-sub">SABER V6</div>
   </div>
@@ -201,7 +205,7 @@ console.log('SABER V6 loading...');
 <div id="app">
   <header>
     <div class="brand">
-      <div class="mark"><img src="./assets/saber-logo-animated.svg" alt="نشان صابر"></div>
+      <div class="mark"><img src="./assets/saber-logo.svg" alt="نشان صابر"></div>
       <div class="brand-txt"><b>صابر</b><small>SABER V6</small></div>
     </div>
     <div class="hdr-right">
@@ -328,6 +332,27 @@ console.log('SABER V6 loading...');
     <section id="settings" class="page">
       <h2>⚙️ تنظیمات</h2>
 
+      <div class="set-section">
+        <h3>🎨 پوستهٔ برنامه</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">یکی از سه ظاهر صابر را انتخاب کن.</p>
+        <div class="row" style="flex-wrap:wrap">
+          <button class="btn" onclick="setTheme('tactical')">🟢 تاکتیکال</button>
+          <button class="btn" onclick="setTheme('midnight')">🔵 نیمه‌شب</button>
+          <button class="btn" onclick="setTheme('amber')">🟠 کهربایی</button>
+        </div>
+      </div>
+      <div class="set-section">
+        <h3>💬 تاریخچهٔ گفتگوها</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">گفتگوهای قبلی روی همین دستگاه ذخیره می‌شوند.</p>
+        <div id="chatHistoryList"></div>
+        <button class="btn" style="width:100%;margin-top:8px" onclick="startNewChat()">＋ گفتگوی جدید</button>
+      </div>
+      <div class="set-section">
+        <h3>📲 نصب برنامه</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">اگر مرورگر نصب مستقیم را پشتیبانی کند، این دکمه نمایش داده می‌شود.</p>
+        <button class="btn primary" id="installPwaBtn" style="width:100%" onclick="installSaberPWA()">نصب صابر</button>
+        <p id="installPwaHint" class="muted" style="margin-top:6px">برای نصب، سایت باید با HTTPS باز شود و شرایط نصب مرورگر را داشته باشد.</p>
+      </div>
       <div class="set-section">
         <h3>🎭 شخصیت صابر</h3>
         <p class="muted" style="font-size:10px;margin-bottom:8px">حال و هوای صابر رو انتخاب کن.</p>
@@ -472,6 +497,8 @@ function $(id){return document.getElementById(id);}
 
 var S = {
   chat: [],
+  chatHistory: [],
+  currentChatId: '',
   settings: {
     model: DEFAULT_CONFIG.MODEL,
     ttsVoice: '',
@@ -479,7 +506,8 @@ var S = {
     personality: 'friend',
     liveSearch: false,
     autoSpeak: false,
-    onlineTTS: false
+    onlineTTS: false,
+    theme: 'tactical'
   },
   apiKey: '',
   apiKey2: '',
@@ -644,13 +672,62 @@ window.clearAllChat = function(){
 };
 
 window.startNewChat = function(){
-  if(S.chat.length && !confirm('گفتگوی جدید شروع شود؟')) return;
-  S.chat=[];
-  save('saber_v6_chat',[]);
-  renderChat();
-  show('chat');
-  toast('گفتگوی جدید');
+  if(S.chat.length) archiveCurrentConversation();
+  S.chat=[]; S.currentChatId='';
+  save('saber_v6_chat',[]); renderChat(); renderChatHistory(); show('chat');
+  toast('گفتگوی جدید آماده است');
 };
+
+window.setTheme=function(theme){
+  if(['tactical','midnight','amber'].indexOf(theme)<0)return;
+  document.body.classList.remove('theme-midnight','theme-amber');
+  if(theme!=='tactical')document.body.classList.add('theme-'+theme);
+  S.settings.theme=theme;save('saber_v6_settings',S.settings);
+  toast(theme==='tactical'?'پوستهٔ تاکتیکال فعال شد':theme==='midnight'?'پوستهٔ نیمه‌شب فعال شد':'پوستهٔ کهربایی فعال شد');
+};
+function archiveCurrentConversation(){
+  if(!S.chat||!S.chat.length)return;
+  var history=load('saber_v6_history',[]);if(!Array.isArray(history))history=[];
+  var id=S.currentChatId||('chat-'+Date.now());
+  var first=S.chat.find(function(m){return m.role==='user';});
+  var item={id:id,title:(first&&first.text?first.text.slice(0,48):'گفتگوی صابر'),updated:Date.now(),messages:S.chat.slice()};
+  history=history.filter(function(h){return h.id!==id;});history.unshift(item);history=history.slice(0,40);
+  save('saber_v6_history',history);S.chatHistory=history;S.currentChatId='';renderChatHistory();
+}
+function persistCurrentConversation(){
+  if(!S.chat||!S.chat.length)return;
+  if(!S.currentChatId)S.currentChatId='chat-'+Date.now();
+  var history=load('saber_v6_history',[]);if(!Array.isArray(history))history=[];
+  var first=S.chat.find(function(m){return m.role==='user';});
+  var item={id:S.currentChatId,title:(first&&first.text?first.text.slice(0,48):'گفتگوی صابر'),updated:Date.now(),messages:S.chat.slice()};
+  history=history.filter(function(h){return h.id!==item.id;});history.unshift(item);history=history.slice(0,40);
+  save('saber_v6_history',history);S.chatHistory=history;
+}
+window.openSavedConversation=function(id){
+  persistCurrentConversation();
+  var history=load('saber_v6_history',[]);var item=history.find(function(h){return h.id===id;});
+  if(!item)return toast('گفتگو پیدا نشد');
+  S.chat=item.messages||[];S.currentChatId=item.id;save('saber_v6_chat',S.chat);renderChat();show('chat');toast('گفتگو بازیابی شد');
+};
+function renderChatHistory(){
+  var box=$('chatHistoryList');if(!box)return;
+  var history=load('saber_v6_history',[]);if(!Array.isArray(history))history=[];
+  S.chatHistory=history;
+  if(!history.length){box.innerHTML='<p class="muted">هنوز گفتگوی ذخیره‌شده‌ای نیست.</p>';return;}
+  box.innerHTML='';
+  history.slice(0,20).forEach(function(item){
+    var row=document.createElement('div');row.className='set-row';row.style.gap='8px';
+    var b=document.createElement('button');b.className='btn';b.style.flex='1';b.style.textAlign='right';b.textContent=item.title||'گفتگوی صابر';b.onclick=function(){openSavedConversation(item.id);};
+    var d=document.createElement('button');d.className='btn';d.textContent='×';d.title='حذف از تاریخچه';d.onclick=function(){var h=load('saber_v6_history',[]).filter(function(x){return x.id!==item.id;});save('saber_v6_history',h);renderChatHistory();toast('از تاریخچه حذف شد');};
+    row.appendChild(b);row.appendChild(d);box.appendChild(row);
+  });
+}
+window.installSaberPWA=function(){
+  if(window._saberInstallPrompt){window._saberInstallPrompt.prompt();window._saberInstallPrompt.userChoice.then(function(c){if(c&&c.outcome==='accepted')toast('درخواست نصب پذیرفته شد');window._saberInstallPrompt=null;});return;}
+  toast('اگر دکمه نصب در دسترس نیست، منوی مرورگر ⋮ و گزینهٔ Install app را بررسی کن. در iPhone از Share و Add to Home Screen استفاده کن.');
+};
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window._saberInstallPrompt=e;var b=$('installPwaBtn');if(b)b.textContent='📲 نصب برنامه';var h=$('installPwaHint');if(h)h.textContent='مرورگر نصب مستقیم را آماده کرده است.';});
+window.addEventListener('appinstalled',function(){toast('صابر نصب شد');window._saberInstallPrompt=null;});
 
 window.show = function(id){
   if(!id)return;
@@ -898,6 +975,7 @@ function addMsg(role,text,noRender){
   };
   S.chat.push(m);
   save('saber_v6_chat',S.chat);
+  persistCurrentConversation();
   if(!noRender) renderOne(m,S.chat.length-1);
   return m;
 }
@@ -1853,6 +1931,9 @@ function boot(){
   var sv = load('saber_v6_settings', null);
   if(sv) for(var k in sv) if(sv.hasOwnProperty(k)) S.settings[k] = sv[k];
   S.chat = load('saber_v6_chat', []);
+  S.chatHistory=load('saber_v6_history',[]);if(!Array.isArray(S.chatHistory))S.chatHistory=[];
+  S.currentChatId='';
+  setTheme(S.settings.theme||'tactical');
 
   /* API فقط از LocalStorage خوانده می‌شود؛ هیچ کلید پیش‌فرضی در HTML وجود ندارد. */
   var savedKey = load('saber_v6_apikey','');
@@ -1869,6 +1950,7 @@ function boot(){
   setAvatar('idle');
   setSys('READY','ok');
   renderChat();
+  renderChatHistory();
   renderPersonalityList();
   updateKeyStatus();
   updateElevenLabsStatus();

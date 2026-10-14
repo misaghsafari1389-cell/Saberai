@@ -1,5 +1,5 @@
-const CACHE_NAME = 'saber-ai-v6-pages-v5-flat-autosearch-pwa';
-const CORE = ['./', './index.html', './manifest.json', './assets/saber-logo-animated.svg', './assets/saber-icon-192.png', './assets/saber-icon-512.png'];
+const CACHE_NAME = 'saber-ai-v6-pages-v6-face-themes-history';
+const CORE = ['./', './index.html', './manifest.json', './assets/saber-logo.svg', './assets/saber-face.webp', './assets/saber-icon-192.png', './assets/saber-icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
