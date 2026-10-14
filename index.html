@@ -123,22 +123,24 @@ h3{font-size:13px}
 .face-ring{position:absolute;top:-10px;left:-10px;right:-10px;bottom:-10px;border-radius:50%;border:1px solid rgba(102,211,157,.3)}
 .face-ring::before{content:"";position:absolute;top:-8px;left:-8px;right:-8px;bottom:-8px;border-radius:50%;border:1px dashed rgba(102,211,157,.4);animation:spin 30s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.avatar{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;background:#0a1a12;border:2px solid rgba(102,211,157,.4);box-shadow:0 0 40px rgba(102,211,157,.2),inset 0 0 30px rgba(0,0,0,.5);transition:border-color .3s,box-shadow .3s}
+.avatar{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:48% 48% 46% 46%;background:radial-gradient(ellipse at 50% 42%,#f2c5a4 0%,#dca17e 58%,#9d654f 100%);border:2px solid rgba(102,211,157,.55);box-shadow:0 0 40px rgba(102,211,157,.2),inset 0 -12px 22px rgba(75,32,23,.24);transition:border-color .3s,box-shadow .3s;overflow:hidden}
 .avatar.listening{border-color:#00ffaa}
 .avatar.thinking{border-color:#d2ad63}
 .avatar.speaking{border-color:#66d39d}
 .avatar.error{border-color:#c96d6d}
-.eye{position:absolute;top:34%;width:40px;height:40px;border-radius:50%;background:#00ffaa;box-shadow:0 0 20px #00ffaa,inset 0 0 8px rgba(255,255,255,.5)}
+.eye{position:absolute;top:37%;width:30px;height:17px;border-radius:50%;background:#fff8ee;box-shadow:0 2px 0 #895d4b;overflow:hidden}.eye::before{content:"";position:absolute;left:9px;top:1px;width:13px;height:15px;border-radius:50%;background:#5a3828;box-shadow:inset 0 0 0 4px #9b704e}.eye::after{content:"";position:absolute;top:3px;left:13px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.95}
 .eye.l{right:24%}
 .eye.r{left:24%}
+.avatar:before{content:"";position:absolute;top:-4%;left:7%;width:86%;height:34%;background:linear-gradient(#30231f,#594036);border-radius:48% 48% 25% 25%;z-index:2;box-shadow:0 6px 5px #774b3a55}
+.avatar:after{content:"";position:absolute;left:46%;top:44%;width:12%;height:24%;background:linear-gradient(90deg,#b77d61,#f0bd9a,#bd8064);clip-path:polygon(35% 0,65% 0,100% 85%,50% 100%,0 85%);z-index:1}
 .eye::after{content:"";position:absolute;top:18%;left:20%;width:30%;height:30%;border-radius:50%;background:#fff;opacity:.9}
 .avatar.idle .eye{animation:blink 4s infinite}
 @keyframes blink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.05)}}
 .avatar.error .eye{background:#c96d6d}
-.mouth{position:absolute;bottom:22%;left:50%;transform:translateX(-50%);width:44px;height:6px;background:#66d39d;border-radius:3px;box-shadow:0 0 10px #66d39d}
-.avatar.idle .mouth{height:4px;opacity:.7}
-.avatar.speaking .mouth{animation:talk .16s ease-in-out infinite alternate}
-@keyframes talk{from{height:4px;width:40px}to{height:14px;width:52px}}
+.mouth{position:absolute;z-index:3;bottom:19%;left:50%;transform:translateX(-50%);width:30px;height:7px;background:#9c3f4b;border-radius:4px 4px 10px 10px;border-top:3px solid #f3c6b4;box-shadow:0 1px 2px #6d332c;transition:height .07s,width .07s}
+.avatar.idle .mouth{height:7px;opacity:1}
+.avatar.speaking .mouth{animation:talk .13s ease-in-out infinite alternate}
+@keyframes talk{from{height:4px;width:24px}to{height:18px;width:32px}}
 .vstate{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);padding:4px 12px;border-radius:16px;background:#050907;border:1px solid rgba(102,211,157,.4);font-size:9px;font-family:monospace;letter-spacing:2px;color:#66d39d;white-space:nowrap}
 .vstate.warn{color:#d2ad63;border-color:#d2ad63}
 .vstate.err{color:#c96d6d;border-color:#c96d6d}
@@ -353,38 +355,18 @@ console.log('SABER V6 loading...');
       </div>
 
       <div class="set-section">
-        <h3>🔑 کلید API سرویس Groq</h3>
-        <p class="muted" style="font-size:10px;margin-bottom:8px">کلید را وارد کن یا فایل متنی/JSON حاوی کلید را بارگذاری کن.</p>
-        <div class="field">
-          <label for="apiKeyInput">API Key</label>
-          <input id="apiKeyInput" type="password" placeholder="gsk_..." autocomplete="off" spellcheck="false">
-        </div>
-        <div style="display:flex;gap:8px;margin:8px 0;align-items:center">
-          <button class="btn" style="flex:1" onclick="toggleApiKeyVisibility()">👁 نمایش/پنهان‌کردن</button>
-          <label class="btn" style="flex:1;text-align:center;cursor:pointer">📁 بارگذاری فایل کلید
-            <input id="apiKeyFile" type="file" accept=".txt,.json,text/plain,application/json" onchange="loadApiKeyFile(event)" hidden>
-          </label>
-        </div>
-        <p class="muted" style="font-size:10px;margin-bottom:8px">فایل TXT: خود کلید؛ فایل JSON: یکی از فیلدهای apiKey، api_key یا key.</p>
-        <button class="btn primary" style="width:100%" onclick="saveApiKey()">💾 ذخیره و بررسی کلید</button>
-        <button class="btn" style="width:100%;margin-top:8px" onclick="removeApiKey()">🗑️ حذف کلید ذخیره‌شده</button>
-        <p class="muted" style="font-size:10px;margin-top:10px">امنیت: کلید فقط در حافظه محلی همین مرورگر ذخیره می‌شود؛ در مخزن GitHub یا فایل HTML قرار نمی‌گیرد. هرکسی به این مرورگر/دستگاه دسترسی داشته باشد ممکن است بتواند از کلید استفاده کند.</p>
-      </div>
-
-      <div class="set-section">
-        <h3>🔑 کلید API صدای گوگل (Gemini TTS)</h3>
-        <p class="muted" style="font-size:10px;margin-bottom:8px">کلید Google AI Studio را وارد کن تا صدای طبیعی Gemini برای خواندن پاسخ‌ها استفاده شود.</p>
-        <div class="field">
-          <label for="googleTtsKeyInput">Google Gemini API Key</label>
-          <input id="googleTtsKeyInput" type="password" placeholder="کلید Google AI Studio" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="row" style="margin-top:8px">
-          <button class="btn" style="flex:1" onclick="toggleGoogleTtsKeyVisibility()">👁 نمایش/پنهان</button>
-          <button class="btn primary" style="flex:1" onclick="saveGoogleTtsKey()">💾 ذخیره کلید صدا</button>
-        </div>
-        <button class="btn" style="width:100%;margin-top:8px" onclick="removeGoogleTtsKey()">🗑️ حذف کلید صدای گوگل</button>
-        <button class="btn" style="width:100%;margin-top:8px" onclick="testGeminiTTS()">🔊 آزمایش Gemini TTS</button>
-        <p id="googleTtsKeyStatus" class="muted" style="font-size:10px;margin-top:8px">کلید صدای گوگل تنظیم نشده است.</p>
+        <h3>🔑 کلیدهای API و مدل‌های Groq</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">دو اتصال مستقل Groq تعریف کن. صابر برای درخواست‌های معمولی و جستجو به‌صورت هوشمند انتخاب می‌کند و در صورت خطای اتصال، اتصال دوم را امتحان می‌کند.</p>
+        <div class="field"><label for="apiKeyInput">Groq API Key 1</label><input id="apiKeyInput" type="password" placeholder="gsk_..." autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="groqModel1">مدل اتصال اول</label><input id="groqModel1" type="text" placeholder="مثلاً llama-3.3-70b-versatile" autocomplete="off" spellcheck="false"></div>
+        <button class="btn" style="width:100%;margin-top:8px" onclick="toggleApiKeyVisibility()">👁 نمایش/پنهان‌کردن کلید اول</button>
+        <div class="field" style="margin-top:12px"><label for="apiKeyInput2">Groq API Key 2</label><input id="apiKeyInput2" type="password" placeholder="gsk_... (اختیاری)" autocomplete="off" spellcheck="false"></div>
+        <div class="field"><label for="groqModel2">مدل اتصال دوم</label><input id="groqModel2" type="text" placeholder="مثلاً mistral-saba-24b" autocomplete="off" spellcheck="false"></div>
+        <button class="btn" style="width:100%;margin-top:8px" onclick="toggleApiKey2Visibility()">👁 نمایش/پنهان‌کردن کلید دوم</button>
+        <button class="btn primary" style="width:100%;margin-top:8px" onclick="saveGroqConnections()">💾 ذخیره اتصال‌ها</button>
+        <button class="btn" style="width:100%;margin-top:8px" onclick="removeApiKey()">🗑️ حذف هر دو کلید Groq</button>
+        <p id="keyStatusDetail" class="muted" style="font-size:10px;margin-top:8px">کلید Groq تنظیم نشده است.</p>
+        <p class="muted" style="font-size:10px;margin-top:10px">کلیدها فقط در LocalStorage همین مرورگر ذخیره می‌شوند. در سایت ایستا، کلیدها از مرورگر به API فرستاده می‌شوند و در مخزن قرار نمی‌گیرند.</p>
       </div>
 
       <div class="set-section" id="elevenLabsSection">
@@ -500,7 +482,9 @@ var S = {
     onlineTTS: false
   },
   apiKey: '',
-  googleTtsApiKey: '',
+  apiKey2: '',
+  groqModel1: DEFAULT_CONFIG.MODEL,
+  groqModel2: 'mistral-saba-24b',
   elevenLabsApiKey: '',
   elevenLabsVoiceId: '',
   recognition: null,
@@ -681,8 +665,9 @@ window.show = function(id){
   if(id==='settings'){
     refreshVoices();
     var ak=$('apiKeyInput'); if(ak) ak.value = S.apiKey||'';
-    var gk=$('googleTtsKeyInput'); if(gk) gk.value = S.googleTtsApiKey||'';
-    updateGoogleTtsKeyStatus();
+    var ak2=$('apiKeyInput2');if(ak2)ak2.value=S.apiKey2||'';
+    var gm1=$('groqModel1');if(gm1)gm1.value=S.groqModel1||S.settings.model||DEFAULT_CONFIG.MODEL;
+    var gm2=$('groqModel2');if(gm2)gm2.value=S.groqModel2||'mistral-saba-24b';
     var ek=$('elevenLabsKeyInput'); if(ek) ek.value=S.elevenLabsApiKey||'';
     var ev=$('elevenLabsVoiceId'); if(ev) ev.value=S.elevenLabsVoiceId||'';
     updateElevenLabsStatus();
@@ -779,11 +764,11 @@ function prepTTS(raw){
 }
 
 window.loadModelsFromApi = function(force){
-  if(!S.apiKey){toast('ابتدا کلید Groq را وارد کنید');return;}
+  var modelKey=S.apiKey||S.apiKey2; if(!modelKey){toast('ابتدا حداقل یک کلید Groq را وارد کن');return;}
   if(S.availableModels.length > 0 && !force){renderModelList();return;}
   var xhr = new XMLHttpRequest();
   xhr.open('GET','https://api.groq.com/openai/v1/models',true);
-  xhr.setRequestHeader('Authorization','Bearer '+S.apiKey);
+  xhr.setRequestHeader('Authorization','Bearer '+modelKey);
   xhr.timeout = 15000;
   xhr.onload = function(){
     if(xhr.status >= 200 && xhr.status < 300){
@@ -861,49 +846,39 @@ function renderModelList(){
 }
 
 function askAI(msg,cb){
-  if(!S.apiKey){cb('⚠️ کلید Groq تنظیم نشده.\n\nبرو به ⋮ → تنظیمات → کلید را وارد کن.');return;}
-  if(!S.settings.model){cb('⚠️ مدلی انتخاب نشده. به تنظیمات برو.');return;}
-
-  var msgs=[{role:'system',content:getPersonalityPrompt()}];
-  for(var i=Math.max(0,S.chat.length-8);i<S.chat.length;i++){
-    if(S.chat[i].role==='user'||S.chat[i].role==='assistant')
-      msgs.push({role:S.chat[i].role,content:S.chat[i].text});
-  }
-  msgs.push({role:'user',content:msg});
-
-  var xhr=new XMLHttpRequest();
-  xhr.open('POST','https://api.groq.com/openai/v1/chat/completions',true);
-  xhr.setRequestHeader('Authorization','Bearer '+S.apiKey);
-  xhr.setRequestHeader('Content-Type','application/json');
-  xhr.timeout=45000;
-
-  var body = {
-    model: S.settings.model,
-    messages: msgs,
-    temperature: 0.7,
-    max_tokens: 1500
-  };
-
-  if(S.settings.liveSearch && S.settings.model.indexOf('compound')<0){
-    body.model = 'compound-beta';
-  }
-
-  xhr.onload=function(){
-    if(xhr.status>=200&&xhr.status<300){
-      try{
-        var d=JSON.parse(xhr.responseText);
-        var r=d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content;
-        cb(r||'پاسخی نیامد.');
-      }catch(e){cb('خطا در پردازش: '+e.message);}
-    }else{
-      var err='HTTP '+xhr.status;
-      try{var e=JSON.parse(xhr.responseText);if(e.error&&e.error.message)err=e.error.message;}catch(ex){}
-      cb('خطا: '+err);
+  var searchIntent=!!S.settings.liveSearch || /(جستجو|جست‌وجو|پیدا کن|آخرین|امروز|قیمت|خبر|منبع|لینک|search|find|latest|today|price|news|source|website)/i.test(msg||'');
+  var candidates=[];
+  var key1=S.apiKey, key2=S.apiKey2;
+  var model1=(S.groqModel1||S.settings.model||DEFAULT_CONFIG.MODEL).trim();
+  var model2=(S.groqModel2||'mistral-saba-24b').trim();
+  if(searchIntent){
+    if(key1){
+      var searchModel=S.availableModels.indexOf('groq/compound')>=0?'groq/compound':(S.availableModels.indexOf('compound-beta')>=0?'compound-beta':'groq/compound');
+      candidates.push({key:key1,model:searchModel,label:'Groq 1 Search'});
+      if(model1!==searchModel)candidates.push({key:key1,model:model1,label:'Groq 1 Fallback'});
     }
-  };
-  xhr.onerror=function(){cb('خطای شبکه — اینترنت را چک کن');};
-  xhr.ontimeout=function(){cb('زمان تمام شد');};
-  xhr.send(JSON.stringify(body));
+    if(key2)candidates.push({key:key2,model:model2,label:'Groq 2'});
+  }else{
+    if(key1)candidates.push({key:key1,model:model1,label:'Groq 1'});
+    if(key2)candidates.push({key:key2,model:model2,label:'Groq 2'});
+  }
+  if(!candidates.length){cb('⚠️ حداقل یک کلید Groq را در تنظیمات وارد کن.');return;}
+  var msgs=[{role:'system',content:getPersonalityPrompt()}];
+  for(var i=Math.max(0,S.chat.length-8);i<S.chat.length;i++) if(S.chat[i].role==='user'||S.chat[i].role==='assistant')msgs.push({role:S.chat[i].role,content:S.chat[i].text});
+  msgs.push({role:'user',content:msg});
+  function attempt(index,lastError){
+    if(index>=candidates.length){cb('خطا در هر دو اتصال Groq. '+(lastError||'کلید، مدل، اینترنت یا سهمیه را بررسی کن.'));return;}
+    var c=candidates[index],xhr=new XMLHttpRequest();
+    xhr.open('POST','https://api.groq.com/openai/v1/chat/completions',true);
+    xhr.setRequestHeader('Authorization','Bearer '+c.key);xhr.setRequestHeader('Content-Type','application/json');xhr.timeout=45000;
+    xhr.onload=function(){
+      if(xhr.status>=200&&xhr.status<300){try{var d=JSON.parse(xhr.responseText),r=d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content;if(r){S.lastGroqConnection=index;cb(r);return;}throw new Error('پاسخ خالی بود');}catch(e){attempt(index+1,e.message);}}
+      else{var err='HTTP '+xhr.status;try{var e=JSON.parse(xhr.responseText);if(e.error&&e.error.message)err=e.error.message;}catch(ex){}attempt(index+1,err);}
+    };
+    xhr.onerror=function(){attempt(index+1,'خطای شبکه');};xhr.ontimeout=function(){attempt(index+1,'زمان درخواست تمام شد');};
+    xhr.send(JSON.stringify({model:c.model,messages:msgs,temperature:0.7,max_tokens:1500}));
+  }
+  attempt(0,'');
 }
 
 /* ============================================================
@@ -1341,17 +1316,13 @@ window.speakOnline = function(text){
   var pr = prepTTS(text);
   if(!pr) return;
 
-  /* اولویت موتور صدای انتخاب‌شده: ElevenLabs، سپس Gemini، سپس Google Translate. */
+  /* اولویت موتور صدا: ElevenLabs؛ اگر تنظیم نشده باشد، Google Translate به‌عنوان جایگزین. */
   if(S.elevenLabsApiKey){
     speakWithElevenLabsTTS(pr);
     return;
   }
-  if(S.googleTtsApiKey){
-    speakWithGeminiTTS(pr);
-    return;
-  }
 
-  /* بدون کلید Gemini، مسیر قدیمی آنلاین حفظ می‌شود. */
+  /* مسیر جایگزین آنلاین حفظ می‌شود. */
   /* توقف قبلی */
   try{ window.speechSynthesis.cancel(); }catch(e){}
   try{
@@ -1385,43 +1356,6 @@ window.speakOnline = function(text){
   playChunksSequentially(chunks, 0);
 };
 
-function speakWithGeminiTTS(text){
-  try{ window.speechSynthesis.cancel(); }catch(e){}
-  try{ if(window._saberAudio){window._saberAudio.pause();window._saberAudio.currentTime=0;window._saberAudio=null;} }catch(e){}
-  S.speaking=true; setAvatar('speaking'); animOn();
-  var endpoint='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent';
-  /* Gemini authorization keys (AQ...) must be sent via x-goog-api-key, not appended as a URL query parameter. */
-  fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.googleTtsApiKey},body:JSON.stringify({
-    contents:[{parts:[{text:'Read the following Persian text naturally and conversationally in Persian (Farsi), with clear pronunciation. Do not translate or add anything: '+text}]}],
-    generationConfig:{responseModalities:['AUDIO'],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:'Kore'}}}}
-  })}).then(function(resp){
-    if(!resp.ok) return resp.text().then(function(t){throw new Error('Google TTS HTTP '+resp.status+(t?' · '+t.slice(0,180):''));});
-    return resp.json();
-  }).then(function(data){
-    var part=data&&data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0];
-    var inline=part&&part.inlineData;
-    if(!inline||!inline.data) throw new Error('پاسخ صوتی از Gemini دریافت نشد');
-    var raw=atob(inline.data), bytes=new Uint8Array(raw.length);
-    for(var i=0;i<raw.length;i++) bytes[i]=raw.charCodeAt(i);
-    var mime=inline.mimeType||'audio/pcm;rate=24000';
-    var blob;
-    if(mime.indexOf('audio/pcm')===0){
-      var sampleRateMatch=mime.match(/rate=(\d+)/i), sampleRate=sampleRateMatch?parseInt(sampleRateMatch[1],10):24000;
-      var wav=new ArrayBuffer(44+bytes.length), view=new DataView(wav);
-      function writeStr(offset,str){for(var j=0;j<str.length;j++)view.setUint8(offset+j,str.charCodeAt(j));}
-      writeStr(0,'RIFF');view.setUint32(4,36+bytes.length,true);writeStr(8,'WAVE');writeStr(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,sampleRate,true);view.setUint32(28,sampleRate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);writeStr(36,'data');view.setUint32(40,bytes.length,true);new Uint8Array(wav,44).set(bytes);blob=new Blob([wav],{type:'audio/wav'});
-    }else{blob=new Blob([bytes],{type:mime.split(';')[0]||'audio/wav'});}
-    var url=URL.createObjectURL(blob), audio=new Audio(url);window._saberAudio=audio;audio.volume=1;
-    function finish(){S.speaking=false;animOff();setAvatar('idle');URL.revokeObjectURL(url);if(window._saberAudio===audio)window._saberAudio=null;}
-    audio.onended=finish;audio.onerror=function(){finish();toast('پخش صدای Gemini ناموفق بود');};
-    return audio.play().catch(function(err){finish();throw err;});
-  }).catch(function(err){
-    console.warn('Gemini TTS failed',err);S.speaking=false;animOff();setAvatar('idle');
-    var msg=String(err&&err.message||err);
-    toast(msg.indexOf('HTTP 400')>=0||msg.indexOf('HTTP 403')>=0||msg.indexOf('HTTP 401')>=0?'کلید یا دسترسی Gemini TTS را بررسی کن':'Gemini TTS ناموفق بود؛ کلید، اینترنت و سهمیه را بررسی کن');
-  });
-}
-
 function updateElevenLabsStatus(message){
   var e=$('elevenLabsStatus');
   if(!e)return;
@@ -1449,16 +1383,10 @@ function speakWithElevenLabsTTS(text){
   if(!S.elevenLabsApiKey||!S.elevenLabsVoiceId){updateElevenLabsStatus('❌ کلید و Voice ID را در تنظیمات وارد کن.');return;}
   try{window.speechSynthesis.cancel();}catch(e){}
   try{if(window._saberAudio){window._saberAudio.pause();window._saberAudio.currentTime=0;window._saberAudio=null;}}catch(e){}
-  S.speaking=true;setAvatar('speaking');animOn();
+  S.speaking=false;setAvatar('thinking');animOff();
   var endpoint='https://api.elevenlabs.io/v1/text-to-speech/'+encodeURIComponent(S.elevenLabsVoiceId);
-  fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','xi-api-key':S.elevenLabsApiKey,'Accept':'audio/mpeg'},body:JSON.stringify({text:text,model_id:'eleven_v3',language_code:'fa',voice_settings:{stability:0.45,similarity_boost:0.75}})}).then(function(r){if(!r.ok)return r.text().then(function(t){throw new Error('HTTP '+r.status+(t?' · '+t.slice(0,220):''));});return r.blob();}).then(function(blob){if(!blob||!blob.size)throw new Error('فایل صوتی خالی دریافت شد');var url=URL.createObjectURL(blob),audio=new Audio(url);window._saberAudio=audio;audio.volume=1;function finish(){S.speaking=false;animOff();setAvatar('idle');URL.revokeObjectURL(url);if(window._saberAudio===audio)window._saberAudio=null;}audio.onended=finish;audio.onerror=function(){finish();toast('پخش فایل صوتی ناموفق بود');};return audio.play().catch(function(e){finish();throw e;});}).catch(function(err){console.warn('ElevenLabs TTS failed',err);S.speaking=false;animOff();setAvatar('idle');var m=String(err&&err.message||err);updateElevenLabsStatus('❌ خطای ElevenLabs: '+m.slice(0,200));toast(m.indexOf('HTTP 401')>=0||m.indexOf('HTTP 403')>=0?'کلید یا دسترسی ElevenLabs را بررسی کن':m.indexOf('HTTP 422')>=0?'Voice ID یا مدل انتخاب‌شده را بررسی کن':'ElevenLabs در دسترس نیست؛ اینترنت، سهمیه و تنظیمات را بررسی کن');});
+  fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','xi-api-key':S.elevenLabsApiKey,'Accept':'audio/mpeg'},body:JSON.stringify({text:text,model_id:'eleven_v3',language_code:'fa',voice_settings:{stability:0.45,similarity_boost:0.75}})}).then(function(r){if(!r.ok)return r.text().then(function(t){throw new Error('HTTP '+r.status+(t?' · '+t.slice(0,220):''));});return r.blob();}).then(function(blob){if(!blob||!blob.size)throw new Error('فایل صوتی خالی دریافت شد');var url=URL.createObjectURL(blob),audio=new Audio(url);window._saberAudio=audio;audio.volume=1;audio.onplay=function(){S.speaking=true;setAvatar('speaking');animOn();};function finish(){S.speaking=false;animOff();setAvatar('idle');URL.revokeObjectURL(url);if(window._saberAudio===audio)window._saberAudio=null;}audio.onended=finish;audio.onerror=function(){finish();toast('پخش فایل صوتی ناموفق بود');};return audio.play().catch(function(e){finish();throw e;});}).catch(function(err){console.warn('ElevenLabs TTS failed',err);S.speaking=false;animOff();setAvatar('idle');var m=String(err&&err.message||err);updateElevenLabsStatus('❌ خطای ElevenLabs: '+m.slice(0,200));toast(m.indexOf('HTTP 401')>=0||m.indexOf('HTTP 403')>=0?'کلید یا دسترسی ElevenLabs را بررسی کن':m.indexOf('HTTP 422')>=0?'Voice ID یا مدل انتخاب‌شده را بررسی کن':'ElevenLabs در دسترس نیست؛ اینترنت، سهمیه و تنظیمات را بررسی کن');});
 }
-
-window.toggleGoogleTtsKeyVisibility=function(){var i=$('googleTtsKeyInput');if(i)i.type=i.type==='password'?'text':'password';};
-window.saveGoogleTtsKey=function(){var i=$('googleTtsKeyInput');if(!i)return;var k=i.value.trim();if(!k){toast('کلید Google AI Studio را وارد کن');return;}S.googleTtsApiKey=k;save('saber_v6_google_tts_key',k);updateGoogleTtsKeyStatus();toast('کلید صدای گوگل در همین مرورگر ذخیره شد');};
-window.removeGoogleTtsKey=function(){if(!confirm('کلید Gemini TTS از این مرورگر حذف شود؟'))return;S.googleTtsApiKey='';save('saber_v6_google_tts_key','');var i=$('googleTtsKeyInput');if(i)i.value='';updateGoogleTtsKeyStatus();toast('کلید صدای گوگل حذف شد');};
-window.testGeminiTTS=function(){if(!S.googleTtsApiKey){toast('اول کلید صدای گوگل را ذخیره کن');return;}speakWithGeminiTTS('سلام، من صابرم. این یک آزمایش صدای طبیعی فارسی با Gemini است.');};
-function updateGoogleTtsKeyStatus(){var e=$('googleTtsKeyStatus');if(e){e.textContent=S.googleTtsApiKey?'✅ کلید صدای گوگل تنظیم شده':'کلید صدای گوگل تنظیم نشده است.';e.style.color=S.googleTtsApiKey?'#66d39d':'#7a9086';}}
 
 function playChunksSequentially(chunks, index){
   if(index >= chunks.length){
@@ -1468,9 +1396,9 @@ function playChunksSequentially(chunks, index){
     return;
   }
 
-  S.speaking = true;
-  setAvatar('speaking');
-  animOn();
+  S.speaking = false;
+  setAvatar('thinking');
+  animOff();
 
   var chunk = chunks[index];
   var endpoints = [
@@ -1502,6 +1430,7 @@ function playChunksSequentially(chunks, index){
     audio.src = endpoints[endpointIndex];
     audio.volume = 1;
 
+    audio.onplay = function(){S.speaking=true;setAvatar('speaking');animOn();};
     audio.onended = function(){
       if(finished) return;
       finished = true;
@@ -1731,8 +1660,9 @@ function handleVoice(text){
    ============================================================
 */
 window.pickModel=function(m){
-  S.settings.model=m;
-  save('saber_v6_settings',S.settings);
+  S.settings.model=m;S.groqModel1=m;
+  save('saber_v6_settings',S.settings);save('saber_v6_groq_model1',m);
+  var modelField=$('groqModel1');if(modelField)modelField.value=m;
   var cards=document.querySelectorAll('.model-card');
   for(var i=0;i<cards.length;i++){
     cards[i].className='model-card'+(cards[i].getAttribute('data-model')===m?' active':'');
@@ -1813,11 +1743,24 @@ window.loadApiKeyFile=function(event){
   reader.readAsText(file);
 };
 
+window.toggleApiKey2Visibility=function(){var i=$('apiKeyInput2');if(i)i.type=i.type==='password'?'text':'password';};
+window.saveGroqConnections=function(){
+  var k1=$('apiKeyInput')?$('apiKeyInput').value.trim():'';
+  var k2=$('apiKeyInput2')?$('apiKeyInput2').value.trim():'';
+  var m1=$('groqModel1')?$('groqModel1').value.trim():'';
+  var m2=$('groqModel2')?$('groqModel2').value.trim():'';
+  if(k1 && k1.indexOf('gsk_')!==0){toast('کلید اول Groq معتبر به نظر نمی‌رسد');return;}
+  if(k2 && k2.indexOf('gsk_')!==0){toast('کلید دوم Groq معتبر به نظر نمی‌رسد');return;}
+  if(!k1&&!k2){toast('حداقل یک کلید Groq وارد کن');return;}
+  S.apiKey=k1;S.apiKey2=k2;S.groqModel1=m1||DEFAULT_CONFIG.MODEL;S.groqModel2=m2||'mistral-saba-24b';S.settings.model=S.groqModel1;
+  save('saber_v6_apikey',S.apiKey);save('saber_v6_apikey2',S.apiKey2);save('saber_v6_groq_model1',S.groqModel1);save('saber_v6_groq_model2',S.groqModel2);save('saber_v6_settings',S.settings);
+  updateKeyStatus();S.availableModels=[];if(S.apiKey||S.apiKey2)loadModelsFromApi(true);toast('اتصال‌های Groq ذخیره شدند');
+};
 window.removeApiKey=function(){
   if(!confirm('کلید API ذخیره‌شده از این مرورگر حذف شود؟'))return;
-  S.apiKey='';
-  save('saber_v6_apikey','');
-  var inp=$('apiKeyInput');if(inp)inp.value='';
+  S.apiKey='';S.apiKey2='';
+  save('saber_v6_apikey','');save('saber_v6_apikey2','');
+  var inp=$('apiKeyInput');if(inp)inp.value='';var inp2=$('apiKeyInput2');if(inp2)inp2.value='';
   updateKeyStatus();
   toast('کلید از این مرورگر حذف شد');
 };
@@ -1829,6 +1772,7 @@ window.saveApiKey=function(){
   if(k.indexOf('gsk_')!==0){toast('کلید Groq باید با gsk_ شروع بشه');return;}
   S.apiKey=k;
   save('saber_v6_apikey',k);
+  S.groqModel1=($('groqModel1')&&$('groqModel1').value.trim())||S.groqModel1||DEFAULT_CONFIG.MODEL;save('saber_v6_groq_model1',S.groqModel1);
   updateKeyStatus();
   toast('کلید در این مرورگر ذخیره شد');
   S.availableModels=[];
@@ -1836,11 +1780,11 @@ window.saveApiKey=function(){
 };
 
 function updateKeyStatus(){
-  var el=$('keyStatus');if(!el)return;
-  if(S.apiKey){el.textContent='✅ تنظیم شده';el.style.color='#66d39d';}
-  else{el.textContent='❌ تنظیم نشده';el.style.color='#c96d6d';}
+  var statusText=(S.apiKey||S.apiKey2)?'✅ '+(S.apiKey?'اتصال ۱ آماده':'اتصال ۱ خالی')+' · '+(S.apiKey2?'اتصال ۲ آماده':'اتصال ۲ خالی'):'❌ تنظیم نشده';
+  var el=$('keyStatusDetail');if(el){el.textContent=statusText;el.style.color=(S.apiKey||S.apiKey2)?'#66d39d':'#c96d6d';}
+  var homeStatus=$('keyStatus');if(homeStatus)homeStatus.textContent=statusText;
   var hk=$('homeKey');
-  if(hk)hk.textContent=S.apiKey?'✅ موجود':'❌ وارد نشده';
+  if(hk)hk.textContent=(S.apiKey||S.apiKey2)?'✅ موجود':'❌ وارد نشده';
 }
 
 /* ============================================================
@@ -1906,11 +1850,11 @@ function boot(){
 
   /* API فقط از LocalStorage خوانده می‌شود؛ هیچ کلید پیش‌فرضی در HTML وجود ندارد. */
   var savedKey = load('saber_v6_apikey','');
-  if(typeof savedKey === 'string' && savedKey.indexOf('gsk_') === 0){
-    S.apiKey = savedKey;
-  }
-  var savedGoogleTtsKey = load('saber_v6_google_tts_key','');
-  if(typeof savedGoogleTtsKey === 'string') S.googleTtsApiKey = savedGoogleTtsKey;
+  if(typeof savedKey === 'string' && savedKey.indexOf('gsk_') === 0){S.apiKey=savedKey;}
+  var savedKey2=load('saber_v6_apikey2','');if(typeof savedKey2==='string'&&savedKey2.indexOf('gsk_')===0)S.apiKey2=savedKey2;
+  S.groqModel1=load('saber_v6_groq_model1',S.settings.model||DEFAULT_CONFIG.MODEL)||DEFAULT_CONFIG.MODEL;
+  S.groqModel2=load('saber_v6_groq_model2','mistral-saba-24b')||'mistral-saba-24b';
+  save('saber_v6_google_tts_key',''); // پاک‌سازی کلید قدیمی Gemini از فضای ذخیره‌سازی
   var savedElevenLabsKey = load('saber_v6_elevenlabs_key','');
   if(typeof savedElevenLabsKey === 'string') S.elevenLabsApiKey = savedElevenLabsKey;
   var savedElevenLabsVoice = load('saber_v6_elevenlabs_voice_id','');
@@ -1921,7 +1865,6 @@ function boot(){
   renderChat();
   renderPersonalityList();
   updateKeyStatus();
-  updateGoogleTtsKeyStatus();
   updateElevenLabsStatus();
 
   /* همگام‌سازی همه کلیدهای toggle */
@@ -1934,7 +1877,7 @@ function boot(){
   var sb = $('searchBadge'); if(sb && S.settings.liveSearch) sb.className = 'search-badge show';
   var tb = $('ttsBadge'); if(tb && S.settings.onlineTTS) tb.className = 'tts-badge show';
 
-  if(S.apiKey){ loadModelsFromApi(); }
+  if(S.apiKey||S.apiKey2){ loadModelsFromApi(); }
   else{
     var ml=$('modelList');
     if(ml) ml.innerHTML='<div class="muted" style="padding:10px;text-align:center">ابتدا کلید Groq را در تنظیمات وارد کنید.</div>';

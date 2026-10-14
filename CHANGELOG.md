@@ -1,9 +1,9 @@
-# Change Log
+# تغییرات نسخه V6 Dual Groq + ElevenLabs
 
-## SABER V6 · ElevenLabs TTS integration
-- Added independent ElevenLabs API key storage, separate from Groq chat and Google Gemini TTS keys.
-- Added voice-list retrieval from the user's ElevenLabs account and selectable Voice ID.
-- Added a Persian voice test and audio playback through ElevenLabs Text-to-Speech using `eleven_v3` and language code `fa`.
-- Online speech now prioritizes ElevenLabs when its key is configured; existing Gemini and Google Translate fallbacks remain in place when ElevenLabs is not configured.
-- Bumped the service-worker cache version to ensure GitHub Pages clients fetch the updated app.
-- No API key is embedded in the project.
+- حذف کامل رابط کاربری و منطق Gemini TTS؛ کلید قدیمی Gemini هنگام اجرای نسخه جدید از LocalStorage پاک می‌شود.
+- افزودن دو محل مستقل برای Groq API Key و دو فیلد انتخاب مدل.
+- مسیریابی درخواست‌ها بر اساس نشانه‌های جستجو و تلاش اتصال دوم در صورت شکست اتصال اول.
+- حفظ ElevenLabs به‌عنوان موتور گفتار آنلاین اصلی و Google Translate به‌عنوان جایگزین.
+- بازطراحی آواتار به چهره‌ای انسان‌مانندتر با چشم، مو، بینی و لب.
+- حرکت لب و نمایش وضعیت SPEAKING فقط پس از رویداد شروع واقعی پخش صوت؛ هنگام انتظار برای پاسخ صوتی، آواتار در وضعیت THINKING می‌ماند.
+- افزایش نسخه کش Service Worker برای بارگیری تغییرات جدید.

@@ -1,16 +1,18 @@
-# Test Report
+# گزارش آزمایش نسخه V6 Dual Groq + ElevenLabs
 
-## Completed checks
-- JavaScript syntax check with Node.js: PASS.
-- Required UI element/function wiring inspected: ElevenLabs key, save/remove, voice listing, Voice ID selection, test button, persisted settings, and online TTS routing are present.
-- Service-worker cache name bumped to a new version: PASS.
-- Project contains no embedded ElevenLabs API key: PASS (user enters their own key in Settings).
+## انجام‌شده
+- بررسی نحوی JavaScript با Node.js: موفق.
+- بررسی ساختار ZIP و وجود فایل‌های اصلی پروژه: در مرحله بسته‌بندی انجام می‌شود.
+- جستجوی کد برای حذف رابط و توابع Gemini TTS: هیچ رابط یا تابع فعال Gemini TTS باقی نمانده؛ کلید قدیمی در زمان راه‌اندازی پاک می‌شود.
+- همگام‌سازی مدل انتخابی با فیلد مدل اتصال اول: در کد اعمال شده است.
+- انیمیشن لب برای صدای گوشی و صوت‌های HTMLAudioElement به رویداد onstart/onplay متصل است.
 
-## Not verified live
-- No real ElevenLabs API request was made because the user's API key is private and was not supplied to the build process.
-- Actual API access, account quota, voice availability, browser CORS/network access, and audio playback must be confirmed by pressing “دریافت صداهای حساب” and “تست صدای فارسی” in the deployed app.
+## تأییدنشده
+- درخواست زنده به Groq با دو کلید واقعی، چون کلیدهای کاربر در اختیار نیستند.
+- درخواست زنده ElevenLabs و دریافت صوت، به علت نیاز به کلید معتبر و Voice ID حساب کاربر.
+- بررسی رفتار روی دستگاه Android واقعی و مرورگر واقعی.
 
-## Known limitations
-- ElevenLabs is a browser-side integration suitable for personal use, not a secure multi-user public deployment; a key saved in LocalStorage can be accessed by someone with access to the browser/device.
-- Persian speech quality depends on the selected voice and the ElevenLabs account/model access.
-- If the deployed app remains cached, refresh the page after deployment; the service-worker cache version has been incremented.
+## محدودیت‌ها
+- انتخاب هوشمند جستجو بر اساس نشانه‌های متنی و تنظیم جستجوی زنده انجام می‌شود، نه یک طبقه‌بند جداگانه.
+- GitHub Pages ایستا است؛ کلیدهای API در مرورگر ذخیره می‌شوند و برای پروژه عمومی/چندکاربره بهتر است از سرور واسط امن استفاده شود.
+- حرکت لب به زمان پخش صوت وابسته است، اما از داده‌های دقیق phoneme/viseme موتور صدا استفاده نمی‌کند؛ بنابراین هم‌زمانی تقریبی است.
