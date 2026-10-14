@@ -132,7 +132,10 @@ h3{font-size:13px}
 .eye{position:absolute;top:34%;width:40px;height:40px;border-radius:50%;background:#00ffaa;box-shadow:0 0 20px #00ffaa,inset 0 0 8px rgba(255,255,255,.5)}
 .eye.l{right:24%}
 .eye.r{left:24%}
-.eye::after{content:"";position:absolute;top:18%;left:20%;width:30%;height:30%;border-radius:50%;background:#fff;opacity:.9}
+.eye::after{content:"";position:absolute;top:27%;left:31%;width:38%;height:38%;border-radius:50%;background:#07120d;box-shadow:0 0 0 3px rgba(255,255,255,.72);animation:gaze 7s ease-in-out infinite}
+@keyframes gaze{0%,15%,100%{transform:translate(0,0)}25%,35%{transform:translate(5px,1px)}50%,60%{transform:translate(-5px,2px)}75%{transform:translate(0,-3px)}}
+.avatar::before{content:"";position:absolute;inset:17% 13% 14%;border:1px solid rgba(102,211,157,.13);border-radius:48% 48% 44% 44%;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.face-ring::before,.avatar.idle .eye,.eye::after,.avatar.speaking .mouth{animation:none!important}}
 .avatar.idle .eye{animation:blink 4s infinite}
 @keyframes blink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.05)}}
 .avatar.error .eye{background:#c96d6d}
@@ -445,7 +448,7 @@ console.log('SABER V6 loading...');
    ============================================================ */
 
 var DEFAULT_CONFIG = {
-  MODEL: 'mistral-saba-24b',
+  MODEL: 'openai/gpt-oss-120b',
   TTS_LANG: 'fa-IR',
   TTS_RATE: 0.9,
   TTS_PITCH: 0.85
@@ -479,7 +482,7 @@ var S = {
 
 var PERSONALITIES = [
   { id:'friend', emoji:'🤝', name:'رفیق باحال', desc:'خودی، صمیمی، شوخ — مثل یه رفیق قدیمی',
-    prompt:'تو "صابر" هستی، یه رفیق خودی و باحال. با کاربر خیلی راحت و خودمونی حرف می‌زنی. از کلمات محاوره‌ای مثل "داداش"، "بذار ببینم"، "چه خبر"، "آره بابا" استفاده می‌کنی. شوخ‌طبعی و صمیمیت توی جواب‌هات موج می‌زنه. ولی وقتی جدی شد، جدی می‌شی. جواب‌هات کوتاه، مفید و بامزه‌ست.' },
+    prompt:'تو "صابر" هستی، به زبان کاربر پاسخ بده. اگر کاربر فارسی نوشت، پاسخ را فارسی و با خط فارسی بنویس؛ مگر اینکه صریحاً فینگلیش بخواهد. یه رفیق خودی و باحال. با کاربر خیلی راحت و خودمونی حرف می‌زنی. از کلمات محاوره‌ای مثل "داداش"، "بذار ببینم"، "چه خبر"، "آره بابا" استفاده می‌کنی. شوخ‌طبعی و صمیمیت توی جواب‌هات موج می‌زنه. ولی وقتی جدی شد، جدی می‌شی. جواب‌هات کوتاه، مفید و بامزه‌ست.' },
   { id:'coach', emoji:'💪', name:'مربی انگیزشی', desc:'پر انرژی، تشویق‌کننده، مثبت‌اندیش',
     prompt:'تو صابر هستی، یه مربی و دوست انگیزشی. با انرژی و محبت حرف می‌زنی. به کاربر انگیزه می‌دی و تشویقش می‌کنی. از جملات مثبت مثل "آفرین!"، "می‌تونی!"، "قوی باش!" استفاده می‌کنی. لحنت گرم و دلگرم‌کننده‌ست.' },
   { id:'funny', emoji:'😄', name:'شوخ و بامزه', desc:'همیشه یه شوخی یا کنایه داره',
@@ -826,9 +829,11 @@ function askAI(msg,cb){
   if(!S.settings.model){cb('⚠️ مدلی انتخاب نشده. به تنظیمات برو.');return;}
 
   var msgs=[{role:'system',content:getPersonalityPrompt()}];
-  for(var i=Math.max(0,S.chat.length-8);i<S.chat.length;i++){
-    if(S.chat[i].role==='user'||S.chat[i].role==='assistant')
-      msgs.push({role:S.chat[i].role,content:S.chat[i].text});
+  for(var i=Math.max(0,S.chat.length-9);i<S.chat.length;i++){
+    var item=S.chat[i];
+    /* The latest user message is appended exactly once below. */
+    if((item.role==='user'||item.role==='assistant') && !(item.role==='user' && item.text===msg && i===S.chat.length-1))
+      msgs.push({role:item.role,content:item.text});
   }
   msgs.push({role:'user',content:msg});
 
@@ -1155,7 +1160,7 @@ function refreshVoices(){
     if(!voices.length){
       var o = document.createElement('option');
       o.value = '';
-      o.textContent = '⚠️ صدایی یافت نشد';
+      o.textContent = '⚠️ فهرست صدا هنوز بارگذاری نشده؛ دوباره باز کن';
       o.disabled = true;
       sel.appendChild(o);
       return;
@@ -1206,6 +1211,14 @@ function refreshVoices(){
   });
 }
 
+/* Persian transliteration fallback for devices without a Persian TTS voice. */
+function persianToFinglish(input){
+  var map={ 'ا':'a','آ':'â','ب':'b','پ':'p','ت':'t','ث':'s','ج':'j','چ':'ch','ح':'h','خ':'kh','د':'d','ذ':'z','ر':'r','ز':'z','ژ':'zh','س':'s','ش':'sh','ص':'s','ض':'z','ط':'t','ظ':'z','ع':'','غ':'gh','ف':'f','ق':'gh','ک':'k','ك':'k','گ':'g','ل':'l','م':'m','ن':'n','و':'u','ه':'h','ی':'i','ي':'i','ئ':'y','ء':'','ؤ':'o','ة':'e','ۀ':'e','‌':' ','،':',','؛':';','؟':'?','٪':' percent '};
+  var out='';
+  for(var i=0;i<input.length;i++){var ch=input[i];out += Object.prototype.hasOwnProperty.call(map,ch)?map[ch]:ch;}
+  return out.replace(/\s+/g,' ').trim();
+}
+
 /* --------- تصمیم‌گیر: گوشی یا آنلاین --------- */
 function speak(text){
   try{ window.speechSynthesis.cancel(); }catch(e){}
@@ -1245,9 +1258,14 @@ function speak(text){
       return;
     }
 
-    /* فارسی نبود → آنلاین */
-    if('speechSynthesis' in window){ /* اگه خواستی اینجا هشدار بدی */ }
-    speakOnline(pr);
+    /* اگر صدای فارسی دستگاه موجود نیست، فینگلیش را با صدای انگلیسی دستگاه بخوان. */
+    var latin = persianToFinglish(pr);
+    if(voices.length){
+      var en = null;
+      for(var vi=0;vi<voices.length;vi++){ if((voices[vi].lang||'').toLowerCase().indexOf('en')===0){en=voices[vi];break;} }
+      speakViaPhoneVoice(latin, en || voices[0]);
+      toast('صدای فارسی نصب نیست؛ متن با فینگلیش و صدای دستگاه خوانده می‌شود');
+    }else{ speakOnline(pr); }
   });
 }
 
@@ -1363,7 +1381,7 @@ function playChunksSequentially(chunks, index){
       S.speaking = false;
       animOff();
       setAvatar('idle');
-      toast('سرویس TTS آنلاین در دسترس نیست؛ صدای گوشی را امتحان کن');
+      toast('TTS آنلاین پاسخ نداد؛ از «پخش گوشی» استفاده کن یا موتور گفتار Android را فعال کن');
       return;
     }
 

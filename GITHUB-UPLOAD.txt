@@ -1,19 +1,14 @@
-SABER AI V6 PRO — GitHub Pages upload
+راهنمای آپلود SABER AI در GitHub (مخصوصاً گوشی اندروید)
 
-IMPORTANT: GitHub Pages does not extract a ZIP uploaded through the web interface. Extract this ZIP first.
+GitHub در صفحه Upload files معمولاً پوشه خالی یا خودِ پوشه را مثل فایل مستقل قبول نمی‌کند. باید فایل‌ها و زیرپوشه‌ها را داخل همان صفحه انتخاب/رها کنید، یا از GitHub Desktop/رایانه استفاده کنید.
 
-1. Extract SABER-AI-V6-PRO-FIXED.zip on your device.
-2. Open the extracted SABER-AI-V6-PRO-FIXED folder.
-3. Upload its CONTENTS to the repository root. Do not upload only the ZIP and do not leave the files nested inside another project folder.
-4. Confirm these paths exist in GitHub exactly as written:
-   - index.html
-   - manifest.json
-   - sw.js
-   - assets/saber-logo-animated.svg
-   - assets/saber-icon-192.png
-   - assets/saber-icon-512.png
-   - assets/saber-icon-512-maskable.png
-5. In Settings > Pages, select Deploy from a branch, branch main (or your default branch), folder /(root), then Save.
-6. Open the HTTPS Pages URL. If an old icon remains, close the installed app/browser tab and clear the site's cached data before reinstalling.
+روش پیشنهادی روی گوشی:
+1) ZIP را از حالت فشرده خارج کنید.
+2) در مخزن GitHub، مطمئن شوید در مسیر اصلی مخزن هستید.
+3) Add file > Upload files را بزنید.
+4) در فایل‌منیجر، فایل‌های داخل پوشه پروژه را انتخاب کنید. اگر انتخاب پوشه ممکن نیست، از رایانه یا GitHub Codespaces استفاده کنید.
+5) پوشه assets و فایل‌های داخل آن باید حفظ شوند؛ ساختار نهایی باید شامل index.html، manifest.json، sw.js و assets/ باشد.
+6) Commit changes را بزنید و در Settings > Pages شاخه و پوشه انتشار را انتخاب کنید.
+7) آدرس Pages را باز کنید و یک بار کش سایت را پاک/سایت را دوباره بارگذاری کنید.
 
-Never upload a real API key to the repository. See README.md and TEST-REPORT.md.
+نکته: خود ZIP را در مخزن آپلود نکنید و انتظار نداشته باشید GitHub آن را خودکار منتشر کند. محتویات ZIP باید در ریشه مخزن قرار بگیرند.
