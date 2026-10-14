@@ -1,0 +1,8 @@
+GitHub Pages upload checklist:
+1. Extract the ZIP.
+2. Upload the CONTENTS of SABER-AI-V6-PRO directly to the repository root.
+3. Settings > Pages > Deploy from a branch > main > /(root) > Save.
+4. Open the HTTPS URL.
+5. In Settings, save a user-owned Groq key and run the real API connection test.
+Security: never commit a real API key. Browser-side storage is not secret from the device user.
+See README.md and TEST-REPORT.md.
