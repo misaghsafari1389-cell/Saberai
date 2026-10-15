@@ -1,6 +1,7 @@
-نشان متحرک صابر
+SABER SVG visual assets
 
-- assets/saber-logo-animated.svg : نشان برداری متحرک برای هدر و صفحه شروع برنامه.
-- assets/saber-icon-192.png و saber-icon-512.png : آیکون‌های نصب PWA روی گوشی.
-- برای تغییر رنگ، فایل SVG را ویرایش کنید؛ رنگ اصلی سبز زمردی/فیروزه‌ای و پس‌زمینه برنامه تیره است.
-- پس از آپلود نسخه جدید روی GitHub Pages، اگر نسخه قدیمی نمایش داده شد، یک بار سایت را کامل ببندید و دوباره باز کنید؛ نسخه کش Service Worker هم به‌روزرسانی شده است.
+- saber-logo.svg: static Saber emblem used by the app header and boot screen.
+- saber-face.svg: standalone vector reference for the rounded Saber robot face. The live voice avatar is inline SVG in index.html so its eyes and mouth can animate.
+- saber-icon.svg: vector PWA icon.
+
+All assets are at the archive root; there is no assets/ directory and no raster/WebP image.

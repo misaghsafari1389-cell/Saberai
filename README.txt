@@ -1,51 +1,16 @@
-صابر AI — بسته آماده GitHub Pages
+SABER AI V6 PRO
 
-محتویات:
-- index.html: برنامه صابر AI
-- manifest.json: مشخصات PWA
-- sw.js: Service Worker برای کش پایه
-- .nojekyll: جلوگیری از پردازش Jekyll
+GitHub Pages deployment
+- Extract this ZIP. Upload all extracted files directly into the root of the GitHub repository. Do not create or upload an enclosing folder.
+- All runtime assets are SVG files at the root; there is no assets/ directory.
+- In Settings > Pages, publish from your branch and /(root). Open the resulting HTTPS URL in Chrome on Android.
+- If a previous version is cached, remove the old shortcut/app and clear the site's storage before testing again.
 
-روش انتشار:
-1) ZIP را استخراج کن.
-2) همه محتویات همین پوشه را مستقیماً در ریشه مخزن GitHub بارگذاری کن (نه خود ZIP و نه یک پوشه تو در تو).
-3) در Settings > Pages، انتشار از Branch اصلی و پوشه /(root) را انتخاب کن.
-4) پس از انتشار، سایت را با HTTPS باز کن. برای میکروفون و قابلیت‌های PWA، HTTPS لازم است.
+Features in this build
+- Static Saber emblem; no animated logo intro.
+- Inline SVG robot face with a centered gaze, blinking eyes, and mouth motion while speech playback is active. Mouth motion is animation tied to the speaking state, not phoneme-accurate lip-sync.
+- Three themes: tactical, midnight blue, and amber.
+- Local conversation history.
+- Flat ZIP layout and SVG visual assets.
 
-کلید API:
-- از داخل برنامه: منوی بالا > تنظیمات > کلید Groq.
-- می‌توانی کلید را دستی وارد کنی یا فایل .txt/.json حاوی کلید را بارگذاری کنی.
-- فایل TXT باید خود کلید را داشته باشد. فایل JSON می‌تواند فیلد apiKey، api_key، key یا groq_api_key داشته باشد.
-- کلید در LocalStorage همان مرورگر ذخیره می‌شود؛ در ZIP یا مخزن GitHub قرار داده نشده است.
-- هشدار: در برنامه‌های فرانت‌اند استاتیک، کلید هنگام استفاده در مرورگر قابل استخراج است. برای استفاده عمومی/چندکاربره، کلید محرمانه را در فرانت‌اند عمومی نگذار و از بک‌اند امن استفاده کن.
-
-این بسته برای GitHub Pages است و به Node.js نیاز ندارد.
-
-تنظیم صدای ElevenLabs:
-1) در صابر به منوی بالا > تنظیمات برو.
-2) بخش «کلید API صدای ElevenLabs» را پیدا کن و کلید خودت را وارد و ذخیره کن.
-3) «دریافت صداهای حساب» را بزن؛ اگر موفق شد، روی صدای دلخواهت بزن تا Voice ID ثبت شود.
-4) «تست صدای فارسی» را بزن. برای خواندن پاسخ‌ها با ElevenLabs، از «پخش آنلاین» استفاده کن یا TTS آنلاین را در تنظیمات روشن کن.
-5) موتور ElevenLabs در صورت داشتن کلید، اولویت دارد؛ اگر کلید ElevenLabs حذف شود، مسیر Gemini یا Google Translate قدیمی باقی می‌ماند.
-6) کلید و Voice ID فقط در LocalStorage همان مرورگر ذخیره می‌شوند و داخل ZIP قرار ندارند. کلید مرورگر در برابر دسترسی محلی کاملاً محرمانه نیست؛ آن را در مخزن عمومی یا گفتگو منتشر نکن.
-7) اگر فهرست صداها دریافت نشد، متن خطا را در همان بخش بخوان. علت می‌تواند کلید نامعتبر، محدودیت حساب/سهمیه، اتصال شبکه یا مسدود شدن درخواست مرورگر باشد.
-
-
-تنظیمات چندمدلی نسخه جدید:
-- در تنظیمات دو کلید Groq و مدل مربوط به هر اتصال را وارد کن و «ذخیره اتصال‌ها» را بزن.
-- جستجوهای تشخیص‌داده‌شده ابتدا از ابتدا مدل جستجوی Groq را امتحان می‌کنند و در صورت پشتیبانی‌نشدن، مدل معمولی و سپس اتصال دوم را امتحان می‌کنند و در صورت شکست، اتصال جایگزین امتحان می‌شود.
-- کلید ElevenLabs و Voice ID در بخش صدای ElevenLabs جدا از Groq ذخیره می‌شوند.
-- Gemini TTS از این نسخه حذف شده است.
-- آواتار فقط هنگام شروع واقعی پخش صوت لب می‌زند؛ همگام‌سازی دقیق واج‌به‌واج پشتیبانی نمی‌شود.
-
-
-### GitHub Pages upload and install
-Extract the ZIP and upload the contents directly to the repository root, not the containing folder. The assets/ folder contains only the app logo and PNG PWA icons. The manifest uses relative URLs for both user/organization Pages and repository Pages paths. On Android, open the HTTPS published site in a supported browser such as Chrome, refresh, and choose Install app/Add to Home screen. If an old version remains cached, remove the old app/shortcut and clear site storage before reinstalling.
-
-Search requests are detected from multilingual search keywords in both chat and voice transcripts. Only that request temporarily tries Groq's search-capable model; the configured chat models remain unchanged and are used again on the next non-search request.
-
-
-GitHub Pages upload: extract the ZIP and upload its contents directly to the repository root, not the containing folder. Keep assets/ for logo and PNG icons. Open the published HTTPS site in a supported browser on Android and choose Install app/Add to Home screen. If an old version remains cached, remove it and clear site storage before reinstalling. Search keywords in multiple languages temporarily route only that request to the Groq search model; the next request returns to the configured chat model.
-
-
-نسخهٔ جدید همچنین شامل لوگوی ثابت، چهرهٔ رباتیک مستقیم‌نگر، سه پوسته، تاریخچهٔ گفتگوها و کنترل نصب PWA است. برای GitHub Pages، محتویات را در ریشهٔ مخزن قرار بده و پوشهٔ assets را کامل نگه دار.
+PWA note: install availability depends on the deployed HTTPS origin, browser support, manifest parsing, and service-worker registration. SVG icons are used per the project's all-SVG requirement; some browser/platform combinations may still prefer conventional 192px and 512px PNG icons for the most reliable install prompt. Live installation on a physical phone has not been verified here.
