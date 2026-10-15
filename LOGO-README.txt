@@ -1,7 +1,7 @@
-SABER SVG visual assets
+SABER SVG VISUALS
 
-- saber-logo.svg: static Saber emblem used by the app header and boot screen.
-- saber-face.svg: standalone vector reference for the rounded Saber robot face. The live voice avatar is inline SVG in index.html so its eyes and mouth can animate.
-- saber-icon.svg: vector PWA icon.
-
-All assets are at the archive root; there is no assets/ directory and no raster/WebP image.
+- saber-logo.svg: Saber emblem used in the header and boot screen.
+- saber-icon.svg: copy of the Saber emblem for the PWA icon; it is not the character face.
+- saber-face.svg: separate standalone vector face reference.
+- The animated voice face is inline SVG in index.html, so the mouth and eyes can animate with voice state.
+- Every file is in the archive root; no raster images or assets directory are included.

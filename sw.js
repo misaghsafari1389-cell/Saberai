@@ -1,4 +1,4 @@
-const CACHE_NAME = 'saber-ai-v6-flat-svg-face-motion-v7';
+const CACHE_NAME = 'saber-ai-v6-replicavox-flat-svg-v8';
 const CORE = ['./', './index.html', './manifest.json', './saber-logo.svg', './saber-face.svg', './saber-icon.svg'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));

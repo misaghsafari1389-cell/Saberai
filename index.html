@@ -295,9 +295,11 @@ console.log('SABER V6 loading...');
               <path d="M29 62 C36 25 59 15 90 15 C121 15 144 25 151 62" fill="none" stroke="#fff" stroke-width="3" opacity=".9"/>
               <path d="M22 100 Q90 122 158 100 L157 125 Q151 159 90 166 Q29 159 23 125Z" fill="url(#faceGlow)" opacity=".8"/>
               <path d="M48 72 Q90 79 132 72" fill="none" stroke="#d2dce0" stroke-width="1" opacity=".7"/>
+              <path d="M37 103 Q46 109 56 104 M124 104 Q134 109 143 103" fill="none" stroke="#c1cfd5" stroke-width="1.5" stroke-linecap="round"/>
               <line x1="56" y1="83" x2="124" y2="83" stroke="#1a252b" stroke-width="2.3" stroke-linecap="round" opacity=".85"/>
-              <circle class="saber-eye left" cx="56" cy="83" r="5.4"/>
-              <circle class="saber-eye right" cx="124" cy="83" r="5.4"/>
+              <circle class="saber-eye left" cx="56" cy="83" r="5.8"/>
+              <circle class="saber-eye right" cx="124" cy="83" r="5.8"/>
+              <circle cx="54.5" cy="81.2" r="1.5" fill="#fff" opacity=".95"/><circle cx="122.5" cy="81.2" r="1.5" fill="#fff" opacity=".95"/>
               <ellipse id="mouth" class="saber-mouth" cx="90" cy="119" rx="10" ry="2.2"/>
               <path d="M72 138 Q90 145 108 138" fill="none" stroke="#c5d0d4" stroke-width="1.4" stroke-linecap="round"/>
               <circle cx="31" cy="112" r="2" fill="#77d8e8" opacity=".7"/><circle cx="149" cy="112" r="2" fill="#77d8e8" opacity=".7"/>
@@ -428,6 +430,30 @@ console.log('SABER V6 loading...');
         <div id="elevenLabsVoices" style="margin-top:8px"></div>
       </div>
 
+      <div class="set-section" id="replicavoxSection">
+        <h3>🗣️ موتور صدای Replicavox</h3>
+        <p class="muted" style="font-size:10px;margin-bottom:8px">طرح رایگان این سرویس طبق صفحهٔ رسمی ۱۵٬۰۰۰ کاراکتر در ماه و دسترسی API دارد. کلید را از حساب Replicavox بساز و اینجا وارد کن. پشتیبانی دقیق فارسی در صدای انتخابی باید با تست بررسی شود.</p>
+        <div class="field">
+          <label for="replicavoxKeyInput">Replicavox API Key</label>
+          <input id="replicavoxKeyInput" type="password" placeholder="sk_..." autocomplete="off" spellcheck="false">
+        </div>
+        <div class="field" style="margin-top:8px">
+          <label for="replicavoxVoiceInput">نام یا شناسهٔ صدا</label>
+          <input id="replicavoxVoiceInput" type="text" value="Archer" placeholder="Archer یا Voice ID" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" style="flex:1" onclick="toggleReplicavoxKeyVisibility()">👁 نمایش/پنهان</button>
+          <button class="btn primary" style="flex:1" onclick="saveReplicavoxSettings()">💾 ذخیره اتصال</button>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" style="flex:1" onclick="testReplicavoxTTS()">🔊 تست صدای فارسی</button>
+          <button class="btn" style="flex:1" onclick="removeReplicavoxKey()">🗑️ حذف کلید</button>
+        </div>
+        <p id="replicavoxStatus" class="muted" style="font-size:10px;margin-top:8px">Replicavox تنظیم نشده است.</p>
+        <p class="muted" style="font-size:10px;margin-top:6px">کلید در LocalStorage همین مرورگر ذخیره می‌شود. چون سایت GitHub Pages ایستا است، کلید در درخواست‌های مرورگر قابل مشاهده است؛ آن را با دیگران به اشتراک نگذار.</p>
+        <p class="muted" style="font-size:10px;margin-top:6px"><a href="https://www.replicavox.com/text-to-speech-api" target="_blank" rel="noopener">ساخت کلید API و مستندات رسمی</a></p>
+      </div>
+
       <div class="set-section">
         <h3>🎙️ صدا</h3>
         <div class="toggle-row" style="background:#0a1510;border:1px solid #1e3329;border-radius:10px;margin-bottom:10px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px">
@@ -525,6 +551,8 @@ var S = {
   groqModel2: 'mistral-saba-24b',
   elevenLabsApiKey: '',
   elevenLabsVoiceId: '',
+  replicavoxApiKey: '',
+  replicavoxVoice: 'Archer',
   recognition: null,
   listening: false,
   speaking: false,
@@ -757,7 +785,10 @@ window.show = function(id){
     var gm2=$('groqModel2');if(gm2)gm2.value=S.groqModel2||'mistral-saba-24b';
     var ek=$('elevenLabsKeyInput'); if(ek) ek.value=S.elevenLabsApiKey||'';
     var ev=$('elevenLabsVoiceId'); if(ev) ev.value=S.elevenLabsVoiceId||'';
+    var rk=$('replicavoxKeyInput'); if(rk) rk.value=S.replicavoxApiKey||'';
+    var rv=$('replicavoxVoiceInput'); if(rv) rv.value=S.replicavoxVoice||'Archer';
     updateElevenLabsStatus();
+    updateReplicavoxStatus();
     var ls=$('settingsLiveSearch'); if(ls) ls.checked = S.settings.liveSearch;
     var ot=$('onlineTTSToggle'); if(ot) ot.checked = S.settings.onlineTTS;
   }
@@ -1410,7 +1441,11 @@ window.speakOnline = function(text){
   var pr = prepTTS(text);
   if(!pr) return;
 
-  /* اولویت موتور صدا: ElevenLabs؛ اگر تنظیم نشده باشد، Google Translate به‌عنوان جایگزین. */
+  /* اولویت موتور آنلاین: Replicavox؛ سپس ElevenLabs؛ در نهایت Google Translate. */
+  if(S.replicavoxApiKey){
+    speakWithReplicavoxTTS(pr);
+    return;
+  }
   if(S.elevenLabsApiKey){
     speakWithElevenLabsTTS(pr);
     return;
@@ -1449,6 +1484,46 @@ window.speakOnline = function(text){
 
   playChunksSequentially(chunks, 0);
 };
+
+function updateReplicavoxStatus(message){
+  var e=$('replicavoxStatus'); if(!e)return;
+  if(message){e.textContent=message;e.style.color=message.indexOf('❌')===0?'#ff8c8c':'#d2ad63';return;}
+  e.textContent=S.replicavoxApiKey?'✅ کلید Replicavox ذخیره شده · صدا: '+(S.replicavoxVoice||'Archer'):'Replicavox تنظیم نشده است.';
+  e.style.color=S.replicavoxApiKey?'#66d39d':'#7a9086';
+}
+window.toggleReplicavoxKeyVisibility=function(){var i=$('replicavoxKeyInput');if(i)i.type=i.type==='password'?'text':'password';};
+window.saveReplicavoxSettings=function(){
+  var k=$('replicavoxKeyInput'),v=$('replicavoxVoiceInput');
+  var key=k?String(k.value||'').trim():'';
+  var voice=v?String(v.value||'').trim():'Archer';
+  if(!key){toast('کلید API ریپلکاوکس را وارد کن');return;}
+  S.replicavoxApiKey=key; S.replicavoxVoice=voice||'Archer';
+  save('saber_v6_replicavox_key',S.replicavoxApiKey);save('saber_v6_replicavox_voice',S.replicavoxVoice);
+  updateReplicavoxStatus('کلید ذخیره شد. حالا تست صدای فارسی را بزن.');toast('اتصال Replicavox در همین مرورگر ذخیره شد');
+};
+window.removeReplicavoxKey=function(){
+  if(!confirm('کلید و تنظیمات Replicavox از این مرورگر حذف شوند؟'))return;
+  S.replicavoxApiKey='';S.replicavoxVoice='Archer';save('saber_v6_replicavox_key','');save('saber_v6_replicavox_voice','Archer');
+  var k=$('replicavoxKeyInput');if(k)k.value='';var v=$('replicavoxVoiceInput');if(v)v.value='Archer';updateReplicavoxStatus();toast('تنظیمات Replicavox حذف شد');
+};
+window.testReplicavoxTTS=function(){
+  if(!S.replicavoxApiKey){toast('ابتدا کلید Replicavox را ذخیره کن');return;}
+  speakWithReplicavoxTTS('سلام، من صابر هستم. این یک آزمایش صدای فارسی است.');
+};
+function speakWithReplicavoxTTS(text){
+  if(!S.replicavoxApiKey){updateReplicavoxStatus('❌ کلید API را در تنظیمات وارد کن.');return;}
+  try{window.speechSynthesis.cancel();}catch(e){}
+  try{if(window._saberAudio){window._saberAudio.pause();window._saberAudio.currentTime=0;window._saberAudio=null;}}catch(e){}
+  updateReplicavoxStatus('در حال ساخت صدای صابر…');
+  fetch('https://api.replicavox.com/v1/audio/speech',{method:'POST',headers:{'Authorization':'Bearer '+S.replicavoxApiKey,'Content-Type':'application/json','Accept':'audio/mpeg'},body:JSON.stringify({model:'replicavox-expressive-v2',voice:S.replicavoxVoice||'Archer',input:text,language:'fa',response_format:'mp3',speed:S.settings.ttsRate||1})})
+    .then(function(r){if(!r.ok)return r.text().then(function(t){throw new Error('HTTP '+r.status+(t?' · '+t.slice(0,180):''));});return r.blob();})
+    .then(function(blob){if(!blob||!blob.size)throw new Error('فایل صوتی خالی دریافت شد');var url=URL.createObjectURL(blob),audio=new Audio(url);window._saberAudio=audio;audio.volume=1;audio.onplay=function(){S.speaking=true;setAvatar('speaking');animOn();};function finish(){S.speaking=false;animOff();setAvatar('idle');URL.revokeObjectURL(url);if(window._saberAudio===audio)window._saberAudio=null;}audio.onended=finish;audio.onerror=function(){finish();toast('پخش فایل صوتی ناموفق بود');};updateReplicavoxStatus('✅ اتصال برقرار شد؛ در حال پخش صدا.');return audio.play().catch(function(e){finish();throw e;});})
+    .catch(function(err){console.warn('Replicavox TTS failed',err);S.speaking=false;animOff();setAvatar('idle');var m=String(err&&err.message||err);updateReplicavoxStatus('❌ خطای Replicavox: '+m.slice(0,160));toast(m.indexOf('HTTP 401')>=0||m.indexOf('HTTP 403')>=0?'کلید یا دسترسی Replicavox را بررسی کن':m.indexOf('429')>=0?'سهمیه یا محدودیت درخواست Replicavox تمام شده؛ از موتور پشتیبان استفاده کن':'ساخت صدای Replicavox ناموفق بود؛ موتور پشتیبان فعال می‌شود.');
+      /* برای جلوگیری از قطع کامل گفتار، در خطای Replicavox به موتور موجود برگرد. */
+      if(S.elevenLabsApiKey&&S.elevenLabsVoiceId){speakWithElevenLabsTTS(text);return;}
+      var chunks=[],remaining=text;while(remaining.length){if(remaining.length<=190){chunks.push(remaining);break;}var chunk=remaining.substring(0,190),cut=Math.max(chunk.lastIndexOf('. '),chunk.lastIndexOf('، '),chunk.lastIndexOf('؟ '),chunk.lastIndexOf('! '),chunk.lastIndexOf(' '));if(cut>100)chunk=remaining.substring(0,cut+1);chunks.push(chunk.trim());remaining=remaining.substring(chunk.length).trim();}playChunksSequentially(chunks,0);
+    });
+}
 
 function updateElevenLabsStatus(message){
   var e=$('elevenLabsStatus');
@@ -1956,6 +2031,8 @@ function boot(){
   if(typeof savedElevenLabsKey === 'string') S.elevenLabsApiKey = savedElevenLabsKey;
   var savedElevenLabsVoice = load('saber_v6_elevenlabs_voice_id','');
   if(typeof savedElevenLabsVoice === 'string') S.elevenLabsVoiceId = savedElevenLabsVoice;
+  var savedReplicavoxKey=load('saber_v6_replicavox_key','');if(typeof savedReplicavoxKey==='string')S.replicavoxApiKey=savedReplicavoxKey;
+  var savedReplicavoxVoice=load('saber_v6_replicavox_voice','Archer');if(typeof savedReplicavoxVoice==='string')S.replicavoxVoice=savedReplicavoxVoice||'Archer';
 
   setAvatar('idle');
   setSys('READY','ok');
@@ -1964,6 +2041,7 @@ function boot(){
   renderPersonalityList();
   updateKeyStatus();
   updateElevenLabsStatus();
+  updateReplicavoxStatus();
 
   /* همگام‌سازی همه کلیدهای toggle */
   var lt = $('liveSearchToggle'); if(lt) lt.checked = !!S.settings.liveSearch;

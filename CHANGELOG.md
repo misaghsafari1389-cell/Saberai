@@ -1,8 +1,10 @@
-# SABER AI V6 PRO - Final flat SVG build
+# Changelog
 
-- Removed the animated intro logo; boot screen and header use the static Saber SVG emblem.
-- Removed raster/WebP assets and the assets directory; visual assets are SVG files at the ZIP root.
-- Rebuilt the voice avatar as inline SVG: soft rounded white robot, centered direct gaze, blinking eyes, and a mouth that opens/closes during speech playback.
-- Retained the three themes and local conversation history.
-- Updated the web app manifest and Service Worker cache version for the flat root deployment.
-- The mouth motion is speech-state animation, not phoneme-accurate lip synchronization.
+## Replicavox flat SVG package
+- Added Replicavox API key and voice settings, save/remove actions, status text, and Persian TTS test.
+- Added Replicavox as the first online TTS provider, retaining ElevenLabs and the existing Google Translate fallback.
+- Requests use the OpenAI-compatible Replicavox endpoint, model `replicavox-expressive-v2`, MP3 output, and `language: fa`.
+- Kept all files at archive root with no assets folder and no raster images.
+- Improved the separate inline SVG robot face and standalone `saber-face.svg`.
+- Set the PWA icon SVG to the Saber emblem rather than the character face.
+- Updated the Service Worker cache name.

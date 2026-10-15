@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><defs><linearGradient id="s" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff"/><stop offset=".7" stop-color="#f2f5f6"/><stop offset="1" stop-color="#d8e0e3"/></linearGradient></defs><rect width="180" height="180" rx="42" fill="#06100c"/><path d="M90 16C44 16 20 39 18 81l2 43c2 29 28 40 70 40s68-11 70-40l2-43c-2-42-26-65-72-65Z" fill="url(#s)" stroke="#c8d4d9" stroke-width="2"/><line x1="56" y1="84" x2="124" y2="84" stroke="#1a252b" stroke-width="2.5" stroke-linecap="round"/><circle cx="56" cy="84" r="5.5" fill="#101820"/><circle cx="124" cy="84" r="5.5" fill="#101820"/><ellipse cx="90" cy="119" rx="10" ry="2.5" fill="#27333a"/><path d="M72 139q18 7 36 0" fill="none" stroke="#c5d0d4" stroke-width="1.5" stroke-linecap="round"/><circle cx="31" cy="112" r="2" fill="#00d7ff"/><circle cx="149" cy="112" r="2" fill="#00d7ff"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+<title id="title">چهرهٔ ربات صابر</title><desc id="desc">ربات سفید و گرد با نگاه دوستانه، چشم‌های براق و دهان متحرک.</desc>
+<defs>
+ <linearGradient id="shell" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fff"/><stop offset=".58" stop-color="#f5f8f9"/><stop offset="1" stop-color="#d6e0e4"/></linearGradient>
+ <radialGradient id="shine" cx="30%" cy="18%" r="90%"><stop stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#a7bbc4" stop-opacity=".12"/></radialGradient>
+ <linearGradient id="side" x1="0" x2="1"><stop stop-color="#b5c4ca" stop-opacity=".6"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#9fb1b9" stop-opacity=".5"/></linearGradient>
+</defs>
+<path d="M90 6C45 6 19 29 17 69L20 119C22 153 48 174 90 175C132 174 158 153 160 119L163 69C161 29 135 6 90 6Z" fill="url(#shell)" stroke="#c4d2d8" stroke-width="1.6"/>
+<path d="M30 64C35 28 59 14 90 14S145 28 150 64" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".9"/>
+<path d="M22 92Q90 110 158 92L156 126Q149 160 90 168Q31 160 24 126Z" fill="url(#shine)"/>
+<path d="M31 69Q44 59 56 69M124 69Q136 59 149 69" fill="none" stroke="#d9e2e6" stroke-width="1.2" opacity=".9"/>
+<path d="M56 82H124" stroke="#17232a" stroke-width="2.3" stroke-linecap="round" opacity=".72"/>
+<g fill="#101820"><circle cx="56" cy="82" r="6.2"/><circle cx="124" cy="82" r="6.2"/></g>
+<g fill="#fff" opacity=".96"><circle cx="54" cy="80" r="1.7"/><circle cx="122" cy="80" r="1.7"/></g>
+<path d="M38 102Q47 108 56 103M124 103Q133 108 142 102" fill="none" stroke="#c1cfd5" stroke-width="1.6" stroke-linecap="round"/>
+<ellipse cx="90" cy="119" rx="10" ry="3" fill="#27333a" stroke="#17232a" stroke-width="1.2"/>
+<path d="M73 140Q90 146 107 140" fill="none" stroke="#c0cdd2" stroke-width="1.7" stroke-linecap="round"/>
+<path d="M24 82Q19 106 26 132M156 82Q161 106 154 132" fill="none" stroke="url(#side)" stroke-width="2"/>
+<circle cx="31" cy="112" r="2.3" fill="#65d9eb"/><circle cx="149" cy="112" r="2.3" fill="#65d9eb"/>
+</svg>

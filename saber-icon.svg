@@ -1,1 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#06100c"/><path d="M256 38 426 136 426 336 256 434 86 336 86 136Z" fill="none" stroke="#00ffaa" stroke-width="8"/><path d="M256 76C150 76 96 131 92 231l7 126c5 71 65 102 157 103 92-1 152-32 157-103l7-126C416 131 362 76 256 76Z" fill="#f4f7f8" stroke="#b8c8ce" stroke-width="8"/><line x1="178" y1="244" x2="334" y2="244" stroke="#152128" stroke-width="9" stroke-linecap="round"/><circle cx="178" cy="244" r="15" fill="#101820"/><circle cx="334" cy="244" r="15" fill="#101820"/><ellipse cx="256" cy="330" rx="25" ry="7" fill="#27333a"/><circle cx="130" cy="328" r="7" fill="#00d7ff"/><circle cx="382" cy="328" r="7" fill="#00d7ff"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">SABER AI emblem</title><desc id="desc">A static tactical emerald AI core and Persian Saad-inspired central mark.</desc>
+<defs>
+ <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b7ffe0"/><stop offset=".48" stop-color="#00ffaa"/><stop offset="1" stop-color="#278b62"/></linearGradient>
+ <radialGradient id="core"><stop offset="0" stop-color="#123d2b"/><stop offset="1" stop-color="#06100c"/></radialGradient>
+ <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M128 12 215 62 215 164 128 214 41 164 41 62Z" stroke="#2d7654" stroke-width="2" opacity=".65"/>
+ <path d="M128 23 204 67 204 158 128 202 52 158 52 67Z" stroke="url(#edge)" stroke-width="3" stroke-dasharray="26 10" opacity=".8">
+  
+ </path>
+ <ellipse cx="128" cy="112" rx="83" ry="31" stroke="#00ffaa" stroke-width="1.7" opacity=".8" transform="rotate(-32 128 112)">
+  
+ </ellipse>
+ <ellipse cx="128" cy="112" rx="83" ry="31" stroke="#8bffcf" stroke-width="1.2" opacity=".55" transform="rotate(32 128 112)">
+  
+ </ellipse>
+ <circle cx="128" cy="112" r="53" fill="url(#core)" stroke="url(#edge)" stroke-width="3" filter="url(#glow)">
+  
+ </circle>
+ <circle cx="128" cy="112" r="43" stroke="#66d39d" stroke-width="1" opacity=".55" stroke-dasharray="3 7"/>
+ <path d="M92 112 Q109 86 128 101 Q145 82 164 108 Q148 130 128 122 Q111 139 92 112Z" stroke="#b7ffe0" stroke-width="2.5" fill="#0a2418" filter="url(#glow)"/>
+ <circle cx="128" cy="110" r="8" fill="#00ffaa" stroke="#eafff5" stroke-width="2" filter="url(#glow)">
+  
+ </circle>
+ <path d="M128 25v14 M128 185v14 M41 112h14 M201 112h14" stroke="#b7ffe0" stroke-width="3"/>
+ <circle cx="128" cy="25" r="3" fill="#00ffaa"/><circle cx="215" cy="112" r="3" fill="#00ffaa"/><circle cx="128" cy="199" r="3" fill="#00ffaa"/><circle cx="41" cy="112" r="3" fill="#00ffaa"/>
+</g>
+</svg>

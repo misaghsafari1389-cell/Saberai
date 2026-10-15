@@ -1,17 +1,14 @@
 # Test report
 
-Automated checks performed on this archive:
-- ZIP integrity check passed.
-- ZIP contains only root-level files; no enclosing directory and no assets/ folder.
-- Runtime visual files are SVG; no PNG or WebP assets are included.
-- Manifest parses as JSON and points to root-level SVG icon.
-- JavaScript syntax check passed (Node.js `--check`).
-- HTML avatar uses inline SVG elements; the SVG mouth's radius is changed while audio playback is marked as speaking.
-- Service Worker cache name was bumped to invalidate older cached app files.
+Automated checks performed:
+- ZIP integrity checked after packaging.
+- All project files are at archive root; no enclosing folder, `assets/` folder, PNG, JPG, or WebP.
+- `manifest.json` parses and references root-level SVG icons.
+- Inline JavaScript syntax checked with Node.js.
+- Replicavox UI controls, LocalStorage persistence, TTS endpoint, MP3 response playback, speaking animation, and fallback paths were reviewed in source.
 
 Not verified in this environment:
-- Live GitHub Pages deployment and installation prompt on a real Android phone.
-- Live Groq/ElevenLabs API responses.
-- Phoneme-level lip synchronization. Mouth motion follows the speaking state and varies over time, but is not matched to individual spoken phonemes.
-
-PWA caution: SVG manifest icons satisfy the project's all-SVG asset constraint, but some installability checks/platforms may be more reliable with PNG icons at 192x192 and 512x512.
+- Live Replicavox API key and actual API request (requires the user's own key).
+- Whether the chosen Replicavox voice returns natural Persian. Official service materials list 15,000 free characters/month and API access, but do not explicitly confirm Persian in the verified language list.
+- Real-device Android PWA installation. SVG-only manifest icons satisfy the no-raster project requirement but some browsers/platforms may prefer PNG icons in 192x192 and 512x512 sizes.
+- Phoneme-level lip synchronization. The mouth animation follows audio playback and changes shape over time, not individual phonemes.
